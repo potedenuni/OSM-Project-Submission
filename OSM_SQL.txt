@@ -1,0 +1,8290 @@
+Microsoft Windows [Version 10.0.16299.125]
+(c) 2017 Microsoft Corporation. All rights reserved.
+
+C:\Users\magic>cd C:\Users\magic\OneDrive\Documents\GitHub\OSM
+
+C:\Users\magic\OneDrive\Documents\GitHub\OSM>sqlite3 dallas.db
+SQLite version 3.9.2 2015-11-02 18:31:45
+Enter ".help" for usage hints.
+sqlite> .read import_csv.sql
+nodes.csv:1: INSERT failed: datatype mismatch
+ways.csv:1: INSERT failed: datatype mismatch
+
+sqlite> .prompt 'City Names> '
+City Names>
+City Names>
+City Names>
+City Names> SELECT tags.value, COUNT(*) as count
+   ...> FROM (SELECT * FROM nodes_tags UNION ALL
+   ...>       SELECT * FROM ways_tags) tags
+   ...> WHERE tags.key LIKE '%city'
+   ...> GROUP BY tags.value
+   ...> ORDER BY count DESC;
+Frisco,1416
+Plano,85
+Dallas,22
+"Fort Worth",19
+Waxahachie,19
+"Cedar Hill",15
+McKinney,10
+"Grand Prairie",8
+Wylie,8
+Arlington,6
+Irving,4
+Cleburne,3
+Corinth,3
+Denton,3
+Euless,3
+Richardson,3
+Duncanville,2
+Garland,2
+Grapevine,2
+"Haltom City",2
+Mansfield,2
+Mesquite,2
+Rockwall,2
+Southlake,2
+15,1
+Anna,1
+Carrollton,1
+Coppell,1
+Crowley,1
+"Farmers Branch",1
+"Highland Village",1
+Keller,1
+"Little Elm",1
+Lucas,1
+MANSFIELD,1
+Terrell,1
+"Trophy Club",1
+Westlake,1
+irving,1
+City Names>
+City Names>
+City Names>
+City Names>
+City Names> SELECT tags.value, COUNT(*) as count
+   ...> FROM (SELECT * FROM nodes_tags UNION ALL
+   ...>       SELECT * FROM ways_tags) tags
+   ...> WHERE tags.key LIKE '%city'
+   ...> AND tags.value GLOB '*[0-9]*'
+   ...> GROUP BY tags.value
+   ...> ORDER BY count DESC;
+15,1
+City Names>
+City Names>
+City Names>
+City Names> UPDATE nodes_tags
+   ...> SET value = ''
+   ...> WHERE key LIKE '%city'
+   ...> AND value GLOB '*[0-9]*';
+City Names>
+City Names>
+City Names>
+City Names> UPDATE ways_tags
+   ...> SET value = ''
+   ...> WHERE key LIKE '%city'
+   ...> AND value GLOB '*[0-9]*';
+City Names>
+City Names>
+City Names>
+City Names> SELECT tags.value, COUNT(*) as count
+   ...> FROM (SELECT * FROM nodes_tags UNION ALL
+   ...>       SELECT * FROM ways_tags) tags
+   ...> WHERE tags.key LIKE '%city'
+   ...> AND tags.value GLOB '*[0-9]*'
+   ...> GROUP BY tags.value
+   ...> ORDER BY count DESC;
+City Names>
+City Names>
+City Names>
+City Names> .prompt 'Zip Codes> '
+Zip Codes>
+Zip Codes>
+Zip Codes>
+Zip Codes>
+Zip Codes> SELECT tags.value, COUNT(*) as count
+   ...> FROM (SELECT * FROM nodes_tags UNION ALL
+   ...>       SELECT * FROM ways_tags) tags
+   ...> WHERE tags.key = 'postcode'
+   ...> GROUP BY tags.value
+   ...> ORDER BY tags.value;
+75002,1
+75006,1
+75019,1
+75032,1
+75034,1
+75038,1
+75039,2
+75043,2
+75050,4
+75051,4
+75061,1
+75062,2
+75063,1
+75067,1
+75068,1
+75069,4
+75070,4
+75071,2
+75075,1
+75077,1
+75080,2
+75081,1
+75087,1
+75093,9
+75098,8
+75104,16
+75116,2
+75149,1
+75150,1
+75160,1
+75165,19
+75201,2
+75202,2
+75203,1
+75204,2
+75205,1
+75207,1
+75208,1
+75211,2
+75212,1
+75215,1
+75216,1
+75217,1
+75220,1
+75224,1
+75234,1
+75243,1
+75249,1
+75261,1
+76009,1
+76013,5
+76017,1
+76033,3
+76036,1
+76039,3
+76051,2
+76063,3
+76092,2
+76102,1
+76106,2
+76107,1
+76109,1
+76111,1
+76117,2
+76118,1
+76119,1
+76120,1
+76132,4
+76133,1
+76135,1
+76137,3
+76177,1
+76205,2
+76209,1
+76210,3
+76248,1
+76262,2
+"TX 76262",1
+Zip Codes>
+Zip Codes>
+Zip Codes>
+Zip Codes> SELECT *
+   ...> FROM nodes_tags
+   ...> WHERE key='postcode'
+   ...> AND value GLOB '*[^0-9]*';
+"721013518,postcode,"TX 76262","addr
+Zip Codes>
+Zip Codes>
+Zip Codes>
+Zip Codes>
+Zip Codes> UPDATE nodes_tags
+   ...> SET value = '76262'
+   ...> WHERE key='postcode'
+   ...> AND value = 'TX 76262';
+Zip Codes>
+Zip Codes>
+Zip Codes>
+Zip Codes> SELECT *
+   ...> FROM nodes_tags
+   ...> WHERE key='postcode'
+   ...> AND value GLOB '*[^0-9]*';
+Zip Codes>
+Zip Codes>
+Zip Codes>
+Zip Codes> .prompt 'Street Names> '
+Street Names>
+Street Names>
+Street Names>
+Street Names>
+Street Names>
+Street Names>
+Street Names> SELECT tags.value, COUNT(*) as count
+   ...> FROM (SELECT * FROM nodes_tags UNION ALL
+   ...>       SELECT * FROM ways_tags) tags
+   ...> WHERE tags.key = 'street'
+   ...> GROUP BY tags.value
+   ...> ORDER BY count DESC;
+"Preston Road",28
+"Meadowbrook Drive",20
+"Townsend Drive",19
+"Calmont Avenue",18
+"6th Avenue",17
+"Northaven Road",17
+"Royal Lane",17
+"Wayside Avenue",17
+"Forest Lane",15
+"North Sylvania Avenue",15
+"Belmont Avenue",14
+"Clinton Avenue",14
+"Merida Avenue",14
+"Northwest 25th Street",14
+"James Avenue",13
+"Livingston Avenue",13
+"Mc Cart Avenue",13
+"Park Lane",13
+"Pershing Avenue",13
+"Walnut Hill Lane",13
+"C F Hawn Freeway",12
+"Fairview Street",12
+"Gaston Avenue",12
+"Gordon Avenue",12
+"Locke Avenue",12
+"Midway Road",12
+"Pleasant Drive",12
+"South Jennings Avenue",12
+"Trail Lake Drive",12
+"Winifred Drive",12
+"Audelia Road",11
+"College Avenue",11
+"Columbus Avenue",11
+"East Berry Street",11
+"El Campo Avenue",11
+"Lubbock Avenue",11
+"North Houston Street",11
+"North Riverside Drive",11
+"Northwest 24th Street",11
+"Peninsula Lane",11
+"Randol Mill Road",11
+"South Adams Street",11
+"South Marsalis Avenue",11
+"Vanderbilt Avenue",11
+"West Illinois Avenue",11
+"Birchman Avenue",10
+"East Lancaster Avenue",10
+"Hale Avenue",10
+"Lipscomb Street",10
+"North Beach Street",10
+"North Elm Street",10
+"Ryan Avenue",10
+"South Buckner Boulevard",10
+"South Freeway",10
+"Spring Valley Road",10
+"Stanley Avenue",10
+"Waits Avenue",10
+"Wilbarger Street",10
+"Willing Avenue",10
+"5th Avenue",9
+"Ave H",9
+"Bonnie Brae Avenue",9
+"Bruton Road",9
+"Bryant Irvin Road",9
+"Burton Avenue",9
+"Crestway Drive",9
+"Dallas Parkway",9
+"Duncanville Road",9
+"East Rosedale Street",9
+"Fitzhugh Avenue",9
+"Frazier Avenue",9
+"Hampshire Boulevard",9
+"Hemphill Street",9
+"Market Avenue",9
+"Mccommas Boulevard",9
+"Norma Street",9
+"North Macarthur Boulevard",9
+"North St Augustine Road",9
+"Northwest 28th Street",9
+"Ramsey Avenue",9
+"Refugio Avenue",9
+"Royal Crest Drive",9
+"South Edgewood Terrace",9
+"St Louis Avenue",9
+"Stuart Drive",9
+"White Settlement Road",9
+"8th Avenue",8
+"Ave G",8
+"Ave N",8
+"Azle Avenue",8
+"Bonnie Drive",8
+"Collett Little Road",8
+"Crenshaw Avenue",8
+"Denver Avenue",8
+"Dutton Drive",8
+"East Overton Road",8
+"Elam Road",8
+"Ferguson Road",8
+"Gould Avenue",8
+"Grafton Avenue",8
+"Ledgestone Drive",8
+"Lincoln Avenue",8
+"Lovell Avenue",8
+"Loving Avenue",8
+"Martel Avenue",8
+"Maryland Avenue",8
+"Miller Avenue",8
+"Monticello Avenue",8
+"North Central Expressway",8
+"North Crump Street",8
+"North Main Street",8
+"Northwest 26th Street",8
+"Prospect Avenue",8
+"Roosevelt Avenue",8
+"Ross Avenue",8
+"Singleton Boulevard",8
+"South Ewing Avenue",8
+"South Hampton Road",8
+"South Lancaster Road",8
+"Southwestern Boulevard",8
+"Stanford Avenue",8
+"Washington Avenue",8
+"West Boyce Avenue",8
+"West Gambrell Street",8
+"West Northwest Highway",8
+"Alston Avenue",7
+"Bonnell Avenue",7
+"Byers Avenue",7
+"Camp Bowie Boulevard",7
+"Camp Bowie West Boulevard",7
+"Caruth Boulevard",7
+"Cockrell Avenue",7
+"Collinwood Avenue",7
+"Curzon Avenue",7
+"Decatur Avenue",7
+"Ellis Avenue",7
+"Elm Street",7
+"Engle Avenue",7
+"Fairmount Avenue",7
+"Forest Hills Boulevard",7
+"Forest Park Boulevard",7
+"Geddes Avenue",7
+"Hanover Avenue",7
+"Harry Hines Boulevard",7
+"Heron Drive",7
+"Idaho Avenue",7
+"Jennie Lee Lane",7
+"Junius Street",7
+"Kenwood Avenue",7
+"Marsh Lane",7
+"Meadow Road",7
+"Mentor Avenue",7
+"Napa Valley Drive",7
+"North Edgefield Avenue",7
+"North Harding Street",7
+"North Winnetka Avenue",7
+"Northwest 19th Street",7
+"Northwest 23rd Street",7
+"Northwest 27th Street",7
+"Northwest 29th Street",7
+"Northwest Loraine Street",7
+"Odessa Avenue",7
+"Overlook Drive",7
+"Purington Avenue",7
+"Skillman Street",7
+"Skyline Drive",7
+"South Cockrell Hill Road",7
+"Stadium Drive",7
+"Teagarden Road",7
+"West Clarendon Drive",7
+"West Davis Street",7
+"West Hammond Street",7
+"West Spurgeon Street",7
+"Westcreek Drive",7
+"Willow Lane",7
+"Abrams Road",6
+"Alaska Avenue",6
+"Alta Vista Road",6
+"Ambrose Drive",6
+"Amherst Avenue",6
+"Anita Street",6
+"Ave I",6
+"Ave K",6
+"Avenue A",6
+"Baylor Street",6
+"Bellaire Drive South",6
+"Belle Chasse Lane",6
+"Beverly Drive",6
+"Birdsong Drive",6
+"Bonnie View Road",6
+"Brandon Street",6
+"Brentwood Stair Road",6
+"Bridge Street",6
+"Britton Avenue",6
+"Burke Road",6
+"Cedar Tree Drive",6
+"Chenault Street",6
+"Clover Lane",6
+"Creekwood Lane",6
+"Crest Ridge Drive",6
+"Dahlia Drive",6
+"Diaz Avenue",6
+"East Ann Arbor Avenue",6
+"East Harvey Avenue",6
+"East Ledbetter Drive",6
+"East Loop 820",6
+"East Robert Street",6
+"Edney Street",6
+"Essex Street",6
+"Fair Park Boulevard",6
+"Ferndale Road",6
+"Forest Creek Drive",6
+"Glen Garden Drive",6
+"Greenlee Street",6
+"Handley Drive",6
+"Harlandale Avenue",6
+"Hawthorne Avenue",6
+"Hillburn Drive",6
+"Homan Avenue",6
+"Houghton Avenue",6
+"Hurley Avenue",6
+"Inwood Road",6
+"John T White Road",6
+"La Grange Drive",6
+"Lee Avenue",6
+"Marion Avenue",6
+"Marks Place",6
+"Martha Lane",6
+"Martin Street",6
+"Mc Kinley Avenue",6
+"Michigan Avenue",6
+"Military Parkway",6
+"Neches Street",6
+"Northwest 21st Street",6
+"Oakland Boulevard",6
+"Parkdale Drive",6
+"Parker Henderson Road",6
+"Pecos Street",6
+"Penrose Avenue",6
+"Periwinkle Drive",6
+"Poinsettia Drive",6
+"Prairie Avenue",6
+"Putnam Street",6
+"Ramey Avenue",6
+"Roaring Springs Road",6
+"Robinwood Drive",6
+"Sandage Avenue",6
+"Scyene Road",6
+"Shiver Road",6
+"Simpson Stuart Road",6
+"South Denley Drive",6
+"South Grove Street",6
+"South Hampshire Boulevard",6
+"South Henderson Street",6
+"South Hills Avenue",6
+"South Hughes Avenue",6
+"South Oak Cliff Boulevard",6
+"South Polk Street",6
+"South University Drive",6
+"South Vernon Avenue",6
+"South Westmoreland Road",6
+"Southern Hills Drive",6
+"Tall Oak Drive",6
+"Travis Avenue",6
+"Velasco Avenue",6
+"Walnut Street",6
+"Waterford Drive",6
+"Weiler Boulevard",6
+"West 5th Street",6
+"West Fuller Avenue",6
+"West Jefferson Boulevard",6
+"West Red Bird Lane",6
+"West Vickery Boulevard",6
+"Western Center Boulevard",6
+"Wheaton Drive",6
+"Whitehurst Drive",6
+"Wilhurt Avenue",6
+"Worth Street",6
+"Yolanda Drive",6
+"Alexander Drive",5
+"Alta Vista Lane",5
+"Anderson Street",5
+"Angus Drive",5
+"Anzio Drive",5
+"Arapaho Road",5
+"Ash Lane",5
+"Ashland Avenue",5
+"Ave J",5
+"Ave M",5
+"Banting Way",5
+"Barrett Drive",5
+"Blue Creek Drive",5
+"Blue Mound Road",5
+"Boat Club Road",5
+"Bomar Avenue",5
+"Briargrove Lane",5
+"Bryn Mawr Drive",5
+"Carl Street",5
+"Chestnut Avenue",5
+"Chicago Avenue",5
+"Childress Street",5
+"Church Street",5
+"Colvin Avenue",5
+"Cooks Lane",5
+"Cortez Drive",5
+"Cuculu Drive",5
+"Deloache Avenue",5
+"Donalee Street",5
+"Durango Drive",5
+"East 4th Street",5
+"East Jefferson Avenue",5
+"East Morningside Drive",5
+"Ellsworth Avenue",5
+"Fairway Drive",5
+"Fernwood Avenue",5
+"Flamingo Road",5
+"Fletcher Avenue",5
+"Forest Avenue",5
+"Forney Road",5
+"Fossil Hill Drive",5
+"Frankford Road",5
+"Freeport Drive",5
+"Garza Avenue",5
+"Gaylord Drive",5
+"Goodman Avenue",5
+"Goodwin Avenue",5
+"Guadalupe Road",5
+"Hansboro Avenue",5
+"Harrington Avenue",5
+"Harvest Hill Road",5
+"Healey Drive",5
+"Hickory Street",5
+"Highgrove Drive",5
+"Hightower Street",5
+"Hollywood Avenue",5
+"Honeysuckle Avenue",5
+"Hulen Street",5
+"Ingersoll Street",5
+"Irving Boulevard",5
+"Ivandell Avenue",5
+"John West Road",5
+"Keller Hicks Road",5
+"Kilarney Drive",5
+"Kilpatrick Avenue",5
+"Kings Highway",5
+"Kingsford Avenue",5
+"Kirnwood Drive",5
+"Lafayette Avenue",5
+"Lake June Road",5
+"Las Vegas Trace",5
+"Lawndale Avenue",5
+"Leisure Drive",5
+"Lemmon Avenue",5
+"Libbey Avenue",5
+"Lindsley Avenue",5
+"Lippitt Avenue",5
+"Lovers Lane",5
+"Lyndon Drive",5
+"Marquette Street",5
+"May Street",5
+"Mccallum Boulevard",5
+"Meadow Lane Terrace",5
+"Melody Lane",5
+"Mercedes Avenue",5
+"Mims Street",5
+"Misty Meadow Drive South",5
+"Moonmist Circle",5
+"Mount Vernon Avenue",5
+"Mountain Lake Road",5
+"Newcombe Drive",5
+"Newport Avenue",5
+"Nomas Street",5
+"North Barnett Avenue",5
+"North Jim Miller Road",5
+"North Madison Avenue",5
+"North Masters Drive",5
+"North Morocco Avenue",5
+"North Normandale Street",5
+"North Pecan Street",5
+"North Prairie Creek Road",5
+"Northwest 30th Street",5
+"Parry Avenue",5
+"Pearl Avenue",5
+"Pennsylvania Avenue",5
+"Prichard Lane",5
+"Queen Street",5
+"Racine Drive",5
+"Ramona Drive",5
+"Richmond Avenue",5
+"River Park Drive",5
+"Rogers Avenue",5
+"Rosedale Avenue",5
+"Rylie Road",5
+"San Benito Way",5
+"San Jacinto Street",5
+"San Joaquin Trace",5
+"Santa Clara Drive",5
+"Saranac Trace",5
+"Seneca Drive",5
+"Shadow Glen Drive",5
+"South Central Expressway",5
+"South Drive",5
+"South Jones Street",5
+"South Marlborough Avenue",5
+"South Rosemont Avenue",5
+"Stonebrook Parkway",5
+"Strong Avenue",5
+"Sundial Drive",5
+"Tremont Street",5
+"Tres Logos Lane",5
+"University Boulevard",5
+"Vickery Boulevard",5
+"Victor Street",5
+"Virgil Street",5
+"Virginia Place",5
+"Wabash Avenue",5
+"Wagon Wheels Trail",5
+"Wakecrest Drive",5
+"Walla Avenue",5
+"Walton Avenue",5
+"Washburn Avenue",5
+"Wayland Drive",5
+"Wayne Street",5
+"Wedgworth Road South",5
+"West 10Th Street",5
+"West 12Th Street",5
+"West 7th Street",5
+"West Biddison Street",5
+"West Broadus Street",5
+"West Freeway",5
+"West Lovers Lane",5
+"West Magnolia Avenue",5
+"West Pentagon Parkway",5
+"Westbrook Avenue",5
+"Westhaven Drive",5
+"Wildfire Lane",5
+"Woodland Avenue",5
+"Wren Avenue",5
+"Yeager Street",5
+"Yucca Avenue",5
+"Ada Avenue",4
+"Aledo Drive",4
+"Allencrest Lane",4
+"Alpha Road",4
+"Apache Circle",4
+"April Sound Lane",4
+"Arch Street",4
+"Arizona Avenue",4
+"Badger Creek Drive",4
+"Baldwin Street",4
+"Barlow Avenue",4
+"Baton Rouge Boulevard",4
+"Beaty Street",4
+"Beechwood Lane",4
+"Belclaire Avenue",4
+"Ben Hogan Lane",4
+"Berwick Avenue",4
+"Bickers Street",4
+"Big Spring Drive",4
+"Big Thicket Drive",4
+"Bilglade Road",4
+"Birmingham Forest Drive",4
+"Blazing Star Road",4
+"Blossom Lane",4
+"Bluewood Drive",4
+"Bluffview Boulevard",4
+"Boca Bay Drive",4
+"Bonaventure Boulevard North",4
+"Boyton Canyon Road",4
+"Briarhaven Road",4
+"Bridal Wreath Lane",4
+"Brittany Place",4
+"Britton Ridge Lane",4
+"Brushy Creek Trace",4
+"Bryan Street",4
+"Burchill Road",4
+"Burlington Boulevard",4
+"Burmeister Road",4
+"Camelot Drive",4
+"Campus Drive",4
+"Canyon Crest Drive",4
+"Caribbean Drive",4
+"Carnation Avenue",4
+"Catherine Street",4
+"Cedar Springs Drive",4
+"Cedar Springs Road",4
+"Chadwick Drive",4
+"Checota Drive",4
+"Clairemont Avenue",4
+"Colgate Avenue",4
+"Colonial Avenue",4
+"Concord Drive",4
+"Cordova Avenue",4
+"Costa Mesa Drive",4
+"Cove Meadow Lane",4
+"Crawford Farms Drive",4
+"Cripple Creek Drive",4
+"Crowley Road",4
+"Dawes Drive",4
+"Deen Road",4
+"Dexter Avenue",4
+"Donna Drive",4
+"Donnelly Avenue",4
+"Donnis Drive",4
+"Ducks Landing",4
+"Dunbar Street",4
+"Dutch Hollow Drive",4
+"East Arlington Avenue",4
+"East Baltimore Avenue",4
+"East Davis Avenue",4
+"East Hattie Street",4
+"East Kiest Boulevard",4
+"East Northwest Highway",4
+"East Powell Avenue",4
+"East R L Thornton Freeway",4
+"East Richmond Avenue",4
+"East Spurgeon Street",4
+"East Vickery Boulevard",4
+"Eastwood Avenue",4
+"Ederville Road",4
+"Edmondson Avenue",4
+"Ella Avenue",4
+"Elmwood Avenue",4
+"Elsie Faye Heggins Street",4
+"Emory Oak Lane",4
+"Estate Lane",4
+"Evans Avenue",4
+"Fairlane Avenue",4
+"Falls Drive",4
+"Fernald Avenue",4
+"Fish Road",4
+"Forbes Street",4
+"Foxpaw Trace",4
+"Galvez Avenue",4
+"Garland Road",4
+"Gillis Johnson Street",4
+"Gladewater Drive",4
+"Glenfield Avenue",4
+"Glenhaven Boulevard",4
+"Glenmont Drive",4
+"Goldenrod Avenue",4
+"Gooding Drive",4
+"Granbury Road",4
+"Granite Creek Drive",4
+"Grayhawk Boulevard",4
+"Green Ridge",4
+"Green River Trace",4
+"Greenbrier Drive",4
+"Grover Avenue",4
+"Hamilton Avenue",4
+"Harbor Road",4
+"Hardeman Street",4
+"Harley Avenue",4
+"Harwen Terrace",4
+"Haverwood Lane",4
+"Hawks Landing Road",4
+"Haymarket Road",4
+"Helmick Avenue",4
+"High Vista Drive",4
+"High Woods Trace",4
+"Highgate Lane",4
+"Hillcrest Street",4
+"Hilltop Road",4
+"Hockaday Drive",4
+"Holcomb Road",4
+"Hollow Valley Drive",4
+"Horizon Place",4
+"Hosta Way",4
+"Houghton Road",4
+"Hudspeth Avenue",4
+"Hulen Park Circle",4
+"Hunnicut Road",4
+"Inverness Avenue",4
+"Jacksboro Highway",4
+"Jacobie Boulevard",4
+"Keller Springs Road",4
+"Kelvin Avenue",4
+"Kendale Drive",4
+"Kilburn Avenue",4
+"Kingbridge Street",4
+"Kinmore Street",4
+"Kirkwood Drive",4
+"Kirkwood Road",4
+"Kleberg Road",4
+"Knox Street",4
+"La Vista Drive",4
+"Lagonda Avenue",4
+"Lakeshore Drive",4
+"Lakeside Drive",4
+"Lakewood Boulevard",4
+"Lanark Avenue",4
+"Laredo Drive",4
+"Laughton Street",4
+"Leacrest Drive",4
+"Leaning Oaks Street",4
+"Lebanon Road",4
+"Lebow Street",4
+"Llano Avenue",4
+"Lockhaven Drive",4
+"Lolita Drive",4
+"Lone Eagle Drive",4
+"Longfellow Drive",4
+"Longmeadow Way",4
+"Lovett Avenue",4
+"Main Street",4
+"Major Street",4
+"Malibu Street",4
+"Malvey Avenue",4
+"Marfa Avenue",4
+"Marigold Avenue",4
+"Marquita Avenue",4
+"Marsalis Lane",4
+"Mason Dells Drive",4
+"Mc Lemore Avenue",4
+"Mcadams Avenue",4
+"Mcneil Street",4
+"Meadow Crest Drive",4
+"Meadow Lake Avenue",4
+"Medford Court East",4
+"Melanie Drive",4
+"Melrose Lane",4
+"Merrell Road",4
+"Milam Street",4
+"Millmar Drive",4
+"Mockingbird Lane",4
+"Monterrey Drive",4
+"Monticello Drive",4
+"Muse Street",4
+"Mystic Trace",4
+"Nash Lane",4
+"Natalie Drive",4
+"Navaro Street",4
+"Newcastle Drive",4
+"Nolan Street",4
+"Norcross Lane",4
+"Normandy Road",4
+"North Acres Drive",4
+"North Bagley Street",4
+"North Bailey Avenue",4
+"North Carroll Avenue",4
+"North Cockrell Hill Road",4
+"North Nichols Street",4
+"North Prairie Avenue",4
+"North Terry Street",4
+"Northfield Drive",4
+"Oak Grove Road",4
+"Oak Hill Circle",4
+"Ohio Garden Road",4
+"Orchid Lane",4
+"Oscar Avenue",4
+"Overton Park Drive East",4
+"Overton Ridge Boulevard",4
+"Panola Avenue",4
+"Panorama Drive",4
+"Park Place Avenue",4
+"Pasatiempo Drive",4
+"Pate Drive",4
+"Peavy Road",4
+"Petain Avenue",4
+"Pinson Street",4
+"Pioneer Street",4
+"Portales Drive",4
+"Post Oak Boulevard",4
+"Potomac Avenue",4
+"Presthope Drive",4
+"Preston Haven Drive",4
+"Preston Oaks Road",4
+"Primrose Avenue",4
+"Princess Lane",4
+"Promise Land Drive",4
+"Purdue Avenue",4
+"Purdue Street",4
+"Quarry Ridge Trace",4
+"Ravenview Road",4
+"Redwood Drive West",4
+"Reiger Avenue",4
+"Ridgehaven Drive",4
+"Rolinda Drive",4
+"Rosen Avenue",4
+"Runnels Street",4
+"Samuell Boulevard",4
+"Samuels Avenue",4
+"San Marcus Avenue",4
+"San Paula Avenue",4
+"Scotland Drive",4
+"Se 14Th Street",4
+"Se-Ha-Payak Road",4
+"Seevers Avenue",4
+"Shady Bend Drive",4
+"Sheridan Road",4
+"Shiloh Road",4
+"Shook Avenue",4
+"Shoreline Drive",4
+"Sleepy Hollow Drive",4
+"Slick Rock Chase",4
+"South Beltline Road",4
+"South Creek Drive",4
+"South Hulen Street",4
+"South St Augustine Road",4
+"Southpoint Drive",4
+"Southwest Boulevard",4
+"Southwest Loop 820",4
+"Statler Court",4
+"Stella Street",4
+"Stephenville Drive",4
+"Stone Meadow Lane",4
+"Stoney Bridge Road",4
+"Sweetwood Drive",4
+"Sycamore School Road",4
+"Sycamore Street",4
+"Sydney Street",4
+"Tennessee Avenue",4
+"Texas Drive",4
+"Thomas Place",4
+"Tierney Road",4
+"Timberglen Road",4
+"Timberline Drive",4
+"Town Bluff Drive",4
+"Trace Ridge Parkway",4
+"Treeline Drive",4
+"Tremont Avenue",4
+"Trinity Mills Road",4
+"Trinity Vista Trace",4
+"Truman Drive",4
+"Tulip Lane",4
+"Van Natta Lane",4
+"Van Ness Lane",4
+"Village Lane",4
+"Vinewood Drive",4
+"Vintage Drive",4
+"Vista Greens Drive",4
+"Volga Avenue",4
+"Waggoner Drive",4
+"Wake Bridge Drive",4
+"Wayfarer Trace",4
+"Weather Vane Lane",4
+"Weber Street",4
+"Wedgwood Drive",4
+"Wellesley Avenue",4
+"West 4th Street",4
+"West Amherst Avenue",4
+"West Beddell Street",4
+"West Camp Wisdom Road",4
+"West Commerce Street",4
+"West Drew Street",4
+"West Ledbetter Drive",4
+"West Mockingbird Lane",4
+"West Valley Ranch Parkway",4
+"West Waggoman Street",4
+"West Wheatland Road",4
+"Westfield Avenue",4
+"Westridge Avenue",4
+"Whispering Trail",4
+"Whitewood Drive",4
+"Whitney Lane",4
+"Whittenburg Drive",4
+"Wilbur Street",4
+"Willis Avenue",4
+"Willow Ridge Road",4
+"Willow Wood Lane",4
+"Willowdell Drive",4
+"Willowgate Drive",4
+"Wilton Avenue",4
+"Woodlark Drive",4
+"Woodmeadow Parkway",4
+"Woodmere Drive",4
+"Woodsmoke Way",4
+"Woodway Drive",4
+"Wrigley Way",4
+"Wyatt Street",4
+"Yosemite Drive",4
+"Acapulco Road",3
+"Adelaide Drive",3
+"Alamo Avenue",3
+"Alexandria Drive",3
+"Allview Lane",3
+"Alta View Street",3
+"Altamesa Boulevard",3
+"Altoona Drive",3
+"Amber Drive",3
+"Andrea Drive",3
+"Andrew Avenue",3
+"Angle Avenue",3
+"Anita Avenue",3
+"Annapolis Drive",3
+"Arbor Street",3
+"Arborcrest Drive",3
+"Arcadia Trace",3
+"Ark Road",3
+"Arroyo Avenue",3
+"Ash Crescent Street",3
+"Ashbourne Way",3
+"Ashley Lane",3
+"Astoria Drive",3
+"Atha Drive",3
+"Ave E",3
+"Ave L",3
+"Avington Way",3
+"Avon Street",3
+"Aylworth Drive",3
+"Azalea Lane",3
+"Bacardi Drive",3
+"Bancroft Lane",3
+"Barberry Drive",3
+"Barclay Avenue",3
+"Basswood Boulevard",3
+"Basswood Drive",3
+"Baxtershire Drive",3
+"Bayfield Drive",3
+"Baystone Drive",3
+"Beartooth Drive",3
+"Beaumont Street",3
+"Beckleycrest Avenue",3
+"Belladonna Drive",3
+"Belt Line Road",3
+"Bent Tree Drive",3
+"Bentley Avenue",3
+"Bermejo Road",3
+"Berrywood Trace",3
+"Bessie Street",3
+"Bideker Avenue",3
+"Big Fork Road",3
+"Biloxi Drive",3
+"Binyon Street",3
+"Birchbend Lane",3
+"Blakehill Drive",3
+"Blandin Street",3
+"Blevins Street",3
+"Blue Lake Drive",3
+"Blue Quartz Road",3
+"Bob O Link Drive",3
+"Boca Raton Boulevard",3
+"Bombay Avenue",3
+"Bonnywood Lane",3
+"Bordeaux Avenue",3
+"Bradford Grove Drive",3
+"Branch Hollow Trace",3
+"Brentfield Drive",3
+"Bretton Bay Lane",3
+"Bretton Wood Drive",3
+"Briarbend Road",3
+"Briery Street",3
+"Bright Street",3
+"Brockbank Drive",3
+"Brook Hill Lane",3
+"Brook Meadow Lane",3
+"Brookfield Avenue",3
+"Brookhaven Trace",3
+"Brown Drive",3
+"Bryan Parkway",3
+"Bryce Avenue",3
+"Buffalo Bend Place",3
+"Burnswick Isles Way",3
+"Butte Meadows Drive",3
+"Cabot Drive",3
+"Cameron Street",3
+"Campana Street",3
+"Canada Drive",3
+"Canoe Road",3
+"Capitol Avenue",3
+"Caracas Drive",3
+"Caravan Trail",3
+"Carleton Avenue",3
+"Carnegie Drive",3
+"Carrousel Circle",3
+"Casa Grande Trail",3
+"Casino Circle",3
+"Castillo Road",3
+"Castle Creek Court",3
+"Castle Hills Drive",3
+"Castle Ridge Road",3
+"Castlegate Drive",3
+"Caveson Drive",3
+"Cayman Drive",3
+"Cayuga Drive",3
+"Cedar Forest Trail",3
+"Cedar Hill Avenue",3
+"Cedar Oaks Boulevard",3
+"Cedarbrush Drive",3
+"Chantilly Lane",3
+"Chapel Creek Drive",3
+"Chestnut Street",3
+"Cheyenne Road",3
+"Chickasaw Avenue",3
+"Chippewa Trail",3
+"Chittamwood Trace",3
+"Churchill Way",3
+"Cibolo Drive",3
+"Cimmaron Trace",3
+"Cinnabar Drive",3
+"Circle Park Boulevard",3
+"Clarke Avenue",3
+"Cleardale Drive",3
+"Clearwood Drive",3
+"Clermont Avenue",3
+"Cliffbrook Drive",3
+"Cloverdale Drive",3
+"Clovermeadow Drive",3
+"Club Meadows Drive",3
+"Cobblers Lane",3
+"Coleman Avenue",3
+"Collins Avenue",3
+"Colonial Parkway",3
+"Conner Drive",3
+"Conroy Street",3
+"Coombs Creek Drive",3
+"Copper Point Lane",3
+"Cotillion Road",3
+"Country Club Circle",3
+"Country Creek Lane",3
+"Country Glen Trail",3
+"Country Lane",3
+"Country Valley Lane",3
+"Courtney Street",3
+"Courtside Drive",3
+"Covert Avenue",3
+"Cragmont Avenue",3
+"Craig Street",3
+"Craige Drive",3
+"Creede Trace",3
+"Creek Point Drive",3
+"Crestline Road",3
+"Crimnson Court",3
+"Crockett Drive",3
+"Cromwell Drive",3
+"Crooked Lane",3
+"Crossman Avenue",3
+"Crystal Beach Lane",3
+"Currin Drive",3
+"Daimler Drive",3
+"Dalford Street",3
+"Daneway Drive",3
+"Darlington Trace",3
+"Darwood Avenue",3
+"Dawson Drive",3
+"De Cory Road",3
+"Deauville Drive",3
+"Del Norte Lane",3
+"Del Roy Drive",3
+"Delford Circle",3
+"Delmonico Drive",3
+"Dennis Avenue",3
+"Denton Drive",3
+"Desco Drive",3
+"Desert Mesa Road",3
+"Diamond Springs Trace",3
+"Dillard Street",3
+"Dorris Street",3
+"Dowdell Street",3
+"Dowdy Ferry Road",3
+"Dowelling Court",3
+"Downbrook Drive",3
+"Drane Drive",3
+"Drexel Drive",3
+"Driskell Boulevard",3
+"Druid Lane",3
+"Drury Drive",3
+"Duffield Drive",3
+"Dugald Place",3
+"Dunaway Drive",3
+"Dunhaven Road",3
+"East 1st Street",3
+"East 9th Street",3
+"East Allen Avenue",3
+"East Cantey Street",3
+"East Center Street",3
+"East Fairfax Avenue",3
+"East Jessamine Street",3
+"East Kellis Street",3
+"East Magnolia Avenue",3
+"East Marshall Drive",3
+"East Mockingbird Lane",3
+"East Mulkey Street",3
+"East Ramsey Avenue",3
+"East Seminary Drive",3
+"Eastland Street",3
+"Easton Road",3
+"Eden Roc Drive",3
+"Ederville Road South",3
+"Edgehill Road",3
+"El Capitan Drive",3
+"El Greco Avenue",3
+"El Hara Circle",3
+"Eldorado Parkway",3
+"Elgin Street",3
+"Elk Horn Trail",3
+"Elm Lawn Street",3
+"Elsby Avenue",3
+"Emerson Avenue",3
+"Emmett Street",3
+"Estacado Drive",3
+"Eustis Avenue",3
+"Ewing Avenue",3
+"Fairfax Street",3
+"Farola Drive",3
+"Featherbrook Drive",3
+"Fern Drive",3
+"Ferndale Avenue",3
+"Ficus Drive",3
+"Fire Hill Drive",3
+"Fireside Drive",3
+"Fisher Road",3
+"Foard Street",3
+"Foothill Drive",3
+"Fordham Road",3
+"Fort Worth Avenue",3
+"Fossil Creek Boulevard",3
+"Fuller Circle",3
+"Fuller Drive",3
+"Galemeadow Drive",3
+"Gallant Fox Drive",3
+"Galway Drive",3
+"Gardendale Drive",3
+"Gaspar Drive",3
+"Geneva Lane",3
+"Genoa Road",3
+"Gilford Street",3
+"Glendora Avenue",3
+"Glengariff Drive",3
+"Golden Horn Lane",3
+"Golden Nugget Drive",3
+"Goldwood Drive",3
+"Goliad Avenue",3
+"Goodyear Drive",3
+"Granite Ridge Drive",3
+"Grayhawk Lane",3
+"Great Trinity Forest Way",3
+"Greenfield Road",3
+"Greenhaven Drive",3
+"Griggs Avenue",3
+"Gross Road",3
+"Half Moon Drive",3
+Halsey,3
+"Hammerly Drive",3
+"Harbor Glen Drive",3
+"Hardwood Trail",3
+"Hardy Street",3
+"Hatcher Street",3
+"Hawick Lane",3
+"Hawk Creek Drive",3
+"Hawley Drive",3
+"Haynes Avenue",3
+"Heatherwood Court",3
+"Hedge Drive",3
+"Heritage Way Drive",3
+"High Brook Drive",3
+"High Summit Drive",3
+"Highland Road",3
+"Hillcrest Road",3
+"Hillview Drive",3
+"Hogan Drive",3
+"Hoke Smith Drive",3
+"Holly Hill Drive",3
+"Homer Street",3
+"Homestretch Drive",3
+"Honey Locust Circle",3
+"Huckleberry Circle",3
+"Huckleberry Drive",3
+"Humbert Avenue",3
+"Hunters Ridge Drive",3
+"Hunting Green Drive",3
+"Huntington Road",3
+"Illinois Avenue",3
+"Itasca Drive",3
+"Jenson Road",3
+"Jerome Street",3
+"Jewell Avenue",3
+"Jim Street",3
+"Joan Drive",3
+"Joaquin Drive",3
+"Jockey Club Lane",3
+"Jordan Ridge Drive",3
+"Joyce Drive",3
+"Joyce Way",3
+"Judge Dupree Drive",3
+"June Drive",3
+"Kelly Boulevard",3
+"Kelton Drive",3
+"Kensington Drive",3
+"Kentucky Derby Lane",3
+"Kerr Trail",3
+"Keswick Drive",3
+"Kilkirk Lane",3
+"Killian Street",3
+"Kimbo Road",3
+"Kingfisher Drive",3
+"Kings Canyon Circle",3
+"Kingsbury Drive",3
+"Kingswood Drive",3
+"Kirk Drive",3
+"Knott Place",3
+"Knoxville Lane",3
+"La Cosa Drive",3
+"La Joya Drive",3
+"La Prada Drive",3
+"Lackland Road",3
+"Lake Arrowhead Drive",3
+"Lake Terrace",3
+"Lanshire Drive",3
+"Lariat Circle",3
+"Larry Drive",3
+"Larue Street",3
+"Laster Road",3
+"Latimer Street",3
+"Laurel Forest Drive",3
+"Laurel Valley Drive",3
+"Lawnview Avenue",3
+"Lawnwood Street",3
+"Lawrence Street",3
+"Legacy Drive",3
+"Limestone Drive",3
+"Linden Avenue",3
+"Linwood Avenue",3
+"Little Canyon Road",3
+"Little Mohican Drive",3
+"Livenshire Drive",3
+"Lizzie Place",3
+"Lombardy Lane",3
+"Lone Tree Lane",3
+"Long Pointe Avenue",3
+"Long Rifle Drive",3
+"Longridge Drive",3
+"Longstraw Drive",3
+"Los Padres Trace",3
+"Lost Spurs Road",3
+"Louis Street",3
+"Love Circle",3
+"Lovedale Avenue",3
+"Lucas Drive",3
+"Lupton Drive",3
+"Lynnfield Drive",3
+"Madeira Drive",3
+"Manana Drive",3
+"Mandalay Drive",3
+"Mansfield Highway",3
+"Maple Springs Boulevard",3
+"Mark IV Parkway",3
+"Marlborough Drive West",3
+"Marlin Drive",3
+"Marvin Brown Street",3
+"Marvin D Love Freeway",3
+"Marys Lane",3
+"Mattison Avenue",3
+"Mattison Street",3
+"Max Lane",3
+"Mc Connell Drive",3
+"Mccutcheon Lane",3
+"Mckinney Avenue",3
+"Meadowcreek Drive",3
+"Meandering Way",3
+"Mendenhall Drive",3
+"Menger Avenue",3
+"Metropolitan Avenue",3
+"Middleglen Road",3
+"Mill Run Road",3
+"Millermore Street",3
+"Millet Avenue",3
+"Milton Street",3
+"Mimosa Lane",3
+"Minot Avenue",3
+"Mistletoe Boulevard",3
+"Misty Ridge Drive",3
+"Mitchell Boulevard",3
+"Moberly Street",3
+"Modree Avenue",3
+"Moler Street",3
+"Montgomery Street",3
+"Morley Drive",3
+"Morning Lane",3
+"Morningside Avenue",3
+"Mountain View Lane",3
+"Mt Royal Street",3
+"Mustang Trail",3
+"Myerwood Lane",3
+"Nashwood Lane",3
+"Nedra Way",3
+"Nell Street",3
+"New York Avenue",3
+"Newcastle Lane",3
+"Nicholson Drive",3
+"North Bond Avenue",3
+"North Buckner Boulevard",3
+"North Chandler Drive",3
+"North Clinton Avenue",3
+"North Fitzhugh Avenue",3
+"North Freeway",3
+"North Glen Drive",3
+"North Hampton Road",3
+"North Judkins Street",3
+"North Justin Avenue",3
+"North Merrill Road",3
+"North Ridge Road",3
+"North Stemmons Freeway",3
+"North Tarrant Parkway",3
+"North Washington Avenue",3
+"North Windomere Avenue",3
+"North Zang Boulevard",3
+"Northeast 28th Street",3
+"Northpoint Drive",3
+"Northwest 18th Street",3
+"Northwest 20th Street",3
+"Northwest 22nd Street",3
+"Northwest 31st Street",3
+"Oak Grove Road East",3
+"Oak Trail",3
+"Oakwood Drive",3
+"Oates Drive",3
+"Oberlin Drive",3
+"Ocean Drive",3
+"Ogden Avenue",3
+"Old Blue Circle",3
+"Old Homestead Drive",3
+"Ollie Street",3
+"Opal Avenue",3
+"Oriole Boulevard",3
+"Overhill Road",3
+"Pack Saddle Trace",3
+"Palacios Avenue",3
+"Palisade Drive",3
+"Pall Mall Avenue",3
+"Palo Pinto Avenue",3
+"Park Hill Drive",3
+"Parkhurst Drive",3
+"Parkmount Drive",3
+"Parkview Hills Lane",3
+"Parkwood Boulevard",3
+"Parkwood Lane",3
+"Parkwood Plaza Drive",3
+"Pemberton Drive",3
+"Peyton Drive",3
+"Phantom Hill Road",3
+"Pine Street",3
+"Pinebrook Drive",3
+"Pineview Lane",3
+"Pisa Lane",3
+"Plantation Lane",3
+"Poppy Drive",3
+"Portview Drive",3
+"Posada Drive",3
+"Prairie Fire Drive",3
+"Preston View Boulevard",3
+"Princeton Avenue",3
+"Pueblo Street",3
+"Quail Run",3
+"Race Street",3
+"Racquet Club Drive",3
+"Radford Road",3
+"Ramona Avenue",3
+"Rand Street",3
+"Ravendale Lane",3
+"Rawlins Lane",3
+"Rayenell Avenue",3
+"Rayville Drive",3
+"Rector Avenue",3
+"Red Bud Drive",3
+"Red Cloud Drive",3
+"Regello Drive",3
+"Regency Circle",3
+"Resaca Drive",3
+"Reveille Road",3
+"Rickenbacker Place",3
+"Ridgedale Avenue",3
+"Ridgeside Drive",3
+"Ridgeview Street",3
+"Riscky Trace",3
+"River Oaks Drive",3
+"River Trails Boulevard",3
+"Roaring Springs Lane",3
+"Robin Hill Lane",3
+"Robin Road",3
+"Rock Garden Trace",3
+"Rockdale Drive",3
+"Rockdale Road",3
+"Rodeo Street",3
+"Rolling Hills Lane",3
+"Rose Of Sharon Lane",3
+"Rotan Lane",3
+"Roundrock Road",3
+"Royal Birkdale Drive",3
+"Royalton Drive",3
+"Royce Drive",3
+"Rufus Street",3
+"Ruidosa Avenue",3
+"Rustown Drive",3
+"Rutland Avenue",3
+"Saddlehorn Drive",3
+"Salmon Drive",3
+"San Leandro Drive",3
+"San Medina Avenue",3
+"Sandy Lane",3
+"Santa Cruz Drive",3
+"Santa Paula Drive",3
+"Santa Rosa Drive",3
+"Sargent Street",3
+"Scarlet View Trace",3
+"Seabreeze Drive",3
+"Selkirk Drive",3
+"Selkirk Drive West",3
+"Settlers Trace",3
+"Seven Gables Street",3
+"Shadow Ridge Court",3
+"Shady Oaks Manor Drive",3
+"Shadydell Drive",3
+"Sharondale Street",3
+"Sharpview Lane",3
+"Shelburne Road",3
+"Sherwood Drive",3
+"Shirley Avenue",3
+"Shoreview Road",3
+"Shorewood Drive",3
+"Sidewinder Trace",3
+"Silent Creek Trace",3
+"Silver Lake Drive",3
+"Silvermist Trace",3
+"Silverock Drive",3
+"Sinclair Street",3
+"Singing Hills Drive",3
+"Skylake Drive",3
+"Snaffle Bit Trace",3
+"Snow Creek Drive",3
+"South Akard Street",3
+"South Barnett Avenue",3
+"South Boulevard",3
+"South Brighton Avenue",3
+"South Clinton Avenue",3
+"South Corinth St Road",3
+"South Cravens Road",3
+"South Lamar Street",3
+"South Littlejohn Avenue",3
+"South Llewellyn Avenue",3
+"South Main Street",3
+"South Malcolm X Boulevard",3
+"South Meadow Drive",3
+"South Montreal Avenue",3
+"South Pipeline Road",3
+"South R L Thornton Freeway",3
+"South Ridge Terrace",3
+"South Riverside Drive",3
+"South Tyler Street",3
+"South Willomet Avenue",3
+"Southeast 14th Street",3
+"Southern Pine Way",3
+"Southland Street",3
+"Sparrow Hawk Lane",3
+"Spindletree Lane",3
+"Spinning Glen Street",3
+"Spyglass Drive",3
+"St Johns Drive",3
+"Staghorn Circle North",3
+"Stalcup Road",3
+"Standifer Street",3
+"Star Thistle Drive",3
+"Statesman Lane",3
+"Stefani Drive",3
+"Steinburg Lane",3
+"Stonewall Lane",3
+"Stonewater Bend Trace",3
+"Storey Lane",3
+"Strait Lane",3
+"Summer Star Lane",3
+"Summit Ridge Drive",3
+"Sun Haven Way",3
+"Sun Valley Drive",3
+"Sundown Drive",3
+"Sunnyside Avenue",3
+"Sutter Street",3
+"Sweet Gum Street",3
+"Sylvan Avenue",3
+"Symphony Lane",3
+"Tahoe Drive",3
+"Tallahassee Lane",3
+"Tamworth Road",3
+"Taxco Road",3
+"Teal Drive",3
+"Tealford Drive",3
+"Ten Mile Bridge Road",3
+"Terry Street",3
+"Thannisch Avenue",3
+"Thompson Street",3
+"Tierra Verde Drive",3
+"Tillman Street",3
+"Timber Ridge Drive",3
+"Timberbluff Road",3
+"Tisinger Avenue",3
+"Torrington Drive",3
+"Towerwood Drive",3
+"Tribute Lane",3
+"Trinity Boulevard",3
+"Tuley Street",3
+"Turner Way",3
+"Turtle Creek Lane",3
+"Twin Cove Drive",3
+"Twin Post Road",3
+"Tyne Trace",3
+"Umphress Road",3
+"Val Verde Drive",3
+"Valentine Street",3
+"Van Pelt Drive",3
+"Vandervort Drive",3
+"Venetian Way",3
+"Verna Trace North",3
+"Vesta Farley Road",3
+"Vida Lane",3
+"Villanova Street",3
+"Vista Del Sol",3
+"Volder Drive",3
+"Voyager Drive",3
+"Wade Boulevard",3
+"Wainwright Drive",3
+"Walden Wood Drive",3
+"Waldrop Drive",3
+"Wales Avenue",3
+"Warbler Lane",3
+"Warm Springs Trace",3
+"Warner Road",3
+"Warren Parkway",3
+"Washington Terrace",3
+"Waterway Drive",3
+"Webb Chapel Extension",3
+"Wedgworth Road",3
+"Weisenberger Drive",3
+"Weller Lane",3
+"Wenonah Drive",3
+"Wentwood Drive",3
+"West 6th Street",3
+"West Bolt Street",3
+"West Colorado Boulevard",3
+"West Felix Street",3
+"West Kiest Boulevard",3
+"West Main Street",3
+"West Mason Street",3
+"West Pafford Street",3
+"West Rancho Diego Lane",3
+"West University Boulevard",3
+"Westbriar Drive",3
+"Westcliff Road South",3
+"Westcrest Drive",3
+"Western Meadows Drive",3
+"Western Street",3
+"Western Trail",3
+"Westlake Avenue",3
+"Westminster Avenue",3
+"Wharton Drive",3
+"Whitman Avenue",3
+"Wild Willow Trace",3
+"Wilder Street",3
+"Williams Road",3
+"Williamsburg Lane",3
+"Wilton Drive",3
+"Windflower Way",3
+"Winding Brook Drive",3
+"Winfield Avenue",3
+"Winterwood Lane",3
+"Winton Street",3
+"Wisteria Street",3
+"Wonder Drive",3
+"Wood River Road",3
+"Woodhall Way",3
+"Woodhaven Boulevard",3
+"Woodland Drive",3
+"Woodlawn Avenue",3
+"Woodmont Drive",3
+"Woodstream Trace",3
+"Wosley Drive",3
+"Wyoming Street",3
+"1st Avenue",2
+"52nd Street",2
+"Abbey Road",2
+"Aberdeen Avenue",2
+"Abston Lane",2
+"Acapulco Drive",2
+"Adcock Court",2
+"Addax Trail",2
+"Addison Drive",2
+"Adobe Drive",2
+"Ainsworth Drive",2
+"Alabama Avenue",2
+"Alamo Bell Way",2
+"Alanbrooke Drive",2
+"Alcorn Avenue",2
+"Aldenwood Drive",2
+"Aldersyde Drive",2
+"Alemeda Street",2
+"Alfa Romeo Way",2
+"Alhambra Street",2
+"Allenwood Drive",2
+"Almond Lane",2
+"Alstone Drive",2
+"Altamont Drive",2
+"Amanda Avenue",2
+"Amber Drive South",2
+"Amberdale Drive",2
+"Ambergate Lane",2
+"Amberwood Road",2
+"Amy Avenue",2
+"Anaheim Drive",2
+"Andre Drive",2
+"Angel Food Lane",2
+"Angleridge Road",2
+"Angora Street",2
+"Annabelle Lane",2
+"Annarose Drive",2
+"Appalachian Lane",2
+"Appaloosa Circle",2
+"Appletree Way",2
+"Appleyard Drive",2
+"Aqua Drive",2
+"Arbor Avenue",2
+"Arbor Branch Drive",2
+"Arbor Park Drive",2
+"Arcadia Park Drive",2
+"Argentia Drive",2
+"Arlington Park Drive",2
+"Arnold Drive",2
+"Artesia Drive",2
+"Ash Creek Lane",2
+"Ashaway Lane",2
+"Ashbrook Drive",2
+"Ashcrest Lane",2
+"Ashcroft Circle",2
+"Ashley Drive",2
+"Aspen Creek Drive",2
+"Aspen Wood Trace",2
+"Astor Drive",2
+"Atlanta Drive",2
+"Auburn Drive",2
+"Autumn Creek Trace",2
+"Avalon Avenue",2
+"Avalon Drive",2
+"Ave C",2
+"Ave D",2
+"Avenue B",2
+"Avenue E",2
+"Avenue I",2
+"Axis Court",2
+"Bacon Drive",2
+"Balboa Drive",2
+"Balcones Drive",2
+"Balcony Lane",2
+"Ballentrae Drive",2
+"Balmoral Drive",2
+"Balta Drive",2
+"Bamberry Drive",2
+"Bandera Ranch Rd",2
+"Bandolier Lane",2
+"Bar Harbor Drive",2
+"Barbara Road",2
+"Barbell Lane",2
+"Barclay Street",2
+"Barcus Circle",2
+"Barkwood Lane",2
+"Barnett Street",2
+"Barstow Boulevard",2
+"Bartlett Avenue",2
+"Bassett Hound Drive",2
+"Bataan Street",2
+"Battle Creek Road",2
+"Bavarian Drive",2
+"Baverton Lane",2
+"Bayview Drive",2
+"Beckwood Drive",2
+"Bedfordshire Drive",2
+"Belcross Lane",2
+"Belgrade Avenue",2
+"Belknap Avenue",2
+"Bellaire Drive West",2
+"Bellaire Park Court",2
+"Bellerive Drive",2
+"Bellingham Drive",2
+"Bellvue Drive",2
+"Belzise Terrace",2
+"Benbrook Highway",2
+"Benchmark Lane",2
+"Bennett Avenue",2
+"Bent Oak Drive",2
+"Bergstrom Street",2
+"Berke Road",2
+"Berkley Lane",2
+"Berkshire Lane",2
+"Bernal Drive",2
+"Berridge Lane",2
+"Berry Ridge Lane",2
+"Berrybrook Drive",2
+"Berryhill Street",2
+"Bessie Drive",2
+"Bethel Drive",2
+"Bethpage Avenue",2
+"Big Bend Drive",2
+"Big Horn Trail",2
+"Big Leaf Lane",2
+"Big Town Boulevard",2
+"Bigelow Lane",2
+"Bigham Boulevard",2
+"Billie Drive",2
+"Biltmoore Drive",2
+"Bird Street",2
+"Birdsong Lane",2
+"Bissonet Avenue",2
+"Black Wing Drive",2
+"Blackjack Oaks Drive",2
+"Blackmore Avenue",2
+"Blackstone Drive",2
+"Blackwillow Lane",2
+"Blackwolf Run Trail",2
+"Blairwood Drive",2
+"Blanchard Drive",2
+"Blarney Stone Court",2
+"Blodgett Avenue",2
+"Bloomfield Drive",2
+"Blossom Drive",2
+"Blue Bay Drive",2
+"Blue Bell Drive",2
+"Blue Flag Lane",2
+"Blue Grass Drive",2
+"Blue Jay Way",2
+"Blue Mound Road West",2
+"Blue Oak Drive",2
+"Blue Ridge Trace",2
+"Blue Water Lake Drive",2
+"Bluebird Avenue",2
+"Bluebonnet Drive",2
+"Blueridge Drive",2
+"Blyth Drive",2
+"Boaz Drive",2
+"Bobbitt Drive",2
+"Bobcat Drive",2
+"Boca Raton Drive",2
+"Boeing Court",2
+"Boisenberry Lane",2
+"Bondstone Drive",2
+"Bonita Avenue",2
+"Bonita Drive",2
+"Boulder Drive",2
+"Bowfin Drive",2
+"Bowin Drive",2
+"Bowling Green Avenue",2
+"Bowman Roberts Road",2
+"Bowspirit Lane",2
+"Bracken Drive",2
+"Bradfield Road",2
+"Bradshaw Drive",2
+"Braemoor Drive",2
+"Braeview Drive",2
+"Bramble Drive",2
+"Branch Trail",2
+"Brazos Drive",2
+"Breanna Way",2
+"Breezy Point Lane",2
+"Brennan Avenue",2
+"Brentwood Drive",2
+"Brewster Street",2
+"Briar Cliff Road",2
+"Briar Cove Drive",2
+"Briar Creek Lane",2
+"Bridgeport Drive",2
+"Bridges Street",2
+"Bridle Latch Drive",2
+"Brierfield Drive",2
+"Brightside Lane",2
+"Brisbane Avenue",2
+"Brixey Drive",2
+"Broken Arrow Road",2
+"Broken Gap Drive",2
+"Bromfield Street",2
+"Brook Ridge Drive",2
+"Brook Valley Lane",2
+"Brookcrest Drive",2
+"Brookglen Lane",2
+"Brookgreen Drive",2
+"Brookhaven Drive",2
+"Brookhurst Drive",2
+"Brookline Avenue",2
+"Brookport Drive",2
+"Brookview Drive",2
+"Brown Street",2
+"Bryan Avenue",2
+"Buena Park Drive",2
+"Buena Vista Drive",2
+"Buffalo Grove Road",2
+"Buffalo Springs Drive",2
+"Buford Drive",2
+"Bugatti Drive",2
+"Bull Run",2
+"Bull Run Drive",2
+"Bunche Drive",2
+"Bunny Run Lane",2
+"Bunting Avenue",2
+"Burgee Court",2
+"Burlington Avenue",2
+"Burlywood Drive",2
+"Burts Drive",2
+"Busch Gardens Drive",2
+"Buttercup Circle North",2
+"Button Bush Drive",2
+"Buttonwood Court",2
+"Byron Street",2
+"Caballo Street",2
+"Cable Drive",2
+"Cadenza Lane",2
+"Cahoba Drive",2
+"Cahoba Terrace",2
+"Calcutta Drive",2
+"Caldwell Avenue",2
+"Calico Rock Drive",2
+"Calumet Avenue",2
+"Camarillo Drive",2
+"Camfield Way",2
+"Camille Avenue",2
+"Campanella Drive",2
+"Campbell Street",2
+"Campion Lane",2
+"Canberra Court",2
+"Canchim Street",2
+"Candlenut Lane",2
+"Candlewood Trail",2
+"Cannonwood Drive",2
+"Canyon Circle",2
+"Canyon Court",2
+"Canyon Creek Trace",2
+"Cap Rock Lane",2
+"Cardella Avenue",2
+"Cardinal Creek Drive",2
+"Cardinal Drive",2
+"Carioca Drive",2
+"Carissa Drive",2
+"Carnegie Lane",2
+"Carolina Trace Trace",2
+"Carpenter Avenue",2
+"Carriage Hill Lane",2
+"Carrick Street",2
+"Cascade Avenue",2
+"Cascade Canyon Trace",2
+"Castle Drive",2
+"Castlerock Drive",2
+"Castolon Drive",2
+"Catamore Lane",2
+"Cedar Bluff Lane",2
+"Cedar Crest Boulevard",2
+"Cedar Hollow Drive",2
+"Cedar River Trace",2
+"Cedarcroft Lane",2
+"Centenary Drive",2
+"Centennial Boulevard",2
+"Centerville Road",2
+"Centre Street",2
+"Cervantes Avenue",2
+"Chaddybrook Lane",2
+"Chairman Drive",2
+"Chalk River Drive",2
+"Chamberlyne Drive",2
+"Chambers Lane",2
+"Channel Drive",2
+"Chaparral Drive",2
+"Chapel Hill Court",2
+"Chapel Rock Drive",2
+"Chapel Springs Trace",2
+"Chaps Avenue",2
+"Charleston Avenue",2
+"Charlestown Drive",2
+"Charlott Street",2
+"Chart Drive",2
+"Chatburn Court",2
+"Chaucer Drive",2
+"Chaucer Place",2
+"Cherbourg Street",2
+"Cherokee Trace",2
+"Chesapeake Bay Drive",2
+"Cheyenne Ranch Rd",2
+"Chinaberry Lane",2
+"Chiswell Road",2
+"Chittamwood Lane",2
+"Christie Lane",2
+"Christine Avenue",2
+"Christopher Drive",2
+"Christopher Lane",2
+"Christy Court",2
+"Church Road",2
+"Churchill Road",2
+"Cicero Street",2
+"Circle Ridge Drive",2
+"Clairborne Drive",2
+"Clarendon Street",2
+"Clark College Drive",2
+"Clark Road",2
+"Clarkridge Drive",2
+"Clarksburg Trace",2
+"Clary Avenue",2
+"Claude Street",2
+"Clayton Road West",2
+"Clear Brook Circle",2
+"Clearglen Drive",2
+"Clearhaven Drive",2
+"Clearwater Drive",2
+"Cliff Creek Drive",2
+"Clover Drive",2
+"Clover Ridge Drive",2
+"Cloverdale Lane",2
+"Cloverglen Lane",2
+"Club Manor Drive",2
+"Club Oaks Drive",2
+"Cobblestone Drive",2
+"Cody Lane",2
+"Coit Road",2
+"Coldwater Lane",2
+"Cole Avenue",2
+"Coles Manor Street",2
+"Collin Street",2
+"Colonial Street",2
+"Columbia Drive",2
+"Comanche Street",2
+"Comfort Drive",2
+"Community Drive",2
+"Compton Trace",2
+"Concho Street",2
+"Concina Way",2
+"Confidence Drive",2
+"Congo Street",2
+"Cool Spring Drive",2
+"Copper Creek Drive",2
+"Copperwood Drive",2
+"Coral Cove Drive",2
+"Cordellera Lane",2
+"Cordova Street",2
+"Corinth Lane",2
+"Corinthian Bay Drive",2
+"Cornell Avenue",2
+"Corner Brook Lane",2
+"Coronado Avenue",2
+"Coronado Trail",2
+"Corral Drive",2
+"Corto Avenue",2
+"Cotillion Drive",2
+"Cottontail Drive",2
+"Cottonwood Village Drive",2
+"Cougar Trace",2
+"Countess Drive",2
+"Country Creek Drive",2
+"Country Manor Road",2
+"Courtney Drive",2
+"Courtshire Drive",2
+"Covemeadow Drive",2
+"Cowboys Parkway",2
+"Cox Lane",2
+"Cradlerock Drive",2
+"Crater Lake Drive",2
+"Creamello Avenue",2
+"Creekmere Drive",2
+"Creekview Drive",2
+"Creekwood Drive",2
+"Creighton Drive",2
+"Crescent Creek Lane",2
+"Crestmere Drive",2
+"Crestover Drive",2
+"Crestpark Drive",2
+"Crimson Oaks Drive",2
+"Cristler Avenue",2
+"Crofton Drive",2
+"Cromwell Court",2
+"Cross Timbers Drive",2
+"Crosswicks Circle",2
+"Crosswind Drive",2
+"Crowberry Way",2
+"Crowder Drive",2
+"Crowley Drive",2
+"Crystal Falls Drive",2
+"Culberson Street",2
+"Culver Street",2
+"Cupertino Trail",2
+"Cushing Drive",2
+"Cy Blackburn Circle",2
+"Daisy Lane",2
+"Dakar Road West",2
+"Dakota Ridge Drive",2
+"Dakota Trail",2
+"Dallas Avenue",2
+"Dallas Highway",2
+"Dalron Drive",2
+"Danbridge Lane",2
+"Danbury Lane",2
+"Dandelion Drive",2
+"Danieldale Drive",2
+"Danville Drive",2
+"Darkwood Drive",2
+"Darla Drive",2
+"Dartmoor Drive",2
+"Davis Drive",2
+"Day Drive",2
+"Day Street",2
+"Daylily Way",2
+"Dazzle Drive",2
+"De Ridder Avenue",2
+"Debbie Street",2
+"Deer Hollow Drive",2
+"Deering Drive",2
+"Deerwood Drive",2
+"Del Largo Way",2
+"Del Rio Drive",2
+"Dell Street",2
+"Denali Drive",2
+"Denbury Drive",2
+"Denham Drive",2
+"Deniro Drive",2
+"Denman Street",2
+"Derbyshire Drive",2
+"Dickey Road",2
+"Dilworth Court",2
+"Dixie Street",2
+"Dogwood Lane",2
+"Dogwood Springs Drive",2
+"Dogwood Street",2
+"Dominique Drive",2
+"Donley Drive",2
+"Dorchester Drive",2
+"Dorman Street",2
+"Dorset Drive",2
+"Dorsett Court",2
+"Douglas Avenue",2
+"Dove Creek Drive",2
+"Dove Ranch Rd",2
+"Dovenshire Terrace",2
+"Downey Drive",2
+"Dragonfly Way",2
+"Drexmore Road",2
+"Driftwood Drive",2
+"Druid Hills Drive",2
+"Drummond Drive",2
+"Dryden Road",2
+"Dublin Lane",2
+"Duchess Trail",2
+"Duet Drive",2
+"Dumbarton Drive",2
+"Dumfries Drive",2
+"Duncan Way",2
+"Dundee Avenue",2
+"Dunford Street",2
+"Dunloe Drive",2
+"Dunstan Lane",2
+"Dunwick Lane",2
+"Durham Drive",2
+"Dusty Palomino Drive",2
+"Dusty Way",2
+"Dykes Way",2
+"Eagle Ridge Circle",2
+"Eagle Trace Drive",2
+"Early Morn Drive",2
+"East 6th Street",2
+"East 7th Street",2
+"East 8th Street",2
+"East Anthony Street",2
+"East Belknap Street",2
+"East Belt Line Road",2
+"East Beltline Road",2
+"East Bowie Street",2
+"East Butler Street",2
+"East Camp Wisdom Road",2
+"East Cannon Street",2
+"East Cherry Street",2
+"East Drew Street",2
+"East Fairmeadows Drive",2
+"East Fogg Street",2
+"East Humbolt Street",2
+"East Hurst Boulevard",2
+"East Illinois Avenue",2
+"East Lake Highlands Drive",2
+"East Leuda Street",2
+"East Loop 820 South",2
+"East Main Street",2
+"East Mason Street",2
+"East Myrtle Street",2
+"East Northside Drive",2
+"East Pulaski Street",2
+"East Ripy Street",2
+"East Riviera Drive",2
+"East Terrell Avenue",2
+"East Woodin Boulevard",2
+"Eastchase Parkway",2
+"Eastwedge Drive",2
+"Eastwick Court",2
+"Ebbtide Court",2
+"Ebbtide Lane",2
+"Eddleman Drive",2
+"Edgemont Avenue",2
+"Edwards Circle",2
+"Edwin Street",2
+"Eisenhower Drive",2
+"El Estado Drive",2
+"El Patio Drive",2
+"El Pensador Drive",2
+"El Tovar Avenue",2
+"Elbe Trace",2
+"Elizabeth Boulevard",2
+"Elk Run Drive",2
+"Ellenboro Lane",2
+"Ellis Road",2
+"Elm Crest Court",2
+"Elm Leaf Drive",2
+"Elmcrest Drive",2
+"Elsberry Avenue",2
+"Elva Warren Street",2
+"Emma Street",2
+"Emrose Terrace",2
+"Ems Road West",2
+"Encino Drive",2
+"Ennis Avenue",2
+"Ensign Drive East",2
+"Erath Street",2
+"Espana Drive",2
+"Espanola Drive",2
+"Etta Street",2
+"Eudora Drive",2
+"Evening Sun Drive",2
+"Everest Drive",2
+"Ezekial Avenue",2
+"Fair Oaks Avenue",2
+"Fair Oaks Crossing",2
+"Fair Wind Street",2
+"Fairhaven Drive",2
+"Fairmeadows Lane",2
+"Fairmount Street",2
+"Fairport Road",2
+"Fairview Avenue",2
+"Fairweather Drive",2
+"Fallbrook Court",2
+"Fallen Trace",2
+"Fantail Drive",2
+"Fargo Drive",2
+"Farnsworth Avenue",2
+"Farragut Street",2
+"Farrah Drive",2
+"Farrar Street",2
+"Fawn Drive",2
+"Fawn Meadow Drive",2
+"Feathercrest Drive",2
+"Fencerow Road",2
+"Fenton Avenue",2
+"Fenwick Drive",2
+"Fern Lake Court",2
+"Fernwood Street",2
+"Fieldstone Drive",2
+"Filly Street",2
+"Firefly Drive",2
+"Firewood Drive",2
+"Fisher Drive",2
+"Flamingo Way",2
+"Fleetwood Drive",2
+"Flemming Drive",2
+"Flicker Lane",2
+"Flint Street",2
+"Flo Avenue",2
+"Flyaway Lane",2
+"Foard Drive",2
+"Fort Apache Drive",2
+"Fort Concho Drive",2
+"Fortune Road",2
+"Fossil Bridge Drive",2
+"Fossil Ridge Drive",2
+"Fossil Run Boulevard",2
+"Fountainbridge Drive",2
+"Fournier Street",2
+"Fox Crossing Lane",2
+"Fox Meadow Way",2
+"Fox Run Drive",2
+"Foxboro Lane",2
+"Foxbriar Lane",2
+"Foxcraft Drive",2
+"Foxfire Way",2
+"Foxhound Lane",2
+"Foxwood Lane",2
+"Francisco Drive",2
+"Frank Street",2
+"Franwood Terrace",2
+"Freddie Street",2
+"Free Range Drive",2
+"Freeland Way",2
+"Freemont Street",2
+"Friendswood Drive",2
+"Frio Drive",2
+"Frontier Drive",2
+"Fry Street",2
+"Furey Street",2
+"Furlong Way",2
+"Fursman Avenue",2
+"Gabriel Lane",2
+"Gainsborough Way",2
+"Gale Lane",2
+"Galloway Avenue",2
+"Garden Acres Drive",2
+"Garden Springs Drive",2
+"Gardenia Drive",2
+"Gardenview Drive",2
+"Garland Avenue",2
+"Garrison Street",2
+"Gatesville Drive",2
+"Gatesworth Lane",2
+"Gayglen Drive",2
+"Genstar Lane",2
+"Gentilly Lane",2
+"Gentle River Drive",2
+"German Pointer Way",2
+"Gettysburg Lane",2
+"Gibbs Williams Road",2
+"Gilbert Avenue",2
+"Gilbert Drive",2
+"Gill Street",2
+"Gillon Avenue",2
+"Glacier Street",2
+"Glad Acres Drive",2
+"Gladiolus Lane",2
+"Glasgow Road",2
+"Glen Arbor Drive",2
+"Glen Canyon Road",2
+"Glen Garden Avenue",2
+"Glen Knoll Drive",2
+"Glen Oaks Boulevard",2
+"Glencrest Lane",2
+"Glendower Lane",2
+"Glengreen Drive",2
+"Glenndon Drive",2
+"Glennox Lane",2
+"Glenville Court",2
+"Gold Basin Road",2
+"Gold Creek Drive East",2
+"Golden Hills Drive",2
+"Golden Sunset Trace",2
+"Golden Triangle Circle",2
+"Goldeneye Lane",2
+"Golf Club Circle",2
+"Goodfellow Drive",2
+"Grace Avenue",2
+"Grambling Drive",2
+"Grand Arbor Lane",2
+"Grand Avenue",2
+"Grand Gulf Road",2
+"Grand Oaks Road",2
+"Grandview Avenue",2
+"Grandview Drive",2
+"Grant Park Avenue",2
+"Grapevine Terrace",2
+"Grassland Drive",2
+"Grassy Glen Drive",2
+"Gray Oak Lane",2
+"Grayson Avenue",2
+"Grayson Drive",2
+"Grayson Street",2
+"Graywood Drive",2
+"Great Divide Drive",2
+"Green Hill Road",2
+"Green Oaks Road",2
+"Greene Avenue",2
+"Greenfield Avenue",2
+"Greenmere Place",2
+"Greenview Circle North",2
+"Greenville Avenue",2
+"Greenway Road",2
+"Grinnell Street",2
+"Grissom Lane",2
+"Grosseto Drive",2
+"Grove Oaks Boulevard",2
+"Grovecrest Drive",2
+"Groveland Drive",2
+"Gurley Avenue",2
+"Haines Avenue",2
+"Halifax Road",2
+"Hallmark Drive",2
+"Hallmark Drive West",2
+"Hamsted Street",2
+"Hanger Avenue",2
+"Harbinger Lane",2
+"Hardy Road",2
+"Harmon Road",2
+"Harmony Lane",2
+"Harrison Avenue",2
+"Hartebeest Trail",2
+"Harter Road",2
+"Hartwood Drive",2
+"Harvest Lane",2
+"Harvest Ridge Road",2
+"Hathaway Street",2
+"Havendon Circle",2
+"Havenwood Drive",2
+"Haverford Drive",2
+"Hawkview Drive",2
+"Hawlet Street",2
+"Hawley Lane",2
+"Hawthorne Street",2
+"Haynie Avenue",2
+"Haynie Street",2
+"Hazeline Road",2
+"Hazelwood Drive",2
+"Hedrick Street",2
+"Heights Drive",2
+"Henderson Drive",2
+"Hensley Drive",2
+"Heritage Place Drive",2
+"Hertford Street",2
+"Hidden Hill Drive",2
+"Hidden Valley Drive",2
+"High Mesa Road",2
+"High Star Lane",2
+"Highcrest Avenue",2
+"Highedge Drive",2
+"Highfall Drive",2
+"Highland Avenue",2
+"Highland Hills Drive",2
+"Highland Ridge Road",2
+"Highview Terrace",2
+"Highwood Drive",2
+"Hilda Circle",2
+"Hildring Drive East",2
+"Hildring Drive West",2
+"Hillard Drive",2
+"Hillbriar Drive",2
+"Hillcrest Avenue",2
+"Hillcrest Boulevard",2
+"Hilldale Road",2
+"Hillwood Lane",2
+"Hodgson Street",2
+"Hollister Drive",2
+"Hollow Creek Drive",2
+"Hollow Forest Drive",2
+"Holly Grove Drive",2
+"Holly Lane",2
+"Holly Springs Drive",2
+"Hollybush Drive",2
+"Homelands Way",2
+"Horizon North Parkway",2
+"Horizon Point",2
+"Hornby Street",2
+"Horncastle Street",2
+"Horse Whisper Lane",2
+"Horseback Trace",2
+"Horseshoe Ridge Drive",2
+"House Street",2
+"Housley Drive",2
+"Hovenkamp Drive",2
+"Howard Avenue",2
+"Howard Street",2
+"Howley Court",2
+"Hudgins Avenue",2
+"Hummingbird Drive",2
+"Hunters Cabin Court",2
+"Hunters Creek Drive",2
+"Hunters Crossing Lane",2
+"Hunters Knoll Drive",2
+"Hunters Parkway",2
+"Hunters Point Way",2
+"Huntington Lane",2
+"Hutchinson Street",2
+"I M Terrell Circle North",2
+"Independence Parkway",2
+"Indian Mound Road",2
+"Inverness Lane",2
+"Ireland Lane",2
+"Irion Avenue",2
+"Irish Glen Trace",2
+"Irish Setter Drive",2
+"Irwin Street",2
+"Isbell Road",2
+"Ivanhoe Drive",2
+"Ivy Ridge Street",2
+"Ivywood Drive",2
+"J Avenue",2
+"Jade Drive",2
+"Jade Street",2
+"Jaguar Drive",2
+"Jamaica Street",2
+"Jamestown Road",2
+"Jamie Way",2
+"Janet Drive",2
+"Jasper Drive",2
+"Jeanette Drive",2
+"Jefferson Drive",2
+"Jellison Boulevard",2
+"Jena Avenue",2
+"Jenny Lake Trace",2
+"Jolie Drive",2
+"Jordan Valley Road",2
+"Joshua Lane",2
+"Jubilee Trail",2
+"Juliet Lane",2
+"Jungle Drive",2
+"Junior Drive",2
+"Juniper Drive",2
+"Jupiter Road",2
+"Kachina Lane",2
+"Kansas Avenue",2
+"Kathleen Drive",2
+"Katy Road",2
+"Kell Drive",2
+"Kemrock Drive",2
+"Kenesaw Drive",2
+"Kennedy Drive",2
+"Kenwick Avenue",2
+"Kenwood Street",2
+"Kimberly Lane",2
+"Kimblewick Drive",2
+"King Louis Drive",2
+"Kingsbrook Trace",2
+"Kingsdale Drive",2
+"Kingsley Drive",2
+"Kingston Street",2
+"Kingsville Drive",2
+"Kinston Street",2
+"Kirkland Court",2
+"Klamath Road",2
+"Knight Street",2
+"Komalty Drive",2
+"Kushla Avenue",2
+"LBJ Freeway",2
+"La Bolsa Drive",2
+"La Cantera Trail",2
+"La Manga Drive",2
+"La Palma Drive",2
+"La Plata Drive",2
+"La Sobrina Drive",2
+"Lake Circle Drive",2
+"Lake Gardens Drive",2
+"Lake Mead Trace",2
+"Lakehurst Court",2
+"Lakeland Street",2
+"Lakewood Drive",2
+"Lamb Creek Drive",2
+"Lancaster Gate",2
+"Landisburg Trace",2
+"Landmark Ridge Street",2
+"Lane Park Drive",2
+"Laneyvale Avenue",2
+"Langdon Avenue",2
+"Lantana Lane",2
+"Larchwood Drive",2
+"Larimore Lane",2
+"Larkspur Lane",2
+"Las Cruces Lane",2
+"Lasater Road",2
+"Lassen Court",2
+"Lasso Road",2
+"Latigo Drive",2
+"Latta Street",2
+"Lauder Lane",2
+"Laurel Hill Lane",2
+"Laurel Lane",2
+"Laurelhill Court North",2
+"Lauretta Drive",2
+"Lava Rock Drive",2
+"Laverton Drive",2
+"Lawngate Drive",2
+"Lawtherwood Place",2
+"Lazy Crest Drive",2
+"Le Mans Drive",2
+"Leahy Drive",2
+"Leameadow Drive",2
+"Leaside Drive",2
+"Leather Strap Drive",2
+"Leatherwood Drive",2
+"Leda Drive",2
+"Legato Lane",2
+"Leigh Ann Drive",2
+"Leland Avenue",2
+"Lenox Drive",2
+"Liberty Crossing Drive",2
+"Library Street",2
+"Life Avenue",2
+"Light Pointe Drive",2
+"Lightfoot Lane",2
+"Lilac Lane",2
+"Lillian Street",2
+"Lina Street",2
+"Lincolnshire Way",2
+"Lindbergh Drive",2
+"Linden Lane",2
+"Link Drive",2
+"Lipan Trace",2
+"Lipton Lane",2
+"Liptonshire Drive",2
+"Lisbon Street",2
+"Littlejohn Avenue",2
+"Live Oak Street",2
+"Lively Lane",2
+"Lizzy Drive",2
+"Loch Haven Court",2
+"Lochwood Boulevard",2
+"Lockhart Avenue",2
+"Lois Street",2
+"Lomita Lane",2
+"Lomita Street",2
+"Lone Brave Drive",2
+"Lone Pine Court",2
+"Lone Pine Lane",2
+"Lonesome Pine Place",2
+"Longmeadow Drive",2
+"Longranger Lane",2
+"Longview Street",2
+"Lorin Avenue",2
+"Lorraine Avenue",2
+"Los Barros Trace",2
+"Lotus Avenue",2
+"Loudoun Springs Drive",2
+"Lowell Lane",2
+"Lowery Road",2
+"Lowline Drive",2
+"Loxley Drive",2
+"Lt Jg Barnett Road",2
+"Ludlow Drive",2
+"Lulu Street",2
+"Lynbrook Drive",2
+"Lynnacre Drive",2
+"Lynx Lane",2
+"Mack Lane",2
+"Madeline Place",2
+"Madera Street",2
+"Madison Drive",2
+"Madrid Drive",2
+"Madyson Ridge Drive",2
+"Mahonia Drive",2
+"Malcolm Drive",2
+"Mallory Drive",2
+"Manderly Place",2
+"Manett Street",2
+"Mannington Drive",2
+"Manorwood Trace",2
+"Mansfield Drive",2
+"Maple Avenue",2
+"Mapleridge Drive",2
+"Marbella Lane",2
+"Marble Falls Road",2
+"Marburg Street",2
+"Marcell Avenue",2
+"Marguerite Lane",2
+"Marilyn Drive",2
+"Marina Del Road",2
+"Marine Creek Parkway",2
+"Mariner Drive",2
+"Marineway Drive",2
+"Maringo Drive",2
+"Mariposa Drive",2
+"Markville Drive",2
+"Marla Drive",2
+"Marne Street",2
+"Maroon Bells Lane",2
+"Marsalis Street",2
+"Marshall Street",2
+"Marshalldell Avenue",2
+"Martin Luther King Jr Boulevard",2
+"Martin Lydon Avenue",2
+"Marview Lane",2
+"Maryel Drive",2
+"Mason Drive",2
+"Matagorda Drive",2
+"Materhorn Drive",2
+"Matland Drive",2
+"Maybeth Street",2
+"Mayfair Street",2
+"Mayflower Drive",2
+"Mayhew Drive",2
+"Mayrant Drive",2
+"Mc Clure Street",2
+"Mc Kenzie Street",2
+"McCree Road",2
+"McFarland Drive",2
+"Mccree Road",2
+"Mckamy Boulevard",2
+"Mclean Avenue",2
+"Mcshann Road",2
+"Meadow Haven Drive",2
+"Meadow Ridge Drive",2
+"Meadow Spring Lane",2
+"Meadow Street",2
+"Meadow Valley Drive",2
+"Meadow Way Lane",2
+"Meadowbrook Boulevard",2
+"Meadowcrest Drive",2
+"Meadowknoll Drive",2
+"Mecca Street",2
+"Medallion Lane",2
+"Medford Court West",2
+"Mehalia Drive",2
+"Melbourne Avenue",2
+"Melissa Lane",2
+"Melody Street",2
+"Melshire Drive",2
+"Meredith Street",2
+"Merrimac Avenue",2
+"Merritt Street",2
+"Mesa Ridge Drive",2
+"Mexicana Road",2
+"Michael Street",2
+"Michelle Drive",2
+"Middle Cove Drive",2
+"Middle Downs Drive",2
+"Midrose Trail",2
+"Mill Creek Road",2
+"Millington Drive",2
+"Millridge Drive",2
+"Milmo Drive",2
+"Minoco Drive",2
+"Mirage Valley Drive",2
+"Miranda Drive",2
+"Missionary Ridge Trace",2
+"Missouri Avenue",2
+"Missy Drive",2
+"Mistletoe Avenue",2
+"Misty Breeze Drive",2
+"Misty Glen Lane",2
+"Misty Haven Lane",2
+"Misty Meadow Drive",2
+"Mitscher Drive",2
+"Mixon Drive",2
+"Moccassin Lane",2
+"Modella Avenue",2
+"Modlin Avenue",2
+"Mohawk Avenue",2
+"Mojave Drive",2
+"Moncrief Street",2
+"Monssen Drive",2
+"Montague Avenue",2
+"Montague Street",2
+"Montfort Drive",2
+"Moran Drive",2
+"Morning Frost Trail",2
+"Morning Glory Drive",2
+"Morris Avenue",2
+"Morton Street",2
+"Moser Avenue",2
+"Moss Haven Drive",2
+"Moss Meadows Drive",2
+"Moss Rose Drive",2
+"Mossbrook Drive",2
+"Mosscreek Lane",2
+"Mossvine Drive",2
+"Motley Drive",2
+"Mount Shasta Circle",2
+"Mountain Crest Drive",2
+"Mouser Street",2
+"Mt Auburn Avenue",2
+"Mt Washington Street",2
+"Muir Drive",2
+"Muleshoe Lane",2
+"Munger Avenue",2
+"Murton Place",2
+"Muskogee Drive",2
+"Mustang Drive",2
+"Myra Lane",2
+"Myrtle Street",2
+"Nabholtz Lane",2
+"Nandina Lane",2
+"Nantuckett Drive",2
+"Natchez Trace",2
+"Nature Drive",2
+"Navasota Circle",2
+"Nelms Drive",2
+"Nelson Place",2
+"New Castleton Lane",2
+"New Kent Road",2
+"Newberry Drive",2
+"Newkirk Street",2
+"Newmore Avenue",2
+"Nicklaus Court",2
+"Nightfall Drive",2
+"Noble Grove Lane",2
+"Nogales Drive",2
+"Noontide Drive",2
+"Norfolk Lane",2
+"Norman Street",2
+"Norris Street",2
+"North Beckley Avenue",2
+"North Belt Line Road",2
+"North Bishop Avenue",2
+"North Cascades Street",2
+"North Chandler Drive West",2
+"North Commerce Street",2
+"North Coral Springs Drive",2
+"North Crawford Street",2
+"North Hampshire Boulevard",2
+"North Hampton Street",2
+"North Haskell Avenue",2
+"North Henderson Avenue",2
+"North Jones Street",2
+"North Littlejohn Avenue",2
+"North Marlborough Avenue",2
+"North Sunbeck Circle",2
+"North Suttonwood Drive",2
+"North Tillery Street",2
+"North Versailles Avenue",2
+"Northbrook Drive",2
+"Northeast 33rd Street",2
+"Northeast 36th Street",2
+"Northeast 38th Street",2
+"Northlake Drive",2
+"Northmoor Drive",2
+"Northridge Drive",2
+"Northshore Drive",2
+"Northview Drive",2
+"Northview Lane",2
+"Northwest 16th Street",2
+"Northwest 32nd Street",2
+"Northwest US 287",2
+"Northwood Road",2
+"Norwich Street",2
+"Novato Place",2
+"Nursery Lane",2
+"O Hara Lane",2
+"Oak Bend Lane",2
+"Oak Gate Lane",2
+"Oak Glen Trail",2
+"Oak Grove Road South",2
+"Oak Grove Road West",2
+"Oak Haven Road",2
+"Oak Hill Drive",2
+"Oak Hill Street",2
+"Oak Valley Lane",2
+"Oakland Hills Drive",2
+"Oakmont Boulevard",2
+"Obenchain Street",2
+"Oceanview Drive",2
+"Ocotillo Lane",2
+"Odessa Street",2
+"Old Benbrook Road",2
+"Old Denton Road",2
+"Old Hemphill Road",2
+"Old Mill Court",2
+"Old Mill Lane",2
+"Old Oaks Drive",2
+"Old Ox Road",2
+"Old York Road",2
+"Oldwest Trace",2
+"Olive Place",2
+"Olusta Drive",2
+"Oradell Lane",2
+"Orange Street",2
+"Orlando Springs Drive",2
+"Outlook Court",2
+"Overdale Drive",2
+"Owl Creek Drive",2
+"Ozark Drive",2
+"Pacesetter Drive",2
+"Paddlefish Drive",2
+"Padre Court",2
+"Pagewood Place",2
+"Paisano Drive",2
+"Palm Island Street",2
+"Palm Ridge Drive",2
+"Palmflower Avenue",2
+"Palo Alto Drive",2
+"Paloma Blanca Drive",2
+"Paloverde Drive",2
+"Paluxy Sands Trace",2
+"Pantego Drive",2
+"Paradise Valley Road",2
+"Park Bend Drive",2
+"Park Brook Drive",2
+"Park Creek Circle West",2
+"Park Downs Drive",2
+"Park Oak Circle",2
+"Park Ridge Boulevard",2
+"Park Row Avenue",2
+"Parkrise Drive",2
+"Parkside Center Boulevard",2
+"Parkview Avenue",2
+"Parkwood Drive",2
+"Parterre Drive",2
+"Parvia Avenue",2
+"Pasadena Avenue",2
+"Pastime Court",2
+"Patonia Avenue",2
+"Patron Trace",2
+"Peach Tree Way",2
+"Pear Ridge Drive",2
+"Pearl Oyster Lane",2
+"Pebble Creek Court",2
+"Pecan Meadow Drive",2
+"Pedernales Trace",2
+"Pelican Drive",2
+"Pembroke Drive",2
+"Peninsula Drive",2
+"Penny Royal Drive",2
+"Peoria Avenue",2
+"Pepperbush Drive",2
+"Pepperidge Lane",2
+"Permian Lane",2
+"Peter Pan Drive",2
+"Petersburg Drive",2
+"Piedmont Drive",2
+"Piedmont Road",2
+"Pierce Avenue",2
+"Pimlico Drive",2
+"Pine Lane",2
+"Pine Tree Circle West",2
+"Pinehaven Drive",2
+"Pinto Trace",2
+"Pioneer Drive",2
+"Pipestone Drive",2
+"Plainfield Drive",2
+"Planters Row Drive",2
+"Pleasant Oaks Drive",2
+"Plum Valley Drive",2
+"Plum Valley Place",2
+"Pollard Street",2
+"Polo Lane",2
+"Poncho Lane",2
+"Pool View Drive",2
+"Poplar Spring Road",2
+"Poppy Drive East",2
+"Portman Avenue",2
+"Post Ridge Drive",2
+"Postwood Drive",2
+"Potter Road",2
+"Power Drive",2
+"Prairie Flower Lane",2
+"Prairie Rose Lane",2
+"Precinct Line Road",2
+"Prescott Circle",2
+"Presidio Avenue",2
+"Preston Fairways Drive",2
+"Prestonshire Lane",2
+"Providence Drive",2
+"Provine Street",2
+"Quail Grove Drive",2
+"Quails Lane",2
+"Quest Drive",2
+"Quincy Street",2
+"Quinto Drive",2
+"Raeford Drive",2
+"Rain Forest Drive",2
+"Rainwater Way",2
+"Raleigh Drive",2
+"Ranger Way",2
+"Rashti Court",2
+"Ray White Road",2
+"Raymond Drive",2
+"Reagan Drive",2
+"Red Clover Drive",2
+"Red Fern Lane",2
+"Red Fox Trace",2
+"Red Hawk Drive",2
+"Red Rock Canyon Road",2
+"Red Wing Drive",2
+"Redcloud Drive",2
+"Redeagle Creek Drive",2
+"Redondo Drive",2
+"Redwing Lane",2
+"Regatta Drive",2
+"Regency Lane",2
+"Regina Drive",2
+"Rembrant Terrace",2
+"Renaissance Drive",2
+"Republic Drive",2
+"Revere Drive",2
+"Revere Place",2
+"Reynolds Avenue",2
+"Rice Lane",2
+"Ridge Oak Street",2
+"Ridge Point Drive",2
+"Ridge Road North",2
+"Ridge Spring Drive",2
+"Ridge View Road",2
+"Ridgedorf Drive",2
+"Ridgelea Street",2
+"Ridgepointe Road",2
+"Ridgerock Road",2
+"Ridgeview Circle",2
+"Rilla Avenue",2
+"Rim Rock Drive",2
+"Rim Rock Road",2
+"Rincon Street",2
+"Rincon Way",2
+"Ringold Drive",2
+"Rio Blanco Court",2
+"Rio Blanco Drive",2
+"Rio Bravo Drive",2
+"Rising Knoll Lane",2
+"Rising Star Boulevard",2
+"River Birch Road",2
+"Riverbend Place",2
+"Riverfalls Drive",2
+"Riverlakes Drive",2
+"Riverside Drive",2
+"Riverway Bend Circle",2
+"Roanoke Avenue",2
+"Robertson Drive",2
+"Robin Glen Drive",2
+"Robinhood Lane",2
+"Rochelle Drive",2
+"Rochester Drive",2
+"Rock Brook Street",2
+"Rock Martin Drive",2
+"Rockport Drive",2
+"Rockridge Terrace",2
+"Roddy Drive",2
+"Rodeo Drive",2
+"Rogers Road",2
+"Rolling Hills Drive",2
+"Rolling Meadow Road",2
+"Rolling Rock Lane",2
+"Rollover Pass Lane",2
+"Roma Lane",2
+"Rose Court",2
+"Rose Lane",2
+"Rosemeade Parkway",2
+"Rosemont Avenue",2
+"Rosemont Road",2
+"Rosser Road",2
+"Rothland Street",2
+"Routt Street",2
+"Rowan Avenue",2
+"Royster Road",2
+"Rugged Drive",2
+"Rum Street",2
+"Running River Lane",2
+"Ruse Springs Lane",2
+"Rush River Trace",2
+"Rushing River Drive",2
+"Rustler Ranch Rd",2
+"Rusty Dell Road",2
+"Ruth Ann Drive",2
+"Ryan Place Drive",2
+"Ryanridge Drive",2
+"Ryeworth Drive",2
+"Sabinas Trace",2
+"Sable Ridge Drive",2
+"Saddle Flap Drive",2
+"Sadie Trail",2
+"Saint James Court",2
+"Salado Trace",2
+"Salmon Run Way",2
+"Saltbrush Street",2
+"Sam Calloway Road",2
+"Samantha Drive",2
+"San Andres Drive",2
+"San Carlos Drive",2
+"San Diego Drive",2
+"San Felipe Trace",2
+"San Francisco Trace",2
+"San Gabriel Avenue",2
+"San Gabriel Drive",2
+"San Juan Avenue",2
+"San Juan Drive",2
+"San Lea Drive",2
+"San Lorenzo Avenue",2
+"San Marcos Drive",2
+"San Rafael Street",2
+"Sandra Lynn Drive",2
+"Sandshell Drive",2
+"Sandsprings Avenue",2
+"Sandstone Court",2
+"Sandy Creek Drive",2
+"Sandy Trace",2
+"Sandybrook Drive",2
+"Sanguinet Street",2
+"Sanshire Avenue",2
+"Santa Anita Drive",2
+"Santa Barbara Avenue",2
+"Santa Fe Avenue",2
+"Santa Fe Circle",2
+"Santa Fe Trace",2
+"Santa Garza Drive",2
+"Santa Maria Lane",2
+"Santa Marie Avenue",2
+"Santa Monica Drive",2
+"Sappington Place",2
+"Saratoga Circle",2
+"Saratoga Downs Way",2
+"Saratoga Road",2
+"Sardinia Way",2
+"Satinwood Drive",2
+"Satsuma Drive",2
+"Saucon Valley Drive",2
+"Savannah Lane",2
+"Savoy Street",2
+"Saxony Road",2
+"Scammel Drive",2
+"Scenery Hill Road",2
+"Schooner Court",2
+"Schroeder Road",2
+"Schwartz Avenue",2
+"Scotch Pine Drive",2
+"Scottsdale Drive",2
+"Sea Breeze Lane",2
+"Sea Pines Drive",2
+"Sea Ridge Drive",2
+"Seagrove Drive",2
+"Seaman Street",2
+"Sean Drive",2
+"Seaside Drive",2
+"Seguin Drive",2
+"Selene Street",2
+"Selma Street",2
+"Senator Drive",2
+"Sereno Drive",2
+"Serrano Drive",2
+"Seth Barwise Street",2
+"Seymour Drive",2
+"Shackelford Drive",2
+"Shad Drive",2
+"Shaddock Creek Lane",2
+"Shadow Wood Drive",2
+"Shady Cedar Drive",2
+"Shady Crest Trail",2
+"Shady Hill Drive",2
+"Shady Springs Trace",2
+"Shady Trail",2
+"Shadywood Drive",2
+"Shalimar Drive",2
+"Shallow Creek Drive",2
+"Sharlis Drive",2
+"Sheffield Place",2
+"Shelburne Drive",2
+"Shelby Drive",2
+"Sheldon Trace",2
+"Sheli Lane",2
+"Shell Creek Drive",2
+"Shell Ridge Drive",2
+"Shelley Boulevard",2
+"Shenstone Drive",2
+"Shepheard Drive",2
+"Sheriff Drive",2
+"Shilling Drive",2
+"Shiprock Road",2
+"Shire View Drive",2
+"Shoal Forest Lane",2
+"Shorecrest Drive",2
+"Shores Court",2
+"Shoveler Trace",2
+"Shropshire Street",2
+"Sierra Madre Drive",2
+"Sikorski Lane",2
+"Silver City Drive",2
+"Silver Creek Drive",2
+"Silver Hill Drive",2
+"Silver Horn Drive",2
+"Silver Lake Trace",2
+"Silver Meadow Drive",2
+"Silver Meadow Lane",2
+"Silver Sage Drive",2
+"Silver Springs Drive",2
+"Silverado Drive",2
+"Silverado Trace",2
+"Silverbell Lane",2
+"Silverwood Trace",2
+"Sioux Creek Lane",2
+"Sixpence Lane",2
+"Sky Lake Drive",2
+"Slippery Rock Drive",2
+"Slover Drive",2
+"Smilax Avenue",2
+"Snyder Drive",2
+"Soledad Road",2
+"Solitude Creek Court",2
+"Somerville Avenue",2
+"Sonora Avenue",2
+"Sonora Trace",2
+"Sonterra Ranch Rd",2
+"Sophora Circle",2
+"Sophora Drive",2
+"Sorano Drive",2
+"Sorcey Road",2
+"South Acres Drive",2
+"South Beckley Avenue",2
+"South Cesar Chavez Boulevard",2
+"South Drive West",2
+"South Edgefield Avenue",2
+"South Ervay Street",2
+"South Fitzhugh Avenue",2
+"South Franklin Street",2
+"South Glasgow Drive",2
+"South Hills Circle",2
+"South Hollywood Avenue",2
+"South Lake Street",2
+"South Ledbetter Drive",2
+"South Montclair Avenue",2
+"South Munger Boulevard",2
+"South Nachita Drive",2
+"South Normandale Street",2
+"South Ridge Road",2
+"South Versailles Avenue",2
+"South Walton Walker Boulevard",2
+"Southeast Loop 820",2
+"Southerland Avenue",2
+"Southern Avenue",2
+"Southgate Drive",2
+"Southmark Drive",2
+"Southridge Drive",2
+"Southwood Drive",2
+"Speight Street",2
+"Sperry Street",2
+"Spillway Circle",2
+"Spindrift Court",2
+"Sportsmans Parkway",2
+"Spotted Owl Drive",2
+"Spring Avenue",2
+"Springbranch Drive",2
+"Springdale Road",2
+"Springtide Drive",2
+"Sprucewood Drive",2
+"Spurlock Street",2
+"St Moritz Avenue",2
+"St. Petersburg Drive",2
+"St. Stephen'S Square",2
+"Stafford Drive",2
+"Stampede Court",2
+"Standering Road",2
+"Standish Road",2
+"Star Fish Street",2
+"Stark Street",2
+"State Oak Drive",2
+"Statler Drive",2
+"Steamboat Drive",2
+"Stella Mae Drive",2
+"Stewart Street",2
+"Stichter Avenue",2
+"Stigall Street",2
+"Still Hollow Drive",2
+"Stockton Lane",2
+"Stockwood Drive",2
+"Stone Creek Lane",2
+"Stone Creek Terrace",2
+"Stone Mountain Drive",2
+"Stone Road",2
+"Stonegate Road",2
+"Stoneleigh Avenue",2
+"Stoneridge Drive",2
+"Stoney Gorge Road",2
+"Stovall Drive",2
+"Strawberry Trail",2
+"Stuckert Drive",2
+"Stults Road",2
+"Sturges Drive",2
+"Sumac Drive",2
+"Summer Meadows Drive",2
+"Summer Oaks Lane",2
+"Summer Sun Drive",2
+"Summersville Lane",2
+"Summerwood Circle",2
+"Sunglow Lane",2
+"Sunland Street",2
+"Sunny Crest Lane",2
+"Sunset Avenue",2
+"Sunset Circle South",2
+"Sunset View Drive",2
+"Sunshine Drive",2
+"Sunvalley Drive",2
+"Sweet Bay Drive",2
+"Sweetbriar Lane",2
+"Sweetwater Drive",2
+"Swift Avenue",2
+"Swiss Avenue",2
+"Tacoma Street",2
+"Tahoe Springs Drive",2
+"Tallman Street",2
+"Tamalpais Drive",2
+"Tamarack Trail",2
+"Tan Oak Drive",2
+"Tandem Trail",2
+"Tangiers Drive",2
+"Tanglebrush Trace",2
+"Tanglewood Lane",2
+"Tapestry Street",2
+"Tealwood Lane",2
+"Tenison Lane",2
+"Terminal Road",2
+"Terra Cota Lane",2
+"Terrace Lawn Circle",2
+"Tex Boulevard",2
+"Thaxton Trace",2
+"Thistledown Drive",2
+"Thomas Avenue",2
+"Thomas Crossing Drive",2
+"Thoroughbred Trace",2
+"Three Bars Drive",2
+"Threshing Drive",2
+"Thrush Avenue",2
+"Tiburon Street",2
+"Tiffany Meadows Lane",2
+"Timber Lane",2
+"Timber Oaks Drive",2
+"Timberview Road",2
+"Timberwilde Circle",2
+"Tioga Street",2
+"Todd Avenue",2
+"Toffee Street",2
+"Tokalon Drive",2
+"Tokowa Drive",2
+"Toledo Bend Drive",2
+"Tolosa Drive",2
+"Tonawanda Drive",2
+"Tophill Lane",2
+"Torrey Pines Drive",2
+"Touchdown Drive",2
+"Touraine Drive",2
+"Tournament Road",2
+"Trail Avenue",2
+"Trail Break Drive",2
+"Trail Hollow Drive",2
+"Trailridge Drive",2
+"Trentman Street",2
+"Triangle Leaf Drive",2
+"Trimble Drive",2
+"Trinity Landing Drive North",2
+"Tristian Court",2
+"Tupelo Trace",2
+"Turfway Drive",2
+"Turkey Creek Drive",2
+"Turtle Creek Drive",2
+"Twinflower Drive",2
+"Tyree Street",2
+"Unity Drive",2
+"Upton Avenue",2
+"Urban Avenue",2
+"Utica Drive",2
+"Vail Street",2
+"Valdez Drive",2
+"Valencia Street",2
+"Valley Ridge Road",2
+"Valley Street",2
+"Valleyside Drive",2
+"Vandelia Street",2
+"Vanessa Drive",2
+"Vantage Point Drive",2
+"Varsity Drive",2
+"Vatican Lane",2
+"Vega Drive",2
+"Ventura Street",2
+"Verde Valley Lane",2
+"Verdun Avenue",2
+"Vermont Avenue",2
+"Vestia Drive",2
+"Victorian Drive",2
+"Victory Drive",2
+"Vienna Apple Road",2
+"View Street",2
+"Vilbig Road",2
+"Village Fair Drive",2
+"Village Trail Drive",2
+"Villagepoint Lane",2
+"Vine Lane",2
+"Vinecrest Drive",2
+"Vinetta Drive",2
+"Virginia Lane",2
+"Viridian Lane",2
+"Vista Heights Boulevard",2
+"Voss Road",2
+"Waco Way",2
+"Wagonwheel Road",2
+"Waldorf Drive",2
+"Walker Street",2
+"Wallace Street",2
+"Walling Lane",2
+"Walnut Drive",2
+"Waneta Drive",2
+"Warm Mist Lane",2
+"Warren Lane",2
+"Washakie Road",2
+"Wateka Drive",2
+"Watercress Lane",2
+"Waterfront Court",2
+"Waters Edge Lane",2
+"Waterview Parkway",2
+"Waverly Way",2
+"Waynewood Court",2
+"Weatherbee Street",2
+"Weddington Court",2
+"Wedgmont Circle North",2
+"Wedgmont Circle South",2
+"Weeburn Drive",2
+"Wellington Road",2
+"Wendover Drive",2
+"Wentworth Street",2
+"Wesleyan Drive South",2
+"Wessex Avenue",2
+"West 7Th Street",2
+"West Bailey Boswell Road",2
+"West Bonds Ranch Rd",2
+"West Campbell Road",2
+"West Cannon Street",2
+"West Dickson Street",2
+"West Elmore Avenue",2
+"West Greenbriar Lane",2
+"West Hanover Avenue",2
+"West J Boaz Road",2
+"West Lancaster Avenue",2
+"West Loop 820 South",2
+"West Louisiana Avenue",2
+"West Millett Drive",2
+"West Purdue Street",2
+"West Rim Road",2
+"West Rosedale Street",2
+"West Saner Avenue",2
+"West Seminary Drive",2
+"West Shaw Street",2
+"Western Avenue",2
+"Western Park Drive",2
+"Westfield Drive",2
+"Westmere Lane",2
+"Westminster Court South",2
+"Westmount Avenue",2
+"Westward Drive",2
+"Westway Avenue",2
+"Westwind Drive",2
+"Weyburn Drive",2
+"Wheeler Street",2
+"Whisper Willows Drive",2
+"Whispering Brook Lane",2
+"Whispering Oaks Drive",2
+"Whispering Pines Drive",2
+"Whistler Drive",2
+"White Pine Lane",2
+"White Rock Trail",2
+"White Tail Trace",2
+"Whitehall Drive",2
+"Whitehall Lane",2
+"Whitley Drive",2
+"Whittier Street",2
+"Wichita Street",2
+"Wichita Trail",2
+"Wild Oak Drive",2
+"Wild Oats Drive",2
+"Wild Pear Lane",2
+"Wildflower Drive",2
+"Wildflower Way",2
+"Wildoak Drive",2
+"Wildrose Drive",2
+"Wilhelm Street",2
+"Wilkinson Avenue",2
+"Will Rogers Boulevard",2
+"Williams Way Court",2
+"Willow Creek Drive",2
+"Willow Park Drive",2
+"Willow Vale Drive",2
+"Willowbrook Drive",2
+"Wilshire Boulevard",2
+"Wiman Drive",2
+"Wimberley Drive",2
+"Wimbleton Way",2
+"Winchester Place",2
+"Windchime Drive",2
+"Winding Creek Road",2
+"Winding River Drive",2
+"Windjammer Road",2
+"Windowmere Street",2
+"Windsor Ridge",2
+"Windwood Trace",2
+"Windy Crest Drive",2
+"Windy Ridge Drive",2
+"Windy Ridge Road",2
+"Wineberry Drive",2
+"Winnebago Court",2
+"Winslow Drive",2
+"Winston Drive",2
+"Winter Springs Drive",2
+"Winterberry Lane",2
+"Wisteria Drive",2
+"Witt Road",2
+"Wixom Lane",2
+"Wolcott Drive",2
+"Wolf Creek Drive",2
+"Wood Dale Drive",2
+"Woodbluff Drive",2
+"Woodbrook Drive",2
+"Woodcastle Drive",2
+"Woodcrest Lane",2
+"Woodfield Road",2
+"Woodgrove Drive",2
+"Woodhue Road",2
+"Woodlot Drive",2
+"Woodmont Court",2
+"Woodmoor Road",2
+"Woodside Hill",2
+"Woodstock Drive",2
+"Woodvale Road",2
+"Woolsey Drive",2
+"Wooten Drive",2
+"Wycliff Avenue",2
+"Wynnewood Drive",2
+"Wyoming Drive",2
+"Yarrow Circle",2
+"Yates Street",2
+"Yellow Rock Trail",2
+"Yoakum Street",2
+"Yorkshire Street",2
+"Yucca Drive",2
+"Zippo Way",2
+"1st Street",1
+"2nd Avenue",1
+"3rd Street",1
+"50th Street",1
+"51St Street",1
+56th,1
+"5th Street",1
+"7th Avenue",1
+"A Avenue",1
+"Aberdeen Drive",1
+"Abilene Street",1
+"Ables Drive",1
+"Ablingdon Drive",1
+"Abraham Drive",1
+"Abrams Place Court",1
+"Abuelo Court",1
+"Academy Boulevard",1
+"Adair Street",1
+"Adams Lane",1
+"Adare Manor Lane",1
+"Aden Road",1
+"Adirondack Lane",1
+"Adleta Boulevard",1
+"Admiralty Way",1
+"Aerial Drive",1
+"Afton Road",1
+"Agnes Street",1
+"Agora Court",1
+"Ainsley Court",1
+"Ainsly Lane",1
+"Aintree Circle",1
+"Airport Freeway",1
+"Akers Avenue",1
+"Akron Street",1
+"Al Patterson Drive",1
+"Alava Drive",1
+"Albermarle Drive",1
+"Albritton Drive",1
+"Alco Avenue",1
+"Alcova Lane",1
+"Alcove Drive",1
+"Alden Avenue",1
+"Alden Lane",1
+"Alder Circle",1
+"Aldridge Drive",1
+"Aldwick Circle",1
+"Aldwick Drive",1
+"Alexandra Court",1
+"Algerita Street",1
+"Algiers Street",1
+"Alicia Drive",1
+"All Stars Avenue",1
+"Allegheny Drive",1
+"Allen Place Court",1
+"Allen Place Drive",1
+"Alliance Gateway Freeway",1
+"Allwood Lane",1
+"Almazan Drive",1
+"Almondale Drive",1
+"Alpine Court",1
+"Alsbury Street",1
+"Alta Drive",1
+"Alta Mere Drive",1
+"Alta Mira Drive",1
+"Alter Drive",1
+"Alto Garden Drive",1
+"Alton Adams Dr",1
+"Alton Avenue",1
+"Altura Avenue",1
+"Alva Court",1
+"Alverstone Drive",1
+"Alwood Court",1
+"Alyssum Drive",1
+"Amador Avenue",1
+"Amador Drive",1
+"Amanda Lane",1
+"Amarosa Road",1
+"Amber Valley Drive",1
+"Amberjack Trace",1
+"Amberton Parkway",1
+"Amberwoods Lane",1
+"Ambrosia Drive",1
+"American Boulevard",1
+"Amesbury Drive",1
+"Amethyst Drive",1
+"Amon Carter Boulevard",1
+"Amspoker Avenue",1
+"Amsterdam Road",1
+"Anahuac Avenue",1
+"Anchor Street",1
+"Anchura Court",1
+"Andante Drive",1
+"Andress Drive",1
+"Andrews Street",1
+"Angel Falls Drive",1
+"Angelina Drive",1
+"Angelo Drive",1
+"Anglin Circle",1
+"Anglin Drive",1
+"Ann Arbor Court",1
+"Annapolis Lane",1
+"Anode Lane",1
+"Anson Road",1
+"Antares Court",1
+"Antelope Hills Drive",1
+"Anthony Street",1
+"Antoinette Street",1
+"Antrim Drive",1
+"Appaloosa Drive",1
+"Appian Way",1
+"Apple Ridge",1
+"Apple Valley Drive",1
+"Appleblossom Drive",1
+"Appledale Lane",1
+"Applegate Drive",1
+"Appleton Drive",1
+"Applewood Road",1
+"April Hill Lane",1
+"April Springs Drive",1
+"Arabian Avenue",1
+"Aransas Drive",1
+"Aransas Street",1
+"Arbor Hill Drive",1
+"Arbor Oaks Drive",1
+"Arbor Ridge Court",1
+"Arbor Ridge Drive",1
+"Arborlawn Drive",1
+"Arborwood Trace",1
+"Arbuckle Drive",1
+"Arcadia Drive",1
+"Arcadia Park Lane",1
+"Arcady Avenue",1
+"Archer Avenue",1
+"Archer Drive",1
+Arctic,1
+"Arctic Lane",1
+"Ardenwood Drive",1
+"Arena Circle",1
+"Aristocrat Lane",1
+"Arkan Parkway",1
+"Arlie Avenue",1
+"Arlington Drive",1
+"Armistice Drive",1
+"Armstead Avenue",1
+"Armstrong Drive",1
+"Arocha Drive",1
+"Arpege Circle",1
+"Arrow Point Drive",1
+"Arrowhead Drive",1
+"Arundel Avenue",1
+"Asbury Avenue",1
+"Ascot Drive",1
+"Ash Grove Way",1
+"Ash Meadow Drive",1
+"Ash Street",1
+"Ashcroft Lane",1
+"Ashdale Drive",1
+"Ashe Court",1
+"Asheboro Street",1
+"Asher Court",1
+"Ashford Avenue",1
+"Ashland Belle Lane",1
+"Ashmont Drive",1
+"Ashridge Drive",1
+"Ashridge Road",1
+"Ashton Avenue",1
+"Askew Street",1
+"Aspen Creek Lane",1
+"Aspen Street",1
+"Aster Avenue",1
+"Aster Ridge Drive",1
+"Aster Street",1
+"Athenia Drive",1
+"Atherton Drive",1
+"Atlanta Street",1
+"Atlantic Lane",1
+"Atlantic Street",1
+"Aton Avenue",1
+"Auburn Avenue",1
+"Augusta Drive",1
+"Augusta Road",1
+"Aurora Street",1
+"Austin Ridge Drive",1
+"Austin Road",1
+"Austin Stone Drive",1
+"Autumn Falls Drive",1
+"Autumn Lane",1
+"Autumn Park",1
+"Autumn Sage Drive",1
+"Autumn Woods Trail",1
+"Autumnwood Drive",1
+"Ava Lane",1
+"Avanti Drive",1
+"Ave B",1
+"Ave M Avenue",1
+"Avenue C",1
+"Avenue F",1
+"Avenue G",1
+"Avenue J",1
+"Avenue Of The Stars",1
+"Averett Court",1
+"Avondale Avenue",1
+"Avondale Haslet Road",1
+"Avril Court North",1
+"Azteca Drive",1
+"Babalos Lane",1
+"Bachman Drive",1
+"Bailey Avenue",1
+"Bainbridge Lane",1
+"Baker Avenue",1
+"Baker Street",1
+"Baker Valley Road",1
+"Balboa Court",1
+"Balch Drive",1
+"Balcones Court",1
+"Balez Drive",1
+"Balfour Court",1
+"Balint Lane",1
+"Ball Street",1
+"Ballymena Drive",1
+"Ballymote Drive",1
+"Balsam Wood Court",1
+"Balta Court",1
+"Bambi Street",1
+"Bandera Road",1
+"Bangor Drive",1
+"Banks Street",1
+"Banning Street",1
+"Bannister Drive",1
+"Bannock Drive",1
+"Banquo Drive",1
+"Bantry Lane",1
+"Barberry Tree Cove",1
+Barcelona,1
+"Bareback Lane",1
+"Bareback Ranch Road",1
+"Barksdale Court",1
+"Barkworth Drive",1
+"Barlow Drive",1
+"Barnabus Drive",1
+"Barnes Bridge Road",1
+"Barney Street",1
+"Barnhill Lane",1
+"Barracks Drive",1
+"Barredo Street",1
+"Barron Lane",1
+"Barrymore Drive",1
+"Barwick Drive",1
+"Basalt Way",1
+"Bastille Way",1
+"Battle Creek Court",1
+"Baumgarten Drive",1
+"Bay Hill Drive",1
+"Bay Lake Drive",1
+"Bay Laurel Lane",1
+"Bay Meadows Circle",1
+"Bay Meadows Drive",1
+"Bay Oaks Court",1
+"Bay Oaks Drive",1
+"Bayard Street",1
+"Bayberry Drive",1
+"Bayless Lane",1
+"Baymar Lane",1
+"Bayshore Place",1
+"Baytree Drive",1
+"Beach Street",1
+"Beach Street West",1
+"Beachview Lane",1
+"Beachview Street",1
+"Beacon Court",1
+"Beacon Hill Drive",1
+"Beacon Way",1
+"Bear Creek Trace",1
+"Bear Hollow Drive",1
+"Bear Run",1
+"Bearden Lane",1
+"Bearden Street",1
+"Beaty Court",1
+"Beau Jake Court",1
+"Beauchamp Street",1
+"Beauford Road",1
+"Beaufort Court",1
+"Beauty Drive",1
+"Beautycrest Circle",1
+"Beaver Creek Drive",1
+"Beckington Lane",1
+"Beckley Lane",1
+"Beckleymeade Avenue",1
+"Beckleyview Avenue",1
+"Bedington Lane",1
+"Bee Balm Drive",1
+"Bee Creek Lane",1
+"Beech Tree Lane",1
+"Beechnut Drive",1
+"Beekman Drive",1
+"Beeville Drive",1
+"Begonia Court",1
+"Belford Avenue",1
+"Belfort Avenue",1
+"Belfort Drive",1
+"Bell Rock Road",1
+"Bell Street",1
+"Bellafonte Drive",1
+"Bellaire Drive North",1
+"Bellcrest Court",1
+"Belle Avenue",1
+"Belle Isle Lane",1
+"Belle Starr Drive",1
+"Bells Street",1
+"Bellville Drive",1
+"Belmar Court",1
+"Belmead Drive",1
+"Belmeade Drive",1
+"Belrose Place",1
+"Belteau Lane",1
+"Beltline Road",1
+"Belton Drive",1
+"Belvedere Drive",1
+"Ben Hur Street",1
+"Benbrook Boulevard",1
+"Benchmark Drive",1
+"Bend Court",1
+"Bending Oak Drive",1
+"Bending Oaks Trail",1
+"Bent Tree Forest Drive",1
+"Bentgrass Drive",1
+"Bentgreen Drive",1
+"Bentham Court",1
+"Benton Avenue",1
+"Bentwood Trail",1
+"Benwick Drive",1
+"Berkley Avenue",1
+"Berkwood Place",1
+"Bernie Anderson Avenue",1
+"Berry Brook Lane",1
+"Bertha Avenue",1
+"Beth Drive",1
+"Bethlehem Avenue",1
+"Bethurum Avenue",1
+"Better Drive",1
+"Betty Jane Lane",1
+"Bettyrae Way",1
+"Beutel Court",1
+"Bevans Street",1
+"Beverly Glen Drive",1
+"Bevington Road",1
+"Bewley Court",1
+"Bexar Street",1
+"Bickham Road",1
+"Bickmore Lane",1
+"Big Bend Court",1
+"Big Bend Street",1
+"Big Flat Drive",1
+"Big Sky Drive",1
+"Big Springs Drive",1
+"Big Wichita Drive",1
+"Bighorn Court",1
+"Biglow Street",1
+"Bilbrook Lane",1
+"Bilco Street",1
+"Biloxi Lane",1
+"Bilsky Bay Drive",1
+"Bimebella Lane",1
+"Birch Avenue",1
+"Birch Grove Lane",1
+"Birch Valley Court",1
+Birchbrook,1
+"Birchcroft Drive",1
+"Bird Lane",1
+"Birdhill Lane",1
+"Birds Eye Road",1
+"Birdville Way",1
+"Birkdale Lane",1
+"Birmingham Avenue",1
+"Biscayne Boulevard",1
+"Bishop Drive",1
+"Bismark Drive",1
+"Bison Court",1
+"Bizerte Avenue",1
+"Black Ash Drive",1
+"Black Bear Court",1
+"Black Berry Lane",1
+"Black Canyon Road",1
+"Black Ranch Court",1
+"Black Rock Drive",1
+"Blackenhurst Lane",1
+"Blackhaw Avenue",1
+"Blackheath Road",1
+"Blackmon Court",1
+"Blacksmith Drive",1
+"Blackthorn Trail",1
+"Blackwood Drive",1
+"Blake Avenue",1
+"Blake Court",1
+"Blalock Avenue",1
+"Blanning Drive",1
+"Blanton Street",1
+"Blessing Drive",1
+"Bliss Road",1
+"Blitz Drive",1
+"Bloomfield Lane",1
+"Blue Carriage Court",1
+"Blue Jay Lane",1
+"Blue Meadow Drive",1
+"Blue Meadow Street",1
+"Blue Pond Circle",1
+"Blue Ridge Boulevard",1
+"Blue Ridge Drive",1
+"Blue Sage Drive",1
+"Blue Sage Road",1
+"Blue Scope Lane",1
+"Blue Springs Drive",1
+"Blue Spruce Drive",1
+"Blue Top Drive",1
+"Blue Trace Lane",1
+"Blueberry Boulevard",1
+"Bluebonnet Circle",1
+"Bluebonnet Road",1
+"Bluecrest Drive",1
+"Bluefield Drive",1
+"Bluestem Road",1
+"Bluestone Road",1
+"Bluff Park Lane",1
+"Bluff Point Drive",1
+"Bluffview Drive",1
+"Blythdale Drive",1
+"Bob Wills Drive",1
+"Bobby Avenue",1
+"Boca Chica Circle",1
+"Boedeker Circle",1
+"Boland Street",1
+"Bolero Court",1
+"Bomber Road",1
+"Bon Aire Drive",1
+"Bong Drive",1
+"Bonham Court",1
+"Bonnet Court",1
+"Bonnet Drive",1
+"Booker Street",1
+"Boone Circle",1
+"Borden Drive",1
+"Boston Avenue",1
+"Botanic Garden Boulevard",1
+"Botany Bay Drive",1
+"Boulder Park Drive",1
+"Bourbon Street",1
+"Bourquin Street",1
+"Bow Court",1
+"Bow Creek Drive",1
+"Bowie Lane",1
+"Bowling Brook Drive",1
+"Bowman Boulevard",1
+"Bowman Drive",1
+"Bowser Avenue",1
+"Box Elder Lane",1
+"Boyd Avenue",1
+"Boyd Street",1
+"Braddock Place",1
+"Bradford Park",1
+"Bradgate Court",1
+"Bradley Avenue",1
+"Bradshaw Street",1
+"Brady Avenue",1
+"Brady Drive",1
+"Braewick Drive",1
+"Braewood Drive",1
+"Bragg Road",1
+"Branch Rd",1
+"Brandeis Lane",1
+"Brandon Lane",1
+"Bransford Street",1
+"Brasenose Street",1
+"Brass Way",1
+"Bratcher Street",1
+"Brea Canyon Road",1
+"Breakpoint Trail",1
+"Breckenridge Court",1
+"Bree Court",1
+"Breeze Hollow Court",1
+"Breezewind Lane",1
+"Breezewood Drive",1
+"Brekenridge Drive",1
+"Brenden Drive",1
+"Brennans Drive",1
+"Brennans Place",1
+"Brenner Drive",1
+"Brentgate Drive",1
+"Bretton Bay Circle",1
+"Brevet Lane",1
+"Brewster Lane",1
+"Brianhill Drive",1
+"Briar Brook Lane",1
+"Briar Court",1
+"Briar Drive",1
+"Briar Ridge Road",1
+"Briar Tree Drive",1
+"Briarbank Circle",1
+"Briarcreek Drive",1
+"Briarcrest Circle",1
+"Briarglen Circle",1
+"Briarglen Drive",1
+"Briaridge Road",1
+"Briarmeade Drive",1
+"Briarmeadow Drive",1
+"Briarnoll Drive",1
+"Briaroaks Drive",1
+"Briarstone Court",1
+"Briarwood Drive",1
+"Briarwood Lane",1
+"Bridal Trace",1
+"Bridgewater Lane",1
+"Bridgewood Drive",1
+"Bridle Boulevard",1
+"Bridle Wood Drive",1
+"Brierhill Court",1
+"Brierhollow Court",1
+"Briggs Street",1
+"Brighton Lane",1
+"Brighton Road",1
+"Brightwater Road",1
+"Brightwood Drive",1
+"Briley Drive",1
+"Brimstone Drive",1
+"Brin Drive",1
+"Bristlecone Court",1
+"Bristol Road",1
+"Bristol Trace Court",1
+"Brittlebrush Trace",1
+"Broadgreen Road",1
+"Brockbank Court",1
+"Broken Arrow Trace",1
+"Broken Bend Boulevard",1
+"Broken Bow Road",1
+"Broken Pine Trace",1
+"Broken Spoke Court",1
+"Broken Tree Trail",1
+"Bronco Drive",1
+"Brook Hollow Drive",1
+"Brook Valley Place",1
+"Brookhill Lane",1
+"Brooklyndell Avenue",1
+"Brooklynn Drive",1
+"Brookmeadow Lane",1
+"Brooktree Lane",1
+"Brown Avenue",1
+"Brownfield Drive",1
+"Brownford Drive",1
+"Browning Lane",1
+"Brownstone Court",1
+"Bruce Avenue",1
+"Bruschetta Drive",1
+"Brushy Creek Trail",1
+"Bryant Irvin Court",1
+"Bryce Canyon Drive",1
+"Bryce Canyon Drive West",1
+"Bryce Canyon Road",1
+"Buchanan Drive",1
+"Buck Avenue",1
+"Buckeye Drive",1
+"Buckhorn Place",1
+"Buckingham Lane",1
+"Buckingham Road",1
+"Buckner Boulevard",1
+"Buckskin Court",1
+"Budtime Lane",1
+"Buena Vista Lane",1
+"Buffalo Creek Drive",1
+"Buffalo Drive",1
+"Buffalo Springs Court",1
+"Buffridge Trail",1
+"Bugle Drive",1
+"Bull Shoals Drive",1
+"Bullhead Drive",1
+"Bulova Street",1
+"Bunch Drive",1
+"Bunk House Drive",1
+"Burbank Street",1
+"Burchill Road South",1
+"Burgess Drive",1
+"Burgoyne Street",1
+"Burgundy Drive",1
+"Burgundy Road",1
+"Burleigh Street",1
+"Burma Road",1
+"Burnett Court",1
+"Burnham Street",1
+"Burning Oak Drive",1
+"Burns Run Court",1
+"Burnside Avenue",1
+"Burnside Drive",1
+"Bursey Road",1
+"Buttercup Lane",1
+"Butterfield Drive",1
+"Butterfly Way",1
+"Butterwick Street",1
+"Buttonwood Drive",1
+"CR 23",1
+"Caballero Circle",1
+"Cabana Lane",1
+"Cabrera Drive",1
+"Cactus Patch Way",1
+"Cactus Springs Drive",1
+"Cactus Trail",1
+"Cade Trace",1
+"Cadiz Drive",1
+"Cain Court",1
+"Cain River Drive",1
+"Cairn Circle",1
+"Caladium Drive",1
+"Caladium Lane",1
+"Calder Court",1
+"Calder Street",1
+"Calico Court",1
+"Caliente Drive",1
+"California Parkway North",1
+"Calihan Court",1
+"Calla Drive",1
+"Calle Bella Drive",1
+"Callender Drive",1
+"Calloway Court",1
+"Calm Meadow Drive",1
+"Calmar Street",1
+"Calvery Court",1
+"Calypso Street",1
+"Cambridge Drive",1
+"Camden Avenue",1
+"Camden Bluff Road",1
+"Camden Lane",1
+"Camden Street",1
+"Camden Yard Drive",1
+"Camellia Lane",1
+"Camelot Road",1
+"Cameo Drive",1
+"Cameron Avenue",1
+"Camilla Street",1
+"Camino Lago",1
+"Campbell Road",1
+"Campfire Court",1
+"Camrose Street",1
+"Canary Drive",1
+"Candlelight Lane",1
+"Candler Drive",1
+"Candlewood Drive",1
+"Cando Drive",1
+"Canelo Drive",1
+"Canisius Court",1
+"Canoga Circle",1
+"Cantana Court",1
+"Canterbury Circle",1
+"Canterbury Court",1
+"Canton Drive",1
+"Canton Street",1
+"Cantrell Street",1
+"Cantura Drive",1
+"Canyon Crest Court",1
+"Canyon Crest Road",1
+"Canyon Drive",1
+"Canyon Lake Drive",1
+"Canyon Lands Drive",1
+"Canyon Ranch Rd",1
+"Canyon Ranch Road",1
+"Canyon Ridge Avenue",1
+"Canyon Ridge Drive",1
+"Canyon Ridge Street",1
+"Canyon Springs Road",1
+"Cape Cod Drive",1
+"Cape Street",1
+"Capestone Drive",1
+"Capilla Court",1
+"Capistrano Road",1
+"Caprock Ranch Rd",1
+"Carbona Drive",1
+"Carbondale Street",1
+"Carder Street",1
+"Cardiff Avenue",1
+"Cardinal Lane",1
+"Cardinal Ridge Avenue",1
+"Carey Street",1
+"Caribou Trail",1
+"Carlisle Street",1
+"Carlsbad Drive",1
+"Carlsbad Way",1
+"Carlson Drive",1
+"Carly Lane",1
+"Carmel Avenue",1
+"Carmel Valley Drive",1
+"Carmen Drive",1
+"Carol Avenue",1
+"Carolina Drive",1
+"Caroline Drive",1
+"Carolyncrest Drive",1
+"Carr Street",1
+"Carrizo Lane",1
+"Carroll Street",1
+"Carrollwood Drive",1
+"Carry Back Circle",1
+"Carson Lane",1
+"Carson Street",1
+"Carta Valley Court",1
+"Carta Valley Drive",1
+"Cartagena Drive",1
+"Carter Avenue",1
+"Carter Road",1
+"Cartwright Avenue",1
+"Caruth Haven Lane",1
+"Carver Avenue",1
+"Carver Drive",1
+"Casa Blanca Avenue",1
+"Casa Loma Avenue",1
+"Casey Street",1
+"Casita Court",1
+"Cass Street",1
+"Cassandra Court",1
+"Cassia Drive",1
+"Cassidy Lane",1
+"Cassie Ann Court",1
+"Castanada Circle",1
+"Castille Drive",1
+"Castillo Drive",1
+"Castle Bay Drive",1
+"Castle Creek Drive",1
+"Castle Oak Lane",1
+"Castle Springs Road",1
+"Castle Top Drive",1
+"Castlemaine Lane",1
+"Castlewood Road",1
+"Catalina Drive",1
+"Cathedral Lake Drive",1
+"Cattail Court",1
+"Cattle Crossing Drive",1
+"Caulfield Drive",1
+"Cave Cove Court",1
+"Cave Drive",1
+"Cavendish Court",1
+"Cecile Court",1
+"Cecile Drive",1
+"Cedar Brush Drive",1
+"Cedar Creek Canyon Drive",1
+"Cedar Creek Trail",1
+"Cedar Elm Lane",1
+"Cedar Falls Drive",1
+"Cedar Lake Drive",1
+"Cedar Path Drive",1
+"Cedar Post Drive",1
+"Cedar Run Drive",1
+"Cedar Shadow Drive",1
+"Cedar Valley Drive",1
+"Cedar Valley Lane",1
+"Cedar Wood Drive",1
+"Cedarcrest Lane",1
+"Cedarhill Road",1
+"Cedarhurst Drive",1
+"Cedarview Road",1
+"Cedro Place",1
+"Celeste Drive",1
+"Celestial Place",1
+"Celtic Ash Drive",1
+"Centenary Avenue",1
+"Centennial Drive",1
+"Centennial Mill Lane",1
+"Centeridge Drive",1
+"Centreport Drive",1
+"Century Parkway",1
+"Chaco Trace",1
+"Chadbourne Road",1
+"Chadwick Court",1
+"Chalfont Circle",1
+"Chalkstone Drive",1
+"Chambers Street",1
+"Chamomile Lane",1
+"Champlain Drive",1
+"Chancellor Row",1
+"Channing Circle",1
+"Chaparral Creek Drive",1
+"Chaparral Lane",1
+"Chapel Downs Drive",1
+"Chapel Oak Trace",1
+"Chapel Ridge Drive",1
+"Chapel Ridge Way",1
+"Chapel Trail",1
+"Chapelview Drive",1
+"Chapman Road",1
+"Charba Street",1
+"Chardonnay Drive",1
+"Chariot Drive",1
+"Charisma Drive",1
+"Charlene Street",1
+"Charleston Drive",1
+"Charlmont Circle",1
+"Charlotte Lane",1
+"Charter Drive",1
+"Chartwell Lane",1
+"Chase Hill Lane",1
+"Chateau Drive",1
+"Chatsworth Lane",1
+"Chattington Drive",1
+"Cheatham Court",1
+"Chelan Way",1
+"Chellen Drive",1
+"Chelmsford Drive",1
+"Chelsea Road",1
+"Cheltenham Way",1
+"Cherry Glen Lane",1
+"Cherry Hills Drive",1
+"Cherry Ridge Court",1
+"Cherry Valley Boulevard",1
+"Cheryl Drive",1
+"Chesapeake Drive",1
+"Chesley Lane",1
+"Chesterton Drive",1
+"Chevez Drive",1
+"Chevy Chase Avenue",1
+"Chevy Chase Lane",1
+"Chickadee Drive",1
+"Chickering Road",1
+"Chihuahua Street",1
+"Childress Trail",1
+"Chilmark Court",1
+"Chilmark Way",1
+"Chimney Hill Lane",1
+"Chimney Peak Lane",1
+"Chimney Rock Court",1
+"Chimney Rock Road",1
+"China Lake Drive",1
+"China Rose Drive",1
+"Chinaberry Court",1
+"Chinaberry Road",1
+"Chinkapin Lane",1
+"Chinkapin Way",1
+"Chipperton Drive",1
+"Chisam Road",1
+"Chisholm Trail",1
+"Chivalry Lane",1
+"Choctaw Place",1
+"Choctaw Trace",1
+"Choice Street",1
+"Cholla Cactus Trace",1
+"Cholla Drive",1
+"Christensen Drive",1
+"Christine Court",1
+"Christine Road",1
+"Chula Vista Drive",1
+"Church Circle",1
+"Church Park Court",1
+"Church Park Drive",1
+"Churchill Avenue",1
+"Cielo Vista Drive",1
+"Cimarron Trail",1
+"Cimmaron Way",1
+"Cinderella Lane",1
+"Cindy Drive",1
+"Cinnamon Hill Drive",1
+"Circle Drive",1
+"Claire Drive",1
+"Claremont Drive",1
+"Clarence Street",1
+"Claridge Court",1
+"Claridge Lane",1
+"Clark Parkway",1
+"Clark Springs Drive",1
+"Clark Vista Drive",1
+"Clarkwood Drive",1
+"Clary Drive",1
+"Classen Drive",1
+"Claudia Lane",1
+"Clay Avenue",1
+"Claybrook Drive",1
+"Clayco Drive",1
+"Claymore Lane",1
+"Clayton Court",1
+"Clayton Oaks Drive",1
+"Clayton Road East",1
+"Clear Creek Road",1
+"Clear Fork Trace",1
+"Clear Lake Circle",1
+"Clear Lake Drive",1
+"Clear Spring Drive",1
+"Clearbrook Drive",1
+"Clearcreek Circle",1
+"Clearcrest Drive",1
+"Clearfield Road",1
+"Clearfork Trail",1
+"Clearhaven Circle",1
+"Clearpoint Drive",1
+"Clearstream Lane",1
+"Clearview Circle",1
+"Clearview Drive",1
+"Cleary Circle",1
+"Cleckler Avenue",1
+"Clemson Drive",1
+"Clendenin Avenue",1
+"Cleveland Road",1
+"Cliburn Drive",1
+"Cliff Creek Crossing Drive",1
+"Cliff Haven Court",1
+"Cliff Ridge Drive",1
+"Cliffbrook Court",1
+"Cliffdale Avenue",1
+"Cliffridge Lane",1
+"Clipper Lane",1
+"Clotell Drive",1
+"Cloud Cover Road",1
+"Cloudview Road",1
+"Clover Haven",1
+"Clover Haven Court",1
+"Clover Knoll Drive",1
+"Clover Meadow Drive",1
+"Cloverglen Drive",1
+"Clovis Avenue",1
+"Club Glen Drive",1
+"Club Hill Circle",1
+"Clubcreek Circle",1
+"Clubgate Drive",1
+"Clubhouse Circle",1
+"Clubway Lane",1
+"Clusterberry Drive",1
+"Clymer Street",1
+"Coach House Lane",1
+"Coahuila Drive",1
+"Cochise Drive",1
+"Cochran Way",1
+"Colbert Drive",1
+"Colbi Lane",1
+"Cold Springs Road",1
+"Coldstone Drive",1
+"Coldstream Drive",1
+"Cole Street",1
+"Colebrook Street",1
+"Coleridge Street",1
+"Coleshire Drive",1
+"Colewood Lane",1
+"Colfax Drive",1
+"College Park Drive",1
+"College Way",1
+"Collinwick Drive",1
+"Colmar Street",1
+"Colonel Drive",1
+"Colt Court",1
+"Colter Drive",1
+"Columbia Avenue",1
+"Columbus Trace",1
+"Comer Drive",1
+"Commerce Street",1
+"Community Lane",1
+"Como Drive",1
+"Comstock Circle",1
+"Concho Trace",1
+"Condor Drive",1
+"Conejos Drive",1
+"Conestoga Drive",1
+"Conflans Road",1
+"Conlin Drive",1
+"Connely Drive",1
+"Connemara Lane",1
+"Conner Avenue",1
+"Connerly Drive",1
+"Conrad Street",1
+"Conroe Street",1
+"Constitution Drive",1
+"Continental Drive",1
+"Control Place",1
+"Coolair Drive",1
+"Coolgreene Drive",1
+"Coolidge Street",1
+"Coolwater Cove",1
+"Cooper Street",1
+"Copenhill Road",1
+"Copperstone Lane",1
+"Coppin Drive",1
+"Coral Circle",1
+"Coral Drive",1
+"Coral Hills Drive",1
+"Coral Lane",1
+"Coral Rock Lane",1
+"Coral Springs Court",1
+"Cordes Court",1
+"Cordova Drive",1
+"Corinth Street",1
+"Cork Place",1
+"Cornelia Lane",1
+"Corning Avenue",1
+"Cornish Avenue",1
+"Corrigan Drive",1
+"Corsicana Drive",1
+"Cortez Court",1
+"Cortland Avenue",1
+"Cortona Lane",1
+"Corvette Drive",1
+"Cosgrove Drive",1
+"Coteau Way",1
+"Cotoneaster Court",1
+"Cotswold Drive",1
+"Cotswold Hills Drive",1
+"Cottage Drive",1
+"Cottageville Lane",1
+"Cottey Street",1
+"Cotton Gin Road",1
+"Count Drive",1
+"Country Brook Drive",1
+"Country Club Drive",1
+"Country Forest Lane",1
+"Countryside Court West",1
+"Countryside Drive",1
+"Countryside Lane",1
+"County Road 2616",1
+"County Road 615",1
+"Courtland Drive",1
+"Courtright Drive",1
+"Cove Drive",1
+"Covehaven Drive",1
+"Coventry Lane",1
+"Cover Drive",1
+"Covington Lane",1
+"Cowan Avenue",1
+"Cowper Drive",1
+"Cox Street",1
+"Coyote Trace",1
+"Crabapple Court",1
+"Crabapple Street",1
+"Craig Court",1
+"Cranfill Drive",1
+"Cravens Road",1
+"Crazy Horse Lane",1
+"Cree Drive",1
+"Creek Ridge Trace",1
+"Creek View Drive",1
+"Creekbluff Drive",1
+"Creekfall Drive",1
+"Creekmeadow Drive",1
+"Creekmoor Drive",1
+"Creekridge Drive",1
+"Creekside Drive",1
+"Creekstone Court",1
+"Creosote Drive",1
+"Crepe Myrtle Circle",1
+"Crescent Avenue",1
+"Crescent Court",1
+"Crescent Ridge Drive",1
+"Crest Avenue",1
+"Crest Cove Circle",1
+"Crest Meadow Drive",1
+"Crestbrook Drive",1
+"Crestlake Drive",1
+"Crestland Avenue",1
+"Crestline Avenue",1
+"Crestmont Court",1
+"Crestover Circle",1
+"Crestshire Drive",1
+"Crestview Drive",1
+"Crestwick Drive",1
+"Crestwood Drive",1
+"Cricket Drive",1
+"Cripple Creek Trace",1
+"Crix Lane",1
+"Cromwell Circle",1
+"Crooked Creek Drive",1
+"Crooked Oak Drive",1
+"Crooked Stick Drive",1
+"Cross Ridge Circle",1
+"Crossbow Drive",1
+"Crosswicks Court",1
+"Crosswood Lane",1
+"Crouch Avenue",1
+"Crown Colony Drive",1
+"Crown Knoll Circle",1
+"Crown Point Circle",1
+"Crown Shore Drive",1
+"Crowndale Drive",1
+"Crowne Pointe Lane",1
+"Crumbcake Drive",1
+"Crump Street",1
+"Crusader Drive",1
+"Crystal Creek Circle",1
+"Crystal Creek Drive",1
+"Crystal Lake Drive",1
+"Crystal Springs Drive",1
+"Crystalwood Court",1
+"Culberson Court",1
+"Cullen Street",1
+"Culver Avenue",1
+"Cumberland Gap Drive",1
+"Cumberland Lane",1
+"Cumberland Place",1
+"Cumberland Road North",1
+"Cumberland Street",1
+"Cup Circle",1
+"Custer Drive",1
+"Cutleaf Court",1
+"Cynthia Court",1
+"Cypress Avenue",1
+"Cypress Wood Court",1
+"Dahlen Street",1
+"Daisy Leaf Drive",1
+"Dale Crest Drive",1
+"Dale Glade Drive",1
+"Dale Street",1
+"Daleport Circle",1
+"Dalewood Lane",1
+"Dalhart Drive",1
+"Dalton Street",1
+"Dan Morton Drive",1
+"Danciger Drive",1
+"Dancliff Drive",1
+"Dancy Drive North",1
+"Dancy Drive South",1
+"Daniel Avenue",1
+"Daniel Court",1
+"Daniel Street",1
+"Daniel Way",1
+"Danner Street",1
+"Danube Court",1
+"Danville Lane",1
+"Darby Drive",1
+"Darby Lane",1
+"Darien Street",1
+"Darko Drive",1
+"Dart Avenue",1
+"Dartbrook Drive",1
+"Dartcrest Drive",1
+"Dartmoor Court",1
+"Dartridge Circle",1
+"Dartridge Drive",1
+"Darvany Drive",1
+"Dasch Street",1
+"Dashingly Drive",1
+"Dashwood Drive",1
+"Daven Oaks Drive",1
+"Davenport Road",1
+"David Drive",1
+"David Strickland Road",1
+"Davila Drive",1
+"Davilla Avenue",1
+"Dawn Drive",1
+"Dawn Hills Drive",1
+"Dax Drive",1
+"Day Dream Drive",1
+"Day Road",1
+"Day Star Drive",1
+"Deal Court",1
+"Deal Drive",1
+"Dean Lane",1
+"Deauville Circle East",1
+"Deauville Circle North",1
+"Deauville Circle South",1
+"Deavers Lane",1
+"Debbe Drive",1
+"Decoy Lane",1
+"Deep River Drive",1
+"Deep Valley Drive",1
+"Deepwood Lane",1
+"Deer Path Drive",1
+"Deer Ridge Drive",1
+"Deer Trace",1
+"Deerfield Drive",1
+"Deerlodge Trace",1
+"Deewood Court",1
+"Del Prado Avenue",1
+"Delaga Drive",1
+"Delaney Drive",1
+"Delaware Avenue",1
+"Delga Street",1
+"Dell View Drive",1
+"Delmar Avenue",1
+"Delmeta Drive",1
+"Deloach Drive",1
+"Delphinium Drive",1
+"Dema Lane",1
+"Dempster Street",1
+"Denham Circle",1
+"Denmark Street",1
+"Dennis Road",1
+"Dennison Street",1
+"Dentcrest Drive",1
+"Derby Lane",1
+"Derek Trail",1
+"Desco Lane",1
+"Desdemona Drive",1
+Deseo,1
+"Desert Highlands Drive",1
+"Desert Hills Drive",1
+"Desert Ridge Drive",1
+"Desperado Road",1
+"Destin Drive",1
+"Detonte Street",1
+"Devin Lane",1
+"Devinstone Drive",1
+"Devonaire Drive",1
+"Devonshire Drive",1
+"Devonshire Lane",1
+"Dewees Lane",1
+"Dewey Street",1
+"Dewitt Circle",1
+"Dexter Lane",1
+"Diablo Grande Drive",1
+"Diamond Avenue",1
+"Diamond Ridge Drive",1
+"Diamond Trace Trace",1
+"Diamondback Lane",1
+"Diceman Drive",1
+"Dickason Avenue",1
+"Dickson Drive",1
+"Dietz Drive",1
+"Dildock Street",1
+"Dillon Street",1
+"Directors Row",1
+"Dixfield Drive",1
+"Dixon Circle",1
+"Dixon Court",1
+"Doe Creek Trace",1
+"Doe Meadow Drive",1
+"Dolphin Road",1
+"Don Street",1
+"Donagon Court",1
+"Donegal Drive",1
+"Donnybrook Lane",1
+"Donore Lane",1
+"Doral Drive",1
+"Dorchester Lane",1
+"Dorchester Street",1
+"Dorinda Circle",1
+"Dorothy Lane South",1
+"Dosier Cove West",1
+"Dothan Lane",1
+"Double Oak Lane",1
+"Dove Brook Circle",1
+"Dove Creek Way",1
+"Dove Lane",1
+"Dove Meadow Court",1
+"Dove Meadow Drive",1
+"Dove Trail Circle",1
+"Dow Ross Boulevard",1
+"Dowelling Drive",1
+"Down Hill Drive",1
+"Downeast Drive",1
+"Downs Lake Circle",1
+"Dragon Street",1
+"Dragonfly Drive",1
+"Drawbridge Drive",1
+"Dream River Trace",1
+"Drexel Street",1
+"Driftway Drive",1
+"Dripping Springs Drive",1
+"Drovers View Trace",1
+"Druid Court",1
+"Drujon Lane",1
+"Drury Lane",1
+"Dry Creek Lane",1
+"Dry Valley Court",1
+"Du Bois Avenue",1
+"Dublin Drive",1
+"Dudley Street",1
+"Duff Court",1
+"Dula Circle",1
+"Duluth Street",1
+"Dun Horse Drive",1
+"Dunafan Court",1
+"Dundrennan Lane",1
+"Dunlap Court",1
+"Dunlap Drive",1
+"Dunmore Drive",1
+"Dunn Hill Drive",1
+"Dunraven Trace",1
+"Durango Road",1
+"Durango Root Drive",1
+"Durango Springs Drive",1
+"Durham Avenue",1
+"Durness Drive",1
+"Dusti Drive",1
+"Dustin Trail",1
+"Duval Drive",1
+"Duxbury Drive",1
+"Dwarf Nettle Drive",1
+"Dwarfs Circle",1
+"Dye Drive",1
+"Dyer Street",1
+"Dyson Street",1
+"E FM 1382",1
+"Eagle Nest",1
+"Eagle Rock Drive",1
+"Eagle Trail",1
+"Eaglebend Lane",1
+"Eagles Rest Drive",1
+"Eagleview Court",1
+"Earl Street",1
+"Earlport Circle",1
+"Earnhardt Way",1
+"East 11th Street",1
+"East 12th Street",1
+"East Altamesa Boulevard",1
+"East Annie Street",1
+"East Atoll Drive",1
+"East Beddell Street",1
+"East Beltwood Parkway",1
+"East Biddison Street",1
+"East Bonds Ranch Rd",1
+"East Broadway Avenue",1
+"East Campbell Road",1
+"East Chambers Street",1
+"East Cherokee Ranch Rd",1
+"East Clarendon Drive",1
+"East Clover Park Drive",1
+"East Crest Lane",1
+"East Daggett Avenue",1
+"East Devitt Street",1
+"East Eighth Street",1
+"East Exchange Avenue",1
+"East Freeman Street",1
+"East Gambrell Street",1
+"East Grand Avenue",1
+"East Greenbriar Lane",1
+"East Hammond Street",1
+"East Harmon Road",1
+"East Industrial Avenue",1
+"East Kirnwood Drive",1
+"East Lane",1
+"East Lawson Road",1
+"East Lovers Lane",1
+"East Lowden Street",1
+"East Maddox Avenue",1
+"East Morphy Street",1
+"East Oaks Lane",1
+"East Oates Road",1
+"East Pafford Street",1
+"East Peach Street",1
+"East Perryton Drive",1
+"East Presidio Street",1
+"East Red Bird Lane",1
+"East Rim Road",1
+"East Shaw Street",1
+"East Shore Circle",1
+"East Shore Drive",1
+"East Side Avenue",1
+"East Sunset Drive",1
+"East Tucker Street",1
+"East Valley Ranch Parkway",1
+"East Waggoman Street",1
+"East Weatherford Street",1
+"East Wintergreen Road",1
+"Easter Avenue",1
+"Eastern Drive",1
+"Eastline Drive",1
+"Eastover Avenue",1
+"Eastpark Lane",1
+"Eastridge Drive",1
+"Eastus Drive",1
+"Eastview Street",1
+"Ebony Drive",1
+"Eccles Drive",1
+"Echo Bluff Drive",1
+"Echo Trace",1
+"Echobrook Lane",1
+"Ector Court",1
+"Ector Drive",1
+"Eddie Place",1
+"Eddy Sass Court",1
+"Eden Valley Lane",1
+"Ederville Circle",1
+"Edge Lake Drive",1
+"Edgecliff Road",1
+"Edgefield Road",1
+"Edgepoint Trace",1
+"Edgerton Drive",1
+"Edgewater Drive",1
+"Edgewood Cove",1
+"Edith Court",1
+"Edmonia Court",1
+"Egan Way",1
+"Ekukpe Drive",1
+"El Camino Drive",1
+"El Campo Drive",1
+"El Cerrito Drive",1
+"El Dorado Drive",1
+"El Padre Lane",1
+"El Rancho Road",1
+"El Rito Drive",1
+"El Toro Court",1
+"El Torro Street",1
+"Elaine Place",1
+"Elam Heights Drive",1
+"Elderwood Drive",1
+"Elderwood Trace",1
+"Elinor Street",1
+"Elk Hollow Drive",1
+"Ellery Drive",1
+"Ellington Drive",1
+"Elm River Court",1
+"Elm Shadows Drive",1
+"Elm Valley Lane",1
+"Elmridge Drive",1
+"Elmwood Boulevard",1
+"Eloise Street",1
+"Elsa Lane",1
+"Elsbeth Street",1
+"Elsie Street",1
+"Elsinor Drive",1
+"Elston Drive",1
+"Elwayne Avenue",1
+"Embassy Street",1
+"Ember Crest Drive",1
+"Embercrest Drive",1
+"Emberwood Drive",1
+"Embrey Drive",1
+"Embry Place",1
+"Emerald Gate Drive",1
+"Emerald Street",1
+"Emeraldglen Lane",1
+"Emeraldpark Lane",1
+"Emerson Street",1
+"Emhouse Street",1
+"Emmeryville Lane",1
+"Empire Central",1
+"Ems Road East",1
+"En Core Drive",1
+"Enchanted Rock Lane",1
+"End O Trace",1
+"Enfield Drive",1
+"Engleman Street",1
+"Englewood Lane",1
+"English Oak Drive",1
+"Enoch Drive",1
+"Ensenada Lane",1
+"Erhard Drive",1
+"Erin Drive",1
+"Errandale Drive",1
+"Esperanza Drive",1
+"Essex Drive",1
+"Estates Lane",1
+"Ester Drive",1
+"Ethel Drive",1
+"Etta Drive",1
+"Eugene Avenue",1
+"Eugene Street",1
+"Eunice Street",1
+"Eureka Springs Court",1
+"Evangeline Road",1
+"Evangeline Way",1
+"Evening Shade Drive",1
+"Evening Star Drive",1
+"Evening View Drive",1
+"Everglade Road",1
+"Evergreen Drive",1
+"Everton Place",1
+"Evita Drive",1
+"Excelsior Lane",1
+"Excelsior Place",1
+"Excelsior Way",1
+"Exeter Drive",1
+"Exmore Pony Way",1
+"Expedition Drive",1
+"Exposition Way",1
+"FM 423",1
+"Fabrication Street",1
+"Fair Creek Terrace",1
+"Fair Haven",1
+"Fair Haven Court",1
+"Fairbanks Circle",1
+"Fairbourne Circle",1
+"Fairbrook Lane",1
+"Faircrest Drive",1
+"Fairfax Avenue",1
+"Fairfield Avenue",1
+"Fairhaven Lane",1
+"Fairway Crossing Drive",1
+"Fairway View Drive",1
+"Fairwood Court",1
+"Fairwood Drive",1
+"Falabella Way",1
+"Falcon Drive",1
+"Falcon Head Court",1
+"Falcon Point Drive",1
+"Fall Cedar Drive",1
+"Fall Crest Drive",1
+"Fall River Drive",1
+"Fallbrook Drive",1
+"Fallen Leaf Court",1
+"Falling Leaves Drive",1
+"Fallkirk Court",1
+"Fallon Place",1
+"Fallow Deer Court",1
+"Fallworth Court",1
+"Farm Field Lane",1
+"Farm-to-Market 1446, Cantrell Street",1
+"Farmcote Drive",1
+"Farmers Branch Street",1
+"Farnsworth Drive",1
+"Farquhar Lane",1
+"Fawn Hill Drive",1
+"Fawn Ridge Drive",1
+"Fawn Valley Drive",1
+"Fawnhollow Drive",1
+"Fayette Trail",1
+"Feather Grass Lane",1
+"Featherwood Drive",1
+"Felder Lane",1
+"Felisa Place",1
+"Fence Post Drive",1
+"Fenchurch Road",1
+"Fenton Drive",1
+"Fern Creek Drive",1
+"Fern Hollow Drive",1
+"Fern Lake Drive",1
+"Fern Valley Drive",1
+"Fernander Drive",1
+"Fernando Road",1
+"Ferncliff Trail",1
+"Ferncreek Lane",1
+"Ferndale Lane",1
+"Fernheath Lane",1
+"Ferris Avenue",1
+"Ferris Branch Boulevard",1
+"Ferry Farm Lane",1
+"Fershaw Place",1
+"Fianna Hills Drive",1
+"Fiddlers Trace",1
+"Fieldcrest Court",1
+"Fieldcrest Drive",1
+"Fielder Street",1
+"Fieldgate Drive",1
+"Fieldstone Road",1
+"Fiesta Street",1
+"Files Street",1
+"Finch Drive",1
+"Finley Street",1
+"Fiore Lane",1
+"Fire Creek Trail",1
+"Fire Ridge Drive",1
+"Firestone Drive",1
+"Firestone Road",1
+"Firewheel Lane",1
+"Fishhook Court",1
+"Five Bar Drive",1
+"Flagstaff Run",1
+"Flagstone Drive",1
+"Flagstone Lane",1
+"Flameleaf Place",1
+"Flamewood Drive",1
+"Flamingo Lane",1
+"Flanary Lane",1
+"Flanders Drive",1
+"Flanders Street",1
+"Flat Creek Drive",1
+"Flatiron Street",1
+"Flatstone Court",1
+"Flaxley Drive",1
+"Flaxseed Lane",1
+"Fleetwing Trace",1
+"Fleetwood Road",1
+"Fleming Avenue",1
+"Flemington Drive",1
+"Fletcher Street",1
+"Flint Rock Drive",1
+"Flintcove Drive",1
+"Flintridge Drive",1
+"Flintrock Drive",1
+"Flintshire Court",1
+"Flora Street",1
+"Florence Drive",1
+"Flowerdale Lane",1
+"Flowering Drive",1
+"Flowering Plum Lane",1
+"Flowering Spring Trace",1
+"Flowertree Drive",1
+"Floyd Drive",1
+"Foch Street",1
+"Fogata Lane",1
+"Folsom Street",1
+"Fondren Drive",1
+"Fontaine Street",1
+"Foothill Lane",1
+"Forbes Court",1
+"Forby Street",1
+"Forefront Avenue",1
+"Forest Bend Road",1
+"Forest Breeze Drive",1
+"Forest Green Drive",1
+"Forest Heights Drive",1
+"Forest Hill Drive",1
+"Forest Hollow Park",1
+"Forest Knoll Trail",1
+"Forest Oaks Drive",1
+"Forest River Court",1
+"Forest Springs Drive",1
+"Forest Trail",1
+"Forest Vista Court",1
+"Forestbrook Drive",1
+"Forestridge Drive",1
+"Forney Trace",1
+"Forrest Drive",1
+"Forsythe Drive",1
+"Fortson Avenue",1
+"Fortuna Street",1
+"Forum Way South",1
+"Fossil Bluff Drive",1
+"Fossil Lake Drive",1
+"Fossil Ridge Road",1
+"Fostoria Drive",1
+"Fountain Glen Lane",1
+"Fountain Lane",1
+"Fountain Ridge Drive",1
+"Fountainview Terrace",1
+"Fouraker Street",1
+"Fowler Street",1
+"Fox Drive",1
+"Fox Glen Run",1
+"Fox Hill Lane",1
+"Fox Hollow",1
+"Fox Hollow Trail",1
+"Fox Hunt Trace",1
+"Fox Lane",1
+"Fox Point Trail",1
+"Fox River Lane",1
+"Fox Trail",1
+"Fox Trot Drive",1
+"Foxboro Court",1
+"Foxcreek Drive",1
+"Foxglen Court",1
+"Foxgrove Circle",1
+"Foxhaven Drive",1
+"Foxridge Court",1
+"Foxworth Drive",1
+"Francis Drive",1
+"Francis Street",1
+"Frazier Street",1
+"Frederick Street",1
+"Fredrick Drive",1
+"Freedom Circle",1
+"Freedom Lane",1
+"Freedom Way",1
+"Freeland Ridge Drive",1
+"Freeman Drive",1
+"Freeman Street",1
+"Freemont Trail",1
+"Freetown Road",1
+"Fremont Lane",1
+"French Settlement Road",1
+"Fresh Springs Road",1
+"Freshfield Road",1
+"Freshwater Lane",1
+"Friedman Lane",1
+"Friendship Road",1
+"Friendsway Court",1
+"Frio Way",1
+"Frosted Willow Lane",1
+"Frostwood Street",1
+"Full Moon Drive",1
+"Fullerton Circle",1
+"Furman Drive",1
+"Gaines Drive",1
+"Gairlock Drive",1
+"Galaxy Drive",1
+"Galemeadow Circle",1
+"Galemeadow Court",1
+"Gallagher Street",1
+"Gallant Court",1
+"Gallant Fox Court",1
+"Gallatin Lane",1
+"Galley Circle",1
+"Galley Street",1
+"Galva Drive",1
+"Galveston Avenue",1
+"Garapan Drive",1
+"Garden Avenue",1
+"Garden Crest Lane",1
+"Garden Grove Road",1
+"Garden Lane",1
+"Garrett Drive",1
+"Garrick Avenue",1
+"Garrison Avenue",1
+"Garvey Street",1
+"Gary Lane",1
+"Gaspard Court",1
+"Gateridge Drive",1
+"Gatetrail Drive",1
+"Gatewick Drive",1
+"Gatlinburg Drive",1
+"General Worth Drive",1
+"Genesis Drive",1
+"Genevieve Drive",1
+"Gentle Knoll Lane",1
+"Gentle Wind Lane",1
+"Georgian Court",1
+"Georgian Trail",1
+"Geranium Lane",1
+"Gibbons Drive",1
+"Gibsondell Avenue",1
+"Gidran Drive",1
+"Gila Bend Lane",1
+"Gilcrest Drive",1
+"Gillarel Springs Lane",1
+"Gillette Street",1
+"Gilmer Street",1
+"Gilmore Street",1
+"Ginger Avenue",1
+"Giordano Way",1
+Gipson,1
+"Glacier Drive",1
+"Glade Street",1
+"Glademeadow Drive",1
+"Gladewater Road",1
+"Gladiola Lane",1
+"Gladney Lane",1
+"Gladstone Court",1
+"Gladstone Drive",1
+"Glassenberry Street",1
+"Glen Aerie Lane",1
+"Glen Albens Circle",1
+"Glen Avenue",1
+"Glen Cross Drive",1
+"Glen Echo Court",1
+"Glen Forest Lane",1
+"Glen Garden Drive North",1
+"Glen Park Drive",1
+"Glen Regal Drive",1
+"Glen Springs Drive",1
+"Glen Stone Lane",1
+"Glencliff Court",1
+"Glenco Terrace",1
+"Glencoe Street",1
+"Glencrest Drive",1
+"Glenda Lane",1
+"Glendale Avenue",1
+"Gleneagle Lane",1
+"Gleneagles Drive",1
+"Glenhollow Court",1
+"Glenhurst Drive",1
+"Glenhurst Lane",1
+"Glenmeadow Court",1
+"Glenmore Avenue",1
+"Glenn Vista Drive",1
+"Glenoaks Drive",1
+"Glenridge Road",1
+"Glenscape Trace",1
+"Glenshannon Circle",1
+"Glenshee Drive",1
+"Glenwick Lane",1
+"Glenwood Avenue",1
+"Glenwood Drive",1
+"Goddard Court",1
+"Goddard Street",1
+"Godfrey Avenue",1
+"Goforth Circle",1
+"Gold Dust Trail",1
+"Golden Dale Drive",1
+"Golden Gate Drive",1
+"Golden Meadow Trace",1
+"Golden Trophy Drive",1
+"Golden Yarrow Drive",1
+"Goldenview Drive",1
+"Goldfinch Drive",1
+"Goldleaf Court",1
+"Goldrock Drive",1
+"Goldstone Lane",1
+"Golf Club Drive",1
+"Golf Lakes Trail",1
+"Golfside Drive",1
+"Gonzales Drive",1
+"Gooch Street",1
+"Goodshire Avenue",1
+"Gorman Drive",1
+"Gospel Drive",1
+"Gossage Lane",1
+"Governors Row",1
+"Gracefield Lane",1
+"Graceland Lane",1
+"Grady Lane",1
+"Grady Lee Street",1
+"Grafton Street",1
+"Graham Ranch Rd",1
+"Grainger Street",1
+"Grainland Court",1
+"Granada Avenue",1
+"Granada Road",1
+"Granbury Drive",1
+"Grand Central Parkway",1
+"Grand Champion Boulevard",1
+"Grand Junction Drive",1
+"Grand Meadow Drive",1
+"Grand National Boulevard",1
+"Grand Rapids Drive",1
+"Granite Hill Drive",1
+"Granite Shoals Avenue",1
+"Grant Street",1
+"Grantland Circle",1
+"Grantsville Drive",1
+"Grapevine Creek Drive",1
+"Grapevine Mills Circle",1
+"Grapewood Street",1
+"Grassy View Drive",1
+"Gray Drive",1
+"Gray Fox Court",1
+"Gray Fox Drive",1
+"Gray Oak Place",1
+"Gray Rock Drive",1
+"Gray Shale Drive",1
+"Gray Wolf Trail",1
+"Graycliff Drive",1
+"Grayport Drive",1
+"Grayson Ridge Drive",1
+"Graystone Drive",1
+"Graywolf Ridge Trace",1
+"Green Cove Lane",1
+"Green Heath Avenue",1
+"Greenbriar Lane",1
+"Greenbriar Trail",1
+"Greenfield Drive",1
+"Greengate Drive",1
+"Greenmeadow Drive",1
+"Greenmound Avenue",1
+"Greenport Drive",1
+"Greenspan Drive",1
+"Greentree Lane",1
+"Greenvalley Lane",1
+"Greenwich Lane",1
+"Gregg Street",1
+"Grenada Drive",1
+"Grenadier Drive",1
+"Grey Crow Drive",1
+"Grey Twig Drive",1
+"Grinstein Drive",1
+"Grizzly Hills Circle",1
+"Gross Street",1
+"Groveridge Drive",1
+"Guadalupe Lane",1
+"Guinn Gate Drive",1
+"Gulf Palms Drive",1
+"Gulf Street",1
+"Gum Drive",1
+"Gunnison Trace",1
+"Gus Thomasson Road",1
+"Guthrie Street",1
+"Haas Drive",1
+"Hacienda Heights Lane",1
+"Hackberry Court",1
+"Halbert Street",1
+"Haley Lane",1
+"Halifax Street",1
+"Hallum Street",1
+"Haltered Horse Lane",1
+"Haltom Road",1
+"Hamburg Court",1
+"Hamlin Drive",1
+"Hampshire Court",1
+"Hampshire Lane",1
+"Hampton Court",1
+"Hancock Court",1
+"Hancock Street",1
+"Handkerchief Way",1
+"Handley Ederville Road",1
+"Hanford Drive",1
+"Hanging Cliff Circle",1
+"Hanna Ranch Boulevard",1
+"Hanna Rose Lane",1
+"Hannah Circle",1
+"Hanover Road",1
+"Happy Canyon Circle",1
+"Happy Canyon Drive",1
+"Happy Hollow Lane",1
+"Happy Trace",1
+"Harbor Springs Drive",1
+"Harbor Town Drive",1
+"Harding Street",1
+"Hardwood Drive",1
+"Harlan Ave.",1
+"Harlanwood Drive",1
+"Harman Street",1
+"Harness Circle",1
+"Harold Walker Drive",1
+"Harper Street",1
+"Harrisburg Drive",1
+"Harston Street",1
+"Hart Street",1
+"Hartford Lane",1
+"Hartman Street",1
+"Hartsdale Drive",1
+"Harvest Glen Drive",1
+"Harvest Grove Drive",1
+"Harvest Moon Drive",1
+"Harvey Drive",1
+"Harwell Drive",1
+"Hasty Street",1
+"Haun Drive",1
+"Haven Lake Way",1
+"Havenbrook Lane",1
+"Haverhill Lane",1
+"Hawkes Nest Court",1
+"Hawks Haven Trace",1
+"Hawks Nest Drive",1
+"Hawkshaw Court",1
+"Hawkwood Court",1
+"Hawkwood Trace",1
+"Hawthorn Lane",1
+"Hayfield Court",1
+"Hayfield Drive",1
+"Haylee Drive",1
+"Hazel Green Drive",1
+"Hazelhurst Lane",1
+"Hearthstone Drive",1
+"Heartside Place",1
+"Heather Lane",1
+"Heatherglen Terrace",1
+"Heatherknoll Drive",1
+"Heathermore Drive",1
+"Heathrow Drive",1
+"Heber Springs Trace",1
+"Hector Street",1
+"Hedgdon Drive",1
+"Hedge Apple Court",1
+"Hedgerow Drive",1
+"Hedgeway Drive",1
+"Hedgewood Court",1
+"Hedgewood Trace",1
+"Helena Avenue",1
+"Helsem Bend",1
+"Hemlock Street",1
+"Hemlock Trail",1
+"Henco Drive",1
+"Henley Drive",1
+"Henna Lane",1
+"Herald Street",1
+"Herbert Street",1
+"Heritage Hills Court",1
+"Heritage Hills Drive",1
+"Heritage Lane",1
+"Heritage Oaks Drive",1
+"Heritage Parkway",1
+"Hermosa Drive",1
+"Herrling Street",1
+"Herschel Avenue",1
+"Hi Line Drive",1
+"Hibbs Drive",1
+"Hickory Hill Drive",1
+"Hickory Meadows Lane",1
+"Hickory Upland Drive",1
+"Hidalgo Drive",1
+"Hidden Cove Lane",1
+"Hidden Creek Lane",1
+"Hidden Dale Drive",1
+"Hidden Gate Court",1
+"Hidden Knoll Trail",1
+"Hidden Meadow Drive",1
+"Hidden Point Drive",1
+"Hidden Run Drive",1
+"Hidden Spring Drive",1
+"Hidden Trail Drive",1
+"Hidden View Circle",1
+"Hiddencreek Drive",1
+"Hiett Court",1
+"High Bluff Drive",1
+"High Cotton Trace",1
+"High Creek Drive",1
+"High Desert Drive",1
+"High Eagle Trace",1
+"High Lark Drive",1
+"High Meadow Drive",1
+"High Plain Lane",1
+"High Pointe Circle",1
+"Highfield Trail",1
+"Highflyer Hills Trail",1
+"Highland Heather Lane",1
+"Highland Meadow Drive",1
+"Highland Oaks Drive",1
+"Highland Park Circle",1
+"Highland Village Drive",1
+"Highlawn Terrace",1
+"Hightower Drive",1
+"Hill City Drive",1
+"Hill Creek Trail",1
+"Hill Forest Drive",1
+"Hill Ridge Drive",1
+"Hillbrook Street",1
+"Hillcrest Court East",1
+"Hillcroft Street",1
+"Hilldale Court",1
+"Hilldale Drive",1
+"Hillfawn Circle",1
+"Hillglenn Road",1
+"Hillgreen Drive",1
+"Hillsboro Avenue",1
+"Hillside Avenue",1
+"Hillside Drive",1
+"Hillstar Circle",1
+"Hilton Head Lane",1
+"Hoblitzelle Drive",1
+"Hodgkins Road",1
+"Hoedown Way",1
+"Hoel Drive",1
+"Hogan Court",1
+"Holland Avenue",1
+"Hollis Avenue",1
+"Hollis Street",1
+"Hollow Circle",1
+"Hollow Lake Road",1
+"Hollow Ridge Road",1
+"Hollowbrook Court",1
+"Hollowbrook Lane",1
+"Holly Hock Lane",1
+"Holly Leaf Drive",1
+"Holly Street",1
+"Holly Tree Drive",1
+"Hollyberry Court",1
+"Holt Street",1
+"Holyoke Drive",1
+"Homeland Street",1
+"Homeplace Drive",1
+"Homestead Lane",1
+"Homestretch Court",1
+"Homewood Place",1
+"Hondo Avenue",1
+"Honeybee Lane",1
+"Honeysuckle Lane",1
+"Hopewell Lane",1
+"Hopkins Avenue",1
+"Horn Toad Drive",1
+"Hornbeam Drive",1
+"Horncastle Court",1
+"Horse Trap Drive",1
+"Horseshoe Bend Drive",1
+"Horseshoe Trail",1
+"Hortense Avenue",1
+"Hot Springs Court",1
+"Hounds Tail Lane",1
+"Hour Glass Circle",1
+"Houston Wood Drive",1
+"Hoyle Avenue",1
+"Huffines Boulevard",1
+"Huffman Lane",1
+"Hughes Lane",1
+"Hughes Place",1
+"Hulen Bend Boulevard",1
+"Hulen Circle East",1
+"Hulen Park Drive",1
+"Hume Drive",1
+"Humphrey Drive",1
+"Hunnicut Circle",1
+"Hunt Club Trail",1
+"Hunter Peak Road",1
+"Hunter Run",1
+"Hunter Street",1
+"Hunters Creek Court",1
+"Hunters Glen Road",1
+"Hunters Glen Trace",1
+"Hunters Run Drive",1
+"Hunters View Lane",1
+"Hunting Drive",1
+"Huntley Street",1
+"Hurricane Lane",1
+"Huttig Avenue",1
+"Hyacinth Lane",1
+"Hyde Court",1
+"Hyde Park Drive",1
+"I Avenue",1
+"Ichabod Crane Road",1
+"Idlewild Drive",1
+"Ila Drive",1
+"Ilahe Drive",1
+"Imperial Valley Lane",1
+"Inca Drive",1
+"Inca Road",1
+"Incline Terrace",1
+"Indale Road",1
+"Indian Blanket Drive",1
+"Indian Creek Trail",1
+"Indian Rock Drive",1
+"Indian Springs Road",1
+"Indian Valley Drive",1
+"Indian Wells Road",1
+"Indiana Avenue",1
+"Indianola Drive",1
+"Indianola Street",1
+"Indigo Ridge Drive",1
+"Intermont Court",1
+"Investor Drive",1
+"Iowa Avenue",1
+"Irish Glen Court",1
+"Iron Ore Trace",1
+"Iron Ridge Drive",1
+"Irongate Lane",1
+"Ironhorse Drive",1
+"Irons Street",1
+"Iroquois Drive",1
+"Irvin Simmons Drive",1
+"Irving Avenue",1
+"Irwindell Boulevard",1
+"Isbell Court",1
+"Island Park Court",1
+"Ives Street",1
+"Ivy Lane",1
+"Ivy Way Court",1
+"Ivygate Circle",1
+"Ivygreen Road",1
+"Jack Casey Court",1
+"Jack Pine Court",1
+"Jackson Drive",1
+"Jackson Lane",1
+"Jadi Lane",1
+"Jaffee Street",1
+"Jamesway Road",1
+"Jasmine Drive",1
+"Jasper Street",1
+"Jaybird Drive",1
+"Jeane Street",1
+"Jennie Drive",1
+"Jennifer Court",1
+"Jennifer Lane",1
+"Jennings Avenue",1
+"Jenson Circle",1
+"Jeran Drive",1
+"Jesse Ramsey Boulevard",1
+"Jessica Street",1
+"Jill Lane",1
+"Jockey Drive",1
+"Joe B Rushing Road",1
+"John Hickman Parkway",1
+"John Ross Road",1
+"John Ryan Drive",1
+"John W Carpenter Freeway",1
+"Johnson Drive",1
+"Johnstone Lane",1
+"Jonelle Avenue",1
+"Jonesboro Avenue",1
+"Jordan Street",1
+"Joseph Lane",1
+"Josh Road",1
+"Jourdan Way",1
+"Joymeadow Drive",1
+"Joyner Ranch Rd",1
+"Judd Street",1
+"Judi Street",1
+"Julian Street",1
+"Julie Avenue",1
+"Juneau Court",1
+"Juneberry Street",1
+"Kahn Street",1
+"Kathleen Avenue",1
+"Kathy Lane",1
+"Katie Joyce Court",1
+"Katy Court",1
+"Kaywood Drive",1
+"Keating Street",1
+"Keats Drive",1
+"Keble Drive",1
+"Keechi Creek Court",1
+"Keeneland Court",1
+"Keller Haslet Road",1
+"Kelley Court",1
+"Kellogg Avenue",1
+"Kelroy Street",1
+"Kelton Street",1
+"Kemble Street",1
+"Kendallwood Drive",1
+"Kenny Drive",1
+"Kenshire Lane",1
+"Kentshire Lane",1
+"Kentwood Drive",1
+"Kenway Drive",1
+"Kenwell Street",1
+"Kern Court",1
+"Kernack Street",1
+"Kerr Court",1
+"Kerrville Street",1
+"Kerry Drive",1
+"Kerstyn Drive",1
+"Kettledrum Drive",1
+"Key Biscayne Drive",1
+"Key Haven",1
+"Key West Court",1
+"Keyridge Drive",1
+"Keystone Drive",1
+"Kiamesha Way",1
+"Kickapoo Drive",1
+"Kidd Springs Drive",1
+"Kielder Circle",1
+"Kielder Court",1
+"Kiest Forest Drive",1
+"Kiest Knoll Drive",1
+"Kiest Valley Parkway",1
+"Kiestcrest Drive",1
+"Kiesthill Drive",1
+"Kildee Lane",1
+"Kilkenny Place",1
+"Kiltartan Drive",1
+"Kimbell Drive",1
+"Kimberly Kay Drive",1
+"King Arthur Drive",1
+"King Cole Circle",1
+"King Cole Drive",1
+"King Court",1
+"King Oaks Lane",1
+"Kings Circle North",1
+"Kings Ridge Road",1
+"Kingsford Lane",1
+"Kingsknowe Parkway",1
+"Kingsmill Terrace",1
+"Kingsridge Drive",1
+"Kingstree Drive",1
+"Kingswood Circle",1
+"Kinkaid Drive",1
+"Kinslow Drive",1
+"Kiowa Drive",1
+"Kirby Street",1
+"Kirkhaven Drive",1
+"Kirkland Drive",1
+"Kirnwood Place",1
+"Kirven Drive",1
+"Kite Lane",1
+"Kiva Lane",1
+"Klamath Mtn Road",1
+"Kline Drive",1
+"Klondike Drive",1
+"Knight Lane",1
+"Knoll Krest Drive",1
+"Knoll Trail Drive",1
+"Knollmeadow Lane",1
+"Kodiak Court",1
+"Koko Head Circle",1
+"Korgan Street",1
+"Kraft Street",1
+"Kristen Drive",1
+"Kristina Lane",1
+"Kroger Drive",1
+"Kuban Boulevard",1
+"Kuroki Street",1
+"Kyle Avenue",1
+"Kyleigh Drive",1
+"Kynard Street",1
+"La Avenida Drive",1
+"La Barba Circle",1
+"La Bett Drive",1
+"La Cabeza Drive",1
+"La Flor Lane",1
+"La Fontana",1
+"La Mesa Drive",1
+"La Risa Drive",1
+"La Vista Lane",1
+"Labron Avenue",1
+"Lacebark Lane",1
+"Lacehaven Drive",1
+"Lacey Lane",1
+"Lacompte Drive",1
+"Lacrosse Drive",1
+"Ladale Drive",1
+"Lafayette Way",1
+"Lago Vista Lane",1
+"Lagonda Lane",1
+"Lahoma Street",1
+"Lahontan Drive",1
+"Lake Avenue",1
+"Lake Bend Trace",1
+"Lake Brook Drive",1
+"Lake Chelen Drive",1
+"Lake Como Drive",1
+"Lake Country Drive",1
+"Lake Crest Drive",1
+"Lake Grove Lane",1
+"Lake Havasu Trace",1
+"Lake Highlands Drive",1
+"Lake June Road East",1
+"Lake Louise Court",1
+"Lake Louise Road",1
+"Lake Meadows Lane",1
+"Lake Park Boulevard",1
+"Lake Park Drive",1
+"Lake Powell Drive",1
+"Lake Rock Court",1
+"Lake Rock Drive",1
+"Lake Springs Trace",1
+"Lake Stone Trace",1
+"Lake Tahoe Trace",1
+"Lake Worth Boulevard",1
+"Lakebluff Way",1
+"Lakedale Drive",1
+"Lakefair Circle",1
+"Lakehill Boulevard",1
+"Lakehurst Avenue",1
+"Lakeland Drive",1
+"Lakemont Drive",1
+"Lakeridge Court",1
+"Lamar Lane",1
+"Lambert Avenue",1
+"Lamington Drive",1
+"Lamont Avenue",1
+"Lamplighter Lane",1
+"Lana Circle",1
+"Lance Drive",1
+"Lance Leaf Drive",1
+"Lancelot Court",1
+"Lancelot Road",1
+"Landlock Drive",1
+"Landmark Drive",1
+"Landpiper Court",1
+"Lands End Street",1
+"Lanewood Circle",1
+"Lanewood Drive",1
+"Lange Circle",1
+"Langston Street",1
+"Lankford Trace",1
+"Lansdale Road",1
+"Lansford Avenue",1
+"Lante Circle",1
+"Lantern Lane",1
+"Lantern Light Drive",1
+"Lanward Circle",1
+"Lanward Drive",1
+"Lapanto Lane",1
+"Larchfield Lane",1
+"Larchridge Drive",1
+"Larchview Drive",1
+"Larchway Drive",1
+"Laren Lane",1
+"Larga Drive",1
+"Lark Lane",1
+"Lark Meadow Way",1
+"Larkin Drive",1
+"Larkwood Circle",1
+"Larmanda Street",1
+"Larson Lane",1
+"Las Colinas Blvd E",1
+"Las Colinas Boulevard",1
+"Las Cruces Drive",1
+"Las Haciendas Drive",1
+"Las Ventanas Trace",1
+"Lashley Drive",1
+"Lashley Place",1
+"Lasso Drive",1
+"Latham Drive",1
+"Lathrop Drive",1
+"Latigo Circle",1
+"Latimer Drive",1
+"Latrobe Trace Way",1
+"Latta Circle",1
+"Latta Parkway",1
+"Laura Lane",1
+"Laurel Canyon Terrace",1
+"Laurel Valley Road",1
+"Laurelhurst Lane",1
+"Laurelwood Court",1
+"Lauren Lane",1
+"Laurie Drive",1
+"Lausanne Avenue",1
+"Lavendale Avenue",1
+"Lavendale Circle",1
+"Lawndale Drive",1
+"Lawson Road",1
+"Lawtherwood Court",1
+"Lawton Court",1
+"Lawton Drive",1
+"Laysan Teal Way",1
+"Layton Street",1
+"Lazio Lane",1
+"Lazy Meadow Lane",1
+"Lazy River Drive",1
+"Lazy River Ranch Rd",1
+"Lazy Rock Lane",1
+"Lazydale Drive",1
+"Lea Crest Lane",1
+"Lea Shore",1
+"Leads Street",1
+"Leana Avenue",1
+"Leandra Lane",1
+"Leann Drive",1
+"Leath Street",1
+"Leatrice Drive",1
+"Lebanon Avenue",1
+"Ledgeview Court",1
+"Ledgeview Road",1
+"Ledyard Drive",1
+"Lee Meadow Drive",1
+"Leeds Drive",1
+"Leeson Lane",1
+"Legend Trail",1
+"Legrand Drive",1
+"Leith Avenue",1
+"Leming Street",1
+"Lemonwood Lane",1
+"Lenox Lane",1
+"Lenway Street",1
+"Leota Drive",1
+"Lester Granger Street",1
+"Levee Lane",1
+"Levelland Drive",1
+"Lewis Canyon Drive",1
+"Lewis Street",1
+"Lexington Avenue",1
+"Lexington Place",1
+"Liam Drive",1
+"Libby Lane",1
+"Lifford Place",1
+"Light Shore Drive",1
+"Limerick Lane",1
+"Lincoln Drive",1
+"Lincoln Hills Court",1
+"Lincolnshire Court",1
+"Lincolnshire Lane",1
+"Linda Drive",1
+"Lindaro Lane",1
+"Lindell Avenue",1
+"Lindentree Lane",1
+"Lindsey Street",1
+"Lindstrom Drive",1
+"Linfield Road",1
+"Linnet Lane",1
+"Linton Drive",1
+"Lionel Way",1
+"Lionfish Way",1
+"Lisa Court",1
+"Lismore Drive",1
+"Little Fox Lane",1
+"Little River Drive",1
+"Little Rock Lane",1
+"Little Valley Road",1
+"Live Oak Creek Drive",1
+"Livorno Lane",1
+"Llano Trace",1
+"Lloyd Avenue",1
+"Lloyd Valley Lane",1
+"Locarno Drive",1
+"Loch Maree Lane",1
+"Lochmeadows Drive",1
+"Lochwood Court",1
+"Lockheed Lane",1
+"Lockmoor Lane",1
+"Lockridge Circle",1
+"Lockshire Drive",1
+"Lodema Lane",1
+"Lodestone Lane",1
+"Lofton Terrace",1
+"Log Cabin Road",1
+"Logancraft Drive",1
+"Loma Vista Drive",1
+"Lombardy Court",1
+"Lomo Alto Drive",1
+"Lomo Street",1
+"London Fog Drive",1
+"London Lane",1
+"Londonderry Lane",1
+"Lone Moor Circle",1
+"Lone Oak Drive",1
+"Lone Rock Road",1
+"Lone Star Drive",1
+"Lonesome Dove Lane",1
+"Long Canyon Trail",1
+"Long Hollow Road",1
+"Longaberger Drive",1
+"Longhorn Trail",1
+"Longleaf Lane",1
+"Longley Court",1
+"Longmont Court",1
+"Longmont Drive",1
+"Longmont Trace",1
+"Longvue Drive",1
+"Longwood Lane",1
+"Longworth Boulevard",1
+"Loreto Drive",1
+"Lorinser Lane",1
+"Los Alamitos Drive",1
+"Los Alamos Trace",1
+"Los Altos Road",1
+"Los Cabos Trace",1
+"Los Olivos Lane",1
+"Los Rios Drive",1
+"Losa Drive",1
+"Lost Creek Boulevard",1
+"Lost Creek Drive",1
+"Lotus Circle",1
+"Louise Street",1
+"Love Place",1
+"Loveland Drive",1
+"Lovington Drive",1
+"Lowery Oaks Trace",1
+"Lowery Street",1
+"Lowriemore Lane",1
+"Loydhill Lane",1
+"Lucas Court",1
+"Lucile Herrin Lane",1
+"Lueders Lane",1
+"Lufkin Drive",1
+"Lullwater Drive",1
+"Luna Road",1
+"Lupine Circle East",1
+"Luzon Street",1
+"Lyndhurst Drive",1
+"Lynncrest Drive",1
+"Lynndale Place",1
+"Lynngrove Drive",1
+"Lynnhaven Avenue",1
+"Lynworth Drive",1
+"Lyon Court",1
+"Lyre Lane",1
+"M Avenue",1
+"Mabel Avenue",1
+"Mac Arthur Drive",1
+"Macarthur Boulevard",1
+"Maceo Lane",1
+"Macie Avenue",1
+"Mackinac Drive",1
+"Macon Street",1
+"Macy Lane",1
+"Maddie Avenue",1
+"Madrone Drive",1
+"Maegen Circle",1
+"Magdalen Avenue",1
+"Magna Vista Drive",1
+"Magnolia Blossom Trace",1
+"Magnolia Road",1
+"Maiden Lane",1
+"Mail Avenue",1
+"Majestic Court",1
+"Major Drive",1
+"Makiposa Lane",1
+"Malcolm Circle",1
+"Mallard Drive",1
+"Mallard Trace",1
+"Mallow Oak Drive",1
+"Malvern Trace",1
+"Manana Road",1
+"Manana Street",1
+"Mannheim Drive",1
+"Manning Lane",1
+"Manor Court",1
+"Many Oaks Drive",1
+"Manzinita Street",1
+"Maple Hill Drive",1
+"Mapleleaf Lane",1
+"Mapleshade Drive",1
+"Mapleshade Lane",1
+"Mapleton Drive",1
+"Mapletree Lane",1
+"Maplewood Avenue",1
+"Marbella Circle",1
+"Marbella Drive",1
+"Marble Canyon Circle",1
+"Marble Canyon Court",1
+"Marble Canyon Drive",1
+"March Avenue",1
+"Marder Street",1
+"Mardi Gras Lane",1
+"Margewood Drive",1
+"Maria Drive",1
+"Marianne Circle",1
+"Marie Lane",1
+"Marietta Court",1
+"Marietta Lane",1
+"Marigold Drive",1
+"Marina Drive",1
+"Marine Circle",1
+"Marine Court West",1
+"Mariners Drive",1
+"Mariposa Lane",1
+"Marjorie Avenue",1
+"Mark Iv Parkway",1
+"Mark Trail Way",1
+"Market Center Boulevard",1
+"Markham Drive",1
+"Markison Road",1
+"Marko Court",1
+"Marks Drive",1
+"Marks Lane",1
+"Markwood Drive",1
+"Marlow Avenue",1
+"Marlow Lane",1
+"Maroon Drive",1
+"Marquette Drive",1
+"Marrs Drive",1
+"Marsarie Street",1
+"Martin Luther Circle",1
+"Martinez Trail",1
+"Martingale View Lane",1
+"Marvel Drive",1
+"Mary Dan Drive",1
+"Mary Margaret Street",1
+"Maryibel Circle",1
+"Maryville Lane",1
+"Maserati Drive",1
+"Masland Circle",1
+"Massa Lane",1
+"Matador Drive",1
+"Matador Ranch Rd",1
+"Matalee Avenue",1
+"Mathis Street",1
+"Maumee Valley Court",1
+"Maurice Avenue",1
+"Maverick Avenue",1
+"Max Goldblatt Drive",1
+"Maxine Drive",1
+"Maxwell Avenue",1
+"May Hall Drive",1
+"Mayblossom Way",1
+"Mc Cain Drive",1
+"Mc Curdy Street",1
+"Mc Ewen Court",1
+"Mc Gee Street",1
+"Mc Lean Street",1
+"McCart Avenue",1
+"Mcadoo Lane",1
+"Mcalaster Street",1
+"Mcbroom Street",1
+"Mcclung Lane",1
+"Mccoy Street",1
+"Mcfarlin Boulevard",1
+"Mcgowan Street",1
+"Mckamy Drive",1
+"Mckaskle Drive",1
+"Mckavett Drive",1
+"Mcpherson Road",1
+"Mcrae Road",1
+"Meaders Avenue",1
+"Meadow Bluff Lane",1
+"Meadow Circle",1
+"Meadow Creek Drive",1
+"Meadow Gate Lane",1
+"Meadow Grove Lane",1
+"Meadow Heath Lane",1
+"Meadow Port Drive",1
+"Meadow Stone Lane",1
+"Meadow Sweet Lane",1
+"Meadow Trail Drive",1
+"Meadow View Trace",1
+"Meadowbrook Avenue",1
+"Meadowchase Way",1
+"Meadowcrest Avenue",1
+"Meadowdale Lane",1
+"Meadowhaven Drive",1
+Meadowmoor,1
+"Meadowood Road",1
+"Medford Road",1
+"Medical District Drive",1
+"Medina Avenue",1
+"Medinah Drive",1
+"Mediterranean Drive",1
+"Melba Street",1
+"Melbourne Drive",1
+"Meletio Lane",1
+"Melita Avenue",1
+"Melodylane Street",1
+"Memorial Drive",1
+"Memory Drive",1
+"Memphis Drive",1
+"Menominee Drive",1
+"Merced Drive",1
+"Mercer Place",1
+"Meredith Drive",1
+"Meredith Lane",1
+"Meribee Drive",1
+"Merit Drive",1
+"Merlotte Lane",1
+"Merrick Court",1
+"Merrimac Street",1
+"Merry Lane Court",1
+"Mesa Crest Drive",1
+"Mesa Drive",1
+"Mesa Verde Court",1
+"Mesa Verde Drive",1
+"Mesa View Trace",1
+"Mesita Drive",1
+"Mesquite Road",1
+"Mesquite Valley Road",1
+"Metmora Court",1
+"Mexicali Way",1
+"Meyersville Avenue",1
+"Miami Springs Drive",1
+"Michael Lane",1
+"Micki Lynn Avenue",1
+"Mid Surrey Court",1
+"Midbury Drive",1
+"Midcrest Drive",1
+"Middlefield Road",1
+"Middleton Road",1
+"Midland Lane",1
+"Midnight Drive",1
+"Mike Lane",1
+"Mike Street",1
+"Milby Oaks Drive",1
+"Mill Creek Trace",1
+"Mill Pond Drive",1
+"Mill Springs Pass",1
+"Mill Stream Drive",1
+"Mill Valley Lane",1
+"Millar Drive",1
+"Miller Road",1
+"Miller Street",1
+"Millerdale Lane",1
+"Milltown Drive",1
+"Milltrail Drive",1
+"Millwood Street",1
+"Milsap Lane",1
+"Milverton Drive",1
+"Mimms Drive",1
+"Mimosa Road",1
+"Minden Street",1
+"Mineola Avenue",1
+"Minnow Way",1
+"Minton Drive",1
+"Minuet Lane",1
+"Mirage Canyon Drive",1
+"Mirage Drive",1
+"Miraloma Drive",1
+"Miramar Avenue",1
+"Mirror Fountain Circle",1
+"Mirror Ridge Drive",1
+"Miss Ellie Circle",1
+"Mission Avenue",1
+"Mission Street",1
+"Misted Breeze Drive",1
+"Misthaven Place",1
+"Mistletoe Drive",1
+"Misty Glen Court",1
+"Misty Meadow Court",1
+"Misty Mountain Drive",1
+"Misty Oaks Lane",1
+"Misty Valley Drive",1
+"Misty Water Drive",1
+"Mistys Run",1
+"Mitchwin Road",1
+"Mizell Street",1
+"Moberly Lane",1
+"Mobile Drive",1
+"Molina Lane",1
+"Mona Lane",1
+"Monarch Drive",1
+"Moneta Lane",1
+"Monroe Drive",1
+"Monstrell Road",1
+"Montague Lane",1
+"Montclair Drive",1
+"Monte Carlo Street",1
+"Montego Road",1
+"Montreaux Drive",1
+"Montrose Drive",1
+"Monument Court",1
+"Monument Way",1
+"Moon Rise Court",1
+"Moondust Drive",1
+"Moonglow Drive",1
+"Moonhill Drive",1
+"Moonlight Lane",1
+"Moonstone Drive",1
+"Moorcroft Drive",1
+"Moore Avenue",1
+"Moore Street",1
+"Moorhen Circle",1
+"Moorview Avenue",1
+"Morab Street",1
+"Moreau Court",1
+"Moresby Street",1
+"Morgan Circle",1
+"Morgan Drive",1
+"Morley Avenue",1
+"Morning Avenue",1
+"Morning Dew Street",1
+"Morning Star Drive",1
+"Morrell Avenue",1
+"Morris Court",1
+"Morris Lane",1
+"Morris Street",1
+"Morrison Drive",1
+"Morse Drive",1
+"Morton Court",1
+"Morven Court",1
+"Mosaic Drive",1
+"Mosier Valley Road",1
+"Moss Circle Drive",1
+"Moss Farm Lane",1
+"Moss Point Road",1
+"Moss Rock Drive",1
+"Moss Trail",1
+"Mosscrest Drive",1
+"Mosson Road",1
+"Mossvine Circle",1
+"Mount Hood Road",1
+"Mount Mckinley Road",1
+"Mount Pheasant Road",1
+"Mount Plymouth Point",1
+"Mountain Air Trace",1
+"Mountain Bluff Drive",1
+"Mountain Cedar Lane",1
+"Mountain Creek Parkway",1
+"Mountain Lake",1
+"Mountain Laurel Lane",1
+"Mountain Ranch Rd",1
+"Mountain Spring Trace",1
+"Mountain Stream Trace",1
+"Mountain Valley Court",1
+"Mountcastle Drive",1
+"Mounts Run Drive",1
+"Mt Everest Street",1
+"Mt Pleasant Street",1
+"Muir Circle",1
+"Muirfield Drive",1
+"Muirfield Road",1
+"Mule Deer Run",1
+"Mullrany Drive",1
+"Mundy Drive",1
+"Murdock Road",1
+"Murphy Street",1
+"Murray Lane",1
+"Mustang Street",1
+"Myatt Avenue",1
+"Myers Circle",1
+"Myrtice Drive",1
+"Myrtle Beach Lane",1
+"Myrtle Springs Avenue",1
+"Myrtlewood Drive",1
+"Mystic Falls Drive",1
+"Mystic River Trace",1
+"N Joe Wilson Road",1
+"N. Hwy 77 Building C, Suite 10",1
+"Nandina Court",1
+"Nandina Drive",1
+"Nara Vista Trace",1
+"Naravista Drive",1
+"Nashville Avenue",1
+"Nation Drive",1
+"Natural Bridge Drive",1
+"Navajo Way",1
+"Navarro Street",1
+"Navarro Way",1
+"Navidad Court",1
+"Needle Leaf Lane",1
+"Nemechek Lane",1
+"Neomi Street",1
+"Neptune Road",1
+"Netleaf Lane",1
+"Nettleton Drive",1
+"Neutron Road",1
+"New Britton Drive",1
+"New Church Road",1
+"New Haven Drive",1
+"Newberry Trace",1
+"Newhall Street",1
+"Newman Boulevard",1
+"Newport Drive",1
+"Nicole Way",1
+"Nies Street",1
+"Nighthawk Drive",1
+"Nightingale Drive",1
+"Niguel Court",1
+"Niles Court",1
+"Nimrod Trail",1
+"Nisqually Street",1
+"No Name Street",1
+"Noble Avenue",1
+"Noble Oak Lane",1
+"Nocona Drive",1
+"Noel Drive",1
+"Nohl Ranch Rd",1
+"Nokomis Avenue",1
+"Nolte Drive",1
+"Noontide Court",1
+"Norma Drive",1
+"Normandy Avenue",1
+"Normont Circle",1
+"Norsworthy Drive",1
+"North Alexander Avenue",1
+"North Brighton Avenue",1
+"North Brookside Drive",1
+"North Bugle Drive",1
+"North Caddo Street",1
+"North Calhoun Street",1
+"North Cavender Street",1
+"North De Costa Street",1
+"North Denley Drive",1
+"North Denver Street",1
+"North Edgewood Terrace",1
+"North Ewing Avenue",1
+"North Franklin Avenue",1
+"North Franklin Street",1
+"North Grove Street",1
+"North Hall Street",1
+"North Hartsdale Avenue",1
+"North Hawkins Street",1
+"North Henderson Street",1
+"North Highway 67",1
+"North Hill Lane",1
+"North Holland Road",1
+"North Industrial Boulevard",1
+"North Ira Avenue",1
+"North Lancaster Avenue",1
+"North Las Vegas Trace",1
+"North MacArthur Boulevard",1
+"North Manus Drive",1
+"North Marsalis Avenue",1
+"North Merrifield Road",1
+"North Nassau Circle",1
+"North Oak Cliff Boulevard",1
+"North Plymouth Road",1
+"North Ravinia Drive",1
+"North Red Oak Circle",1
+"North Redwood Circle",1
+"North Retta Street",1
+"North Riverfront Boulevard",1
+"North Rogers Street",1
+"North Tennant Street",1
+"North Tyler Street",1
+"North University Drive",1
+"North Vernon Avenue",1
+"North Walton Walker Boulevard",1
+"North Westmoreland Road",1
+"North Willomet Avenue",1
+"Northcliff Drive",1
+"Northcrest Road",1
+"Northeast 11th Street",1
+"Northeast 16th Street",1
+"Northeast 29th Street",1
+"Northeast 30th Street",1
+"Northeast 31st Street",1
+"Northeast 34th Street",1
+"Northeast 35th Street",1
+"Northeast 37th Street",1
+"Northeast Loop 820",1
+"Northern Oak Circle",1
+"Northern Pine Drive",1
+"Northpointe Court",1
+"Northport Drive",1
+"Northwest 14th Street",1
+"Northwest 17th Street",1
+"Northwest 35th Street",1
+"Northwest Highway 287",1
+"Norway Road",1
+"Norwich Lane",1
+"Norwood Drive",1
+"Notre Dame Drive",1
+"Nottingham Boulevard",1
+"Nutmeg Circle",1
+"O B Crowe Drive",1
+"Oak Arbor Drive",1
+"Oak Cliff Road",1
+"Oak Forest Court",1
+"Oak Forest Drive",1
+"Oak Glen Circle",1
+"Oak Haven Lane",1
+"Oak Hill Place",1
+"Oak Hill Road",1
+"Oak Knoll Drive",1
+"Oak Lawn Avenue",1
+"Oak Meadows Drive",1
+"Oak Street",1
+"Oakbluff Drive",1
+"Oakbrook Boulevard",1
+"Oakcrest Road",1
+"Oakhurst Scenic Drive",1
+"Oakland Drive",1
+"Oakland Hills Lane",1
+"Oakleaf Drive",1
+"Oakleigh Lane",1
+"Oakmont Court",1
+"Oakmont Lane",1
+"Oakton Road",1
+"Oakwood Circle",1
+"Oates Circle",1
+"Obrien Court",1
+"Obrien Way",1
+"Ocho Rios Drive",1
+"Octavia Street",1
+"Odom Avenue",1
+"Offshore Drive",1
+"Ohio Drive",1
+"Oklaunion Drive",1
+"Old Burleson Road",1
+"Old Cleb Crow Jct Road",1
+"Old Colony Road",1
+"Old Decatur Road",1
+"Old Glory Trace",1
+"Old Granbury Road",1
+"Old Handley Road",1
+"Old Hickory Trail",1
+"Old Macgregor Lane",1
+"Old Mill Road",1
+"Old Moss Road",1
+"Old Oak Drive",1
+"Old Santa Fe Trace",1
+"Old Spanish Trail",1
+"Old Stone Drive",1
+"Old Trinity Way",1
+"Olden Street",1
+"Olivia Drive",1
+"Omaha Lane",1
+"Ontario Lane",1
+"Oram Street",1
+"Orbiter Circle",1
+"Orcas Street",1
+"Orchard Hill Lane",1
+"Orchard Park Drive",1
+"Orchid Drive",1
+"Oriel Circle",1
+"Orinoco Drive",1
+"Orland Park Circle",1
+"Orlando Court",1
+"Orleans Lane",1
+"Ormond Lane",1
+"Oryx Trail",1
+"Osborn Road",1
+"Osbun Street",1
+"Oslo Lane",1
+"Osprey Drive",1
+"Otis Drive",1
+"Overglen Drive",1
+"Overhill Lane",1
+"Overlake Drive",1
+"Overland Street",1
+"Overpark Drive",1
+"Overridge Drive",1
+"Overton Avenue",1
+"Overton Hollow",1
+"Overton Terrace",1
+"Overton View Court",1
+"Overton Woods Court",1
+"Overwood Drive",1
+"Overwood Road",1
+"Ovid Drive",1
+"Owasso Street",1
+"Owega Avenue",1
+"Owenwood Avenue",1
+"Owenwood Drive",1
+"Oxford Place",1
+"Pacific Place",1
+"Pacific Street",1
+"Pacino Drive",1
+"Pack Saddle Way",1
+"Page Street",1
+"Pagemill Road",1
+"Pagewood Drive",1
+"Paint Pony Trace North",1
+"Paint Trace",1
+"Painted Tree Trace",1
+"Paladin Place",1
+"Palazzo Drive",1
+"Palisades Court",1
+"Pallas Court",1
+"Pallos Verdas Drive",1
+"Palm Drive",1
+"Palm Lane",1
+"Palmnold Circle West",1
+"Palo Pinto Drive",1
+"Paloduro Lane",1
+"Pamela Drive",1
+"Pamela Lane",1
+"Pampas Creek Drive",1
+"Pampas Street",1
+"Pandora Circle",1
+"Pangolin Court",1
+"Panola Drive",1
+"Pansy Road",1
+"Panther Creek Parkway",1
+"Paragon Drive",1
+"Paramount Avenue",1
+"Parham Court",1
+"Park Creek Circle East",1
+"Park Garden Drive",1
+"Park Grove Lane",1
+"Park Highlands Drive",1
+"Park Lake Drive",1
+"Park Springs Boulevard",1
+"Park Street",1
+"Park Vista Drive",1
+"Parkbrook Drive",1
+"Parkcrest Court",1
+"Parker Road",1
+"Parkford Drive",1
+"Parkmere Drive",1
+"Parkmount Court",1
+"Parkshire Avenue",1
+"Parkside Drive",1
+"Parkstone Way",1
+"Parkview Drive",1
+"Parliament Lane",1
+"Parsons Lane",1
+"Parsons Street",1
+"Patch Grove Drive",1
+"Paterno Drive",1
+"Patricia Avenue",1
+"Patrick Circle",1
+"Patrick Drive",1
+"Patriot Drive",1
+"Pattison Drive",1
+"Patton Drive",1
+"Pawpaw Ridge Drive",1
+"Payton Drive",1
+"Peabody Avenue",1
+"Peace Drive",1
+"Peaceful Terrace",1
+"Peach Street",1
+"Peachtree Lane",1
+"Peak Circle",1
+"Peak Street",1
+"Pear Street",1
+"Pearson Drive",1
+"Peavy Circle",1
+"Peavy Place",1
+"Pebble Creek Road",1
+"Pebble Stone Drive",1
+"Pebble Valley Lane",1
+"Pebblebrook Court",1
+"Pebblebrook Drive",1
+"Pebbleford Road",1
+"Pecan Chase Lane",1
+"Pecan Creek Circle",1
+"Pecan Street",1
+"Pelican Lane",1
+"Pencross Lane",1
+"Pendleton Street",1
+"Penelope Street",1
+"Penhurst Drive",1
+"Peninsula Club Circle",1
+"Peninsula Club Circle East",1
+"Pennridge Lane",1
+"Penrod Avenue",1
+"Pensacola Avenue",1
+"Pensive Drive",1
+"Peony Court",1
+"Peoria Lane",1
+"Pepperidge Circle",1
+"Peppertree Lane",1
+"Perch Drive",1
+"Peregrine Trace",1
+"Perkins Lane",1
+"Perry Drive",1
+"Perry Lane",1
+"Perryton Drive",1
+"Pershing Street",1
+"Persimmon Lane",1
+"Persimmon Road",1
+"Peru Street",1
+"Petersburgh Place",1
+"Petty Lane",1
+"Petunia Drive",1
+"Pez Drive",1
+"Pheasant Creek Drive",1
+"Pheasant Park",1
+"Pheasant Run",1
+"Pheasant Run Trace",1
+"Pheasant Walk Street",1
+"Phelps Drive",1
+"Philip Avenue",1
+"Phinney Avenue",1
+"Phinney Drive",1
+"Phoenix Drive",1
+"Picasso Place",1
+"Pickwick Drive",1
+"Pictureline Drive",1
+"Pilot Drive",1
+"Pilot Point Street",1
+"Pindar Avenue",1
+"Pine Bluff Court",1
+"Pine Grove Lane",1
+"Pine Ridge Lane",1
+"Pine Trail Road",1
+"Pine Tree Circle East",1
+"Pine Tree Circle South",1
+"Pine Valley Place",1
+"Pinecrest Drive",1
+"Pinehurst Drive",1
+"Pineland Drive",1
+"Pineview Road",1
+"Piney Point Street",1
+"Pinnacle Drive",1
+"Pinnacle Point Drive",1
+"Pinocchio Drive",1
+"Pinon Street",1
+"Pinyon Pine Drive",1
+"Pisces Avenue",1
+"Pistoia Drive",1
+"Pistol Creek Drive",1
+"Pitchfork Ranch Rd",1
+"Pitkin Road",1
+"Placid Pond Drive",1
+"Placitas Trace",1
+"Plainsman Lane",1
+"Plainview Drive",1
+"Plano Road",1
+"Plant Avenue",1
+"Plantation Circle",1
+"Plateau Drive",1
+"Player Court",1
+"Plaza Dr",1
+"Plaza Drive",1
+"Plaza Parkway",1
+"Pleasant Grove Drive",1
+"Pleasant Hills Drive",1
+"Pleasant Meadows Lane",1
+"Pleasant Mound Drive",1
+"Pleasant Street",1
+"Pleasant View Drive",1
+"Pleasant Vista Drive",1
+"Pleasant Wood Lane",1
+"Plover Circle",1
+"Plum Street",1
+"Plummer Drive",1
+"Plumstead Drive",1
+"Plumtree Drive",1
+"Plymouth Avenue",1
+"Plymouth Lane",1
+"Poinciana Place",1
+"Point Lobos Trace",1
+"Polk Avenue",1
+"Polly Street",1
+"Polo Heights Drive",1
+"Polo Ranch Street",1
+"Ponder Street",1
+"Ponderosa Circle",1
+"Ponte Vedra Drive",1
+"Poplar Ridge Drive",1
+"Poppy Court",1
+"Poppy Hill Lane",1
+"Porcupine Drive",1
+"Port Road",1
+"Port Royal Drive",1
+"Portland Street",1
+"Portridge Drive",1
+"Possum Kingdom Drive",1
+"Post Oak Circle",1
+"Post Oak Terrace",1
+"Powderhorn Road",1
+"Prairie Crossing Drive",1
+"Prairie Grove Drive",1
+"Prairie Gulch Drive",1
+"Prater Road",1
+"Preakness Circle",1
+"Preakness Lane",1
+"Preferred Place",1
+"Prelude Drive",1
+"Prescott Lane",1
+"Prestige Drive",1
+"Prestmont Place",1
+"Preston Drive",1
+"Preston Hollow Road",1
+"Preston North Drive",1
+"Preston Ridge Road",1
+"Preston Valley Drive",1
+"Preston Vineyard Drive",1
+"Prestoncrest Lane",1
+"Prestondell Court",1
+"Prestwick Drive",1
+"Pretoria Place",1
+"Prickly Pear Drive",1
+"Pricklybranch Drive",1
+"Priddy Lane",1
+"Primrose Drive",1
+"Primrose Lane",1
+"Prince George Avenue",1
+"Prince Street",1
+"Prince William Lane",1
+"Princess Victoria Court",1
+"Pringle Drive",1
+"Priscella Drive",1
+"Promontory Drive",1
+"Prospect Drive",1
+"Prospect Hill Drive",1
+"Prosper Street",1
+"Prosperity Avenue",1
+"Prospero Lane",1
+"Proton Road",1
+"Province Lane",1
+"Purple Sage Road",1
+"Putting Green Drive",1
+"Pyrite Drive",1
+"Quail Creek Drive",1
+"Quail Feather Drive",1
+"Quail Hollow Court",1
+"Quail Ridge",1
+"Quail Ridge Road",1
+"Quail View Drive",1
+"Quails Nest Drive",1
+"Quanah Street",1
+"Quarry Chop Drive",1
+"Quarry Circle",1
+"Quarry Trace Street",1
+"Quarter Horse Lane",1
+"Quartz Court",1
+"Queens Brook Lane",1
+"Queens Garden Drive",1
+"Queenswood Court",1
+"Queenswood Lane",1
+"Querida Lane",1
+"Quest Court",1
+"Quiet Meadow Lane",1
+"Quietwood Drive",1
+"Quinn Street",1
+"Quorum Drive",1
+"Racebrook Court",1
+"Racell Street",1
+"Rachel Drive",1
+"Raft Street",1
+"Ragged Spur Court",1
+"Rain Dance Trace",1
+"Rain Forest Court",1
+"Rain Forest Lane",1
+"Rainbow Creek Drive",1
+"Rainbow Falls Drive",1
+"Rainier Road",1
+"Rainy Lake Drive",1
+"Raisintree Drive",1
+"Rall Circle",1
+"Ram Ridge Road",1
+"Ramble Wood Trace",1
+"Rampston Place",1
+"Ranch View Road",1
+"Ranch Vista Drive",1
+"Ranchero Lane",1
+"Ranchita Drive",1
+"Ranchita Road",1
+"Rancho Verde Parkway",1
+"Random Road",1
+"Randwick Trail",1
+"Ranger Drive",1
+"Ranger Road",1
+"Ranier Court",1
+"Rankin Street",1
+"Ransom Terrace",1
+"Raphael Drive",1
+"Raspberry Lane",1
+"Raton Drive",1
+"Ravehill Lane",1
+"Raven Lane",1
+"Raven Row",1
+"Ravenscroft Drive",1
+"Ravenswood Drive",1
+"Ravenya Street",1
+"Ravine Trail",1
+"Rawlins Street",1
+"Ray Krebbs Avenue",1
+"Raydell Place",1
+"Reading Drive",1
+"Record Crossing Road",1
+"Red Bird Court",1
+"Red Bluff Lane",1
+"Red Bud Lane",1
+"Red Elm Lane",1
+"Red Maple Drive",1
+"Red River Trail",1
+"Red Spring Road",1
+"Red Velvet Road",1
+"Red Willow Road",1
+"Red Wolf Drive",1
+"Redbird Center Drive",1
+"Redbud Lane",1
+"Redcrest Court",1
+"Redman Circle",1
+Redondo,1
+"Redstart Lane",1
+"Redwood Creek Lane",1
+"Redwood Trace",1
+"Reed Lane",1
+"Reed Street",1
+"Reeder Road",1
+"Regal Road",1
+"Regal Row",1
+"Regency Drive",1
+"Regent Blvd",1
+"Regent Drive",1
+"Reginald Road",1
+"Reisling Drive",1
+"Remington Drive",1
+"Remond Drive",1
+"Renaissance Court",1
+"Rench Road",1
+"Renfro Court",1
+"Renova Drive",1
+"Rentzel Street",1
+"Retriever Lane",1
+"Reverchon Drive",1
+"Reverend Cbt Smith Street",1
+"Revolution Way",1
+"Rex Drive",1
+"Rexton Lane",1
+"Rheims Place",1
+"Rhoda Lane",1
+"Rhoni Court",1
+"Richard Avenue",1
+"Richardo Lane",1
+"Richmond Drive",1
+"Richmond Park Lane",1
+"Richwood Drive",1
+"Richwoods Drive",1
+"Rickee Drive",1
+"Rickover Drive",1
+"Ricochet Drive",1
+"Ridge Hollow Trail",1
+"Ridge Lake Drive",1
+"Ridge Park Lane",1
+"Ridge Rock Lane",1
+"Ridgecrest Drive",1
+"Ridgecrest Lane",1
+"Ridgedale Drive",1
+"Ridgeland Drive",1
+"Ridgemont Drive",1
+"Ridgemoor Circle",1
+"Ridgeoak Way",1
+"Ridgerock Court",1
+"Ridgestone Drive",1
+"Ridgeton Road",1
+"Ridgetop Circle",1
+"Ridgeway Street",1
+"Ridgewick Drive",1
+"Ridgewood Road",1
+"Ridglea Country Club Drive",1
+"Riding Stable Lane",1
+"Rimdale Drive",1
+"Rimrock Circle",1
+"Ringgold Lane",1
+"Rio Hondo Drive",1
+"Rio Vista Drive",1
+"Ripley Street",1
+"Ripplewood Drive",1
+"Ripplewood Road",1
+"Rising Tide Drive",1
+"Risinghill Drive",1
+"River Chase Drive",1
+"River Forest Drive",1
+"River Glen Drive",1
+"River Rock Boulevard",1
+"River Rock Lane",1
+"River Valley Boulevard",1
+"River View Way",1
+"Riverchase Drive",1
+"Riverdale Drive",1
+"Riverflat Drive",1
+"Riverglen Drive",1
+"Rivermoor Court",1
+"Riverpark Drive",1
+"Riversprings Drive",1
+"Rivertree Boulevard",1
+"Riverwalk Lane",1
+"Riverwater Trace",1
+"Riverway Circle",1
+"Riverway Drive",1
+"Riverwood Drive",1
+"Riverwood Trace",1
+"Riviera Road",1
+"Roanoke Drive",1
+"Roanoke Street",1
+"Robert L Parish Sr Avenue",1
+"Roberts Avenue",1
+"Robin Creek Drive",1
+"Robin Meadow Drive",1
+"Robindale Drive",1
+"Robinson Street",1
+"Robinwoods Drive",1
+"Rochester Street",1
+"Rock Canyon Trail",1
+"Rock Creek Lane",1
+"Rock Dove Circle",1
+"Rock Elm Road",1
+"Rock Island Street",1
+"Rock Valley Drive",1
+"Rockaway Drive",1
+"Rockbend Place",1
+"Rockbluff Drive",1
+"Rockbrook Court",1
+"Rockford Drive",1
+"Rockingham Way",1
+"Rockmill Trace",1
+"Rockmoor Lane",1
+"Rockwood Drive",1
+"Rockwood Street",1
+"Rocky Branch Drive",1
+"Rocky Court",1
+"Rocky Place Court",1
+"Rocky Point Drive",1
+"Rocky Ridge Road",1
+"Rocky Top Circle",1
+"Rockyford Drive",1
+"Rockyglen Drive",1
+"Roehampton Drive",1
+"Rogue River Trace",1
+"Rogue Way",1
+"Roky Court",1
+"Roland Avenue",1
+"Roland Drive",1
+"Rolater Road",1
+"Rolling Creek Run",1
+"Rolling Meadows Drive",1
+"Rolling Ridge Lane",1
+"Rolling Rock Drive",1
+"Rolling Springs Court",1
+"Roma Drive",1
+"Romney Road",1
+"Rosa Court",1
+"Rosalie Drive",1
+"Rose Garden Avenue",1
+"Rose Lea Court",1
+"Rosebank Drive",1
+"Rosebriar Way",1
+"Rosecliff Drive",1
+"Rosedale Drive",1
+"Rosedown Lane",1
+"Roseland Avenue",1
+"Roseland Street",1
+"Roselawn Lane",1
+"Rosemead Drive",1
+"Rosser Square",1
+"Rota Circle",1
+"Rothington Road",1
+"Round Pen Run",1
+"Roundrock Lane",1
+"Roundtable Road",1
+"Routh Street",1
+"Rowan Drive",1
+"Royal Cedar Drive",1
+"Royal Chapel Drive",1
+"Royal Cove Drive",1
+"Royal Harbor",1
+"Royal Lytham Road",1
+"Royal Oaks Drive",1
+"Royal Park",1
+"Royal Springs Drive",1
+"Royal Terrace Lane",1
+"Royalwood Drive",1
+"Royalwood Lane",1
+"Ruby Place",1
+"Rue Du Lac Street",1
+"Rugged Avenue",1
+"Ruidosa Drive",1
+"Ruidosa Trace",1
+"Runnemede Lane",1
+"Running Bay",1
+"Running Brook Drive",1
+"Running River Court",1
+"Rush Creek Court",1
+"Rushing Springs Drive",1
+"Rushwood Court",1
+"Rust College Drive",1
+"Rustic Lane",1
+"Rustic Meadows Drive",1
+"Rustic Ridge Road",1
+"Rustic Valley Drive",1
+"Ruston Avenue",1
+"Ruth Borchardt Drive",1
+"Ruth Street",1
+"Rutherglen Drive",1
+"Rutledge Street",1
+"Ryan Lane",1
+"Ryder Court",1
+"S Loop 288",1
+"Sabine Street",1
+"Saddle Bag Drive",1
+"Saddle Blanket Court",1
+"Saddle Drive",1
+"Saddle Trace",1
+"Saddle Tree Road",1
+"Saddleridge Drive",1
+"Saddlewood Drive",1
+"Sagebrush Drive",1
+"Sagecrest Terrace",1
+"Sagehill Drive",1
+"Sahallee Drive",1
+"Sahara Place",1
+"Sail Creek Drive",1
+"Saint Anne Street",1
+"Saint Lawrence Road",1
+"Saints Circle",1
+"Salano Creek Drive",1
+"Saldana Drive",1
+"Salem Drive",1
+"Salerno Drive",1
+"Salisbury Avenue",1
+"Salisbury Drive",1
+"Sam Bass Trace",1
+"Sam Cantey Street",1
+"Sam Dealey Drive",1
+"San Christoval Pass",1
+"San Clemente Drive",1
+"San Cristobal Drive",1
+"San Fernando Drive",1
+"San Fernando Way",1
+"San Jose Drive",1
+"San Lucas Avenue",1
+"San Marcos Way",1
+"San Miguel Trace",1
+"San Pablo Drive",1
+"San Rafael Drive",1
+"San Saba Drive",1
+"San Simeon Lane",1
+"San Souci Drive",1
+"Sanborn Street",1
+"Sand Hill Drive",1
+"Sand Shell Court",1
+"Sand Street",1
+"Sandalwood Drive",1
+"Sandalwood Lane",1
+"Sanden Drive",1
+"Sandestin Drive",1
+"Sandgate Street",1
+"Sandhill Road",1
+"Sandywoods Court",1
+"Sangers Court",1
+"Santa Anna Avenue",1
+"Santa Fe Lane",1
+"Santa Gertrudis Drive",1
+"Santa Gertrudis Street",1
+"Santa Rita Court",1
+"Santiago Drive",1
+"Sao Paulo Road",1
+"Sapphire Drive",1
+"Sapphire Street",1
+"Sarah Jane Lane",1
+"Sarah Lee Drive",1
+"Sarasota Springs Drive",1
+"Sarazen Drive",1
+"Sargent Road",1
+"Sarita Drive",1
+"Sartain Drive",1
+"Sassafras Drive",1
+"Savage Drive",1
+"Savannah Circle",1
+"Sawgrass Court",1
+"Sawmill Road",1
+"Sawtimber Trace",1
+"Sax Leigh Drive",1
+"Saxon Street",1
+"Saxony Court",1
+"Scarborough Lane",1
+"Scenery Hill Court",1
+"Scenic Point Drive",1
+"Scenic Road",1
+"Scenic Vista Drive",1
+"Schadt Street",1
+"Schieffer Avenue",1
+"Schmidt Street",1
+"Schofield Drive",1
+"Scio Drive",1
+"Scotsmeadow Drive",1
+"Scott Avenue",1
+"Scott Road",1
+"Scott Street",1
+"Scotts Valley Street",1
+"Scottsbluff Drive",1
+"Se 12Th Street",1
+"Sea Eagle Lane",1
+"Sea Harbor Road",1
+"Sea Island Drive",1
+"Seabrook Drive",1
+"Seafield Lane",1
+"Seagoville Road",1
+"Seal Cove",1
+"Sealands Lane",1
+"Searcy Drive",1
+"Seascape Lane",1
+"Seaside Lane",1
+"Seaton Drive",1
+"Seawood Drive",1
+"Sebring Drive",1
+"Secco Court",1
+"Secluded Pond Drive",1
+"Seco Boulevard",1
+"Sedalia Street",1
+"Seedling Court",1
+"Seedling Lane",1
+"Segura Court North",1
+"Segura Court South",1
+"Seldon Way",1
+"Seminole Drive",1
+"Senate Street",1
+"Seneca Court",1
+"Senita Cactus Street",1
+"Sequoia Way",1
+"Seven Eagles Lane",1
+"Sevenoaks Drive",1
+"Sevier Wells Road",1
+"Sewanee Drive",1
+"Sewell Avenue",1
+"Sewell Circle",1
+"Shackleford Street",1
+"Shadow Bend Drive",1
+"Shadow Brook Lane",1
+"Shadow Creek Court",1
+"Shadow Ridge Drive",1
+"Shady Creek Court",1
+"Shady Creek Lane",1
+"Shady Dale Lane",1
+"Shady Glen Court",1
+"Shady Glen Lane",1
+"Shady Hollow Lane",1
+"Shady Oaks Drive",1
+"Shady Shore Drive",1
+"Shady Valley Drive",1
+"Shadybank Drive",1
+"Shadycliff Drive",1
+"Shafter Drive",1
+"Shagbark Street",1
+"Shakespeare Lane",1
+"Shale Drive",1
+"Shamrock Avenue",1
+"Shannon Drive",1
+"Sharon Road",1
+"Sharon Street",1
+"Shasta Ridge Court",1
+"Shasta Trace",1
+"Shaw Street",1
+"Sheffield Drive",1
+"Sheila Lane",1
+"Shelby Lane",1
+"Shelby Place",1
+"Shell Flower Lane",1
+"Shellbrook Avenue",1
+"Shellwood Lane",1
+"Shelterwood Circle",1
+"Shenandoah Street",1
+"Shepherds Hill Lane",1
+"Sherbrooke Drive",1
+"Sherburne Drive",1
+"Shields Street",1
+"Shiloh Drive",1
+"Shinnecock Hills Drive",1
+"Shirestone Lane",1
+"Shore Shadows Lane",1
+"Shore View Drive",1
+"Shorelark Drive",1
+"Shoreline Circle West",1
+"Shortleaf Drive",1
+"Shortmeadow Lane",1
+"Shumard Court",1
+"Shumard Oak Lane",1
+"Sicily Street",1
+"Side Saddle Trace",1
+"Sidney Drive",1
+"Sidney Street",1
+"Siena Drive",1
+"Sienna Ridge Lane",1
+"Sierra Blanca Drive",1
+"Sierra Drive",1
+"Sierra Ridge Drive",1
+"Sierra Vista Way",1
+"Sierra Way",1
+"Signet Street",1
+"Silkwood Drive",1
+"Silkwood Street",1
+"Silsby Drive",1
+"Silver Maple Drive",1
+"Silver Oaks Lane",1
+"Silver Springs Circle",1
+"Silver Spur Lane",1
+"Silver Stream Lane",1
+"Silverberry Avenue",1
+"Silverbrook Lane",1
+"Silverdollar Trail",1
+"Silverhill Drive",1
+"Silverleaf Drive",1
+"Silverthorne Drive",1
+"Silverton Drive",1
+"Silverwood Lane",1
+"Simondale Drive",1
+"Sims Drive",1
+"Single Creek Trail",1
+"Singleleaf Lane",1
+"Singleton Court",1
+"Sky High Circle",1
+"Skyfrost Drive",1
+"Skylark Drive",1
+"Slade Boulevard",1
+"Slate Street",1
+"Slay Street",1
+"Sleepy Creek Drive",1
+"Sleepy Lane",1
+"Sleepy Meadows Drive",1
+"Sleepy Ridge Circle",1
+"Slick Rock Trail",1
+"Slide Road",1
+"Slide Rock Road",1
+"Smoke Tree Lane",1
+"Smokethorn Drive",1
+"Snapdragon Drive",1
+"Snow Goose Way",1
+"Snowden Road",1
+"Snowdrop Lane",1
+"Snowshill Drive",1
+"Soapberry Circle",1
+"Softcloud Drive",1
+"Softwood Circle",1
+"Soloman Drive",1
+"Solon Road",1
+"Solona Blvd",1
+"Solona Street",1
+"Solta Drive",1
+"Somerset Avenue",1
+"Somerset Lane",1
+"Sondra Drive",1
+"Sonnet Drive",1
+"Sonterra Lane",1
+"Sorghum Drive",1
+"Sourwood Drive",1
+"South 2Nd Avenue",1
+"South Alexander Avenue",1
+"South Ayers Avenue",1
+"South Beacon Street",1
+"South Better Drive",1
+"South Briscoe Boulevard",1
+"South Camp Court",1
+"South Dick Price Road",1
+"South Dover Terrace",1
+"South Dwight Avenue",1
+"South Gilpin Avenue",1
+"South Handley Drive",1
+"South Harwood Street",1
+"South Havenwood Lane",1
+"South Janmar Drive",1
+"South Kimball Avenue",1
+"South Macarthur Boulevard",1
+"South Manus Drive",1
+"South Meadow Drive East",1
+"South Murdeaux Lane",1
+"South Nassau Circle",1
+"South Oakland Boulevard",1
+"South Ravinia Drive",1
+"South Ridge Trace",1
+"South Ridgeway",1
+"South Rockwall Avenue",1
+"South S Street",1
+"South Sunbeck Circle",1
+"South Sylvania Avenue",1
+"South Tillery Street",1
+"South Waverly Drive",1
+"South Westcreek Court",1
+"South Windomere Avenue",1
+"South Winnetka Avenue",1
+"South Zang Boulevard",1
+"Southbrook Circle",1
+"Southcrest Court",1
+"Southcrest Drive",1
+"Southern Pines Court",1
+"Southpark Lane",1
+"Southport Drive",1
+"Southview Lane",1
+"Southway Circle",1
+"Sovereign Road",1
+"Spangler Road",1
+"Spanish Needle Trace",1
+"Spanish River Trace",1
+"Speckle Drive",1
+"Specklebelly Lane",1
+"Spence Street",1
+"Spencer Street",1
+"Spiller Street",1
+"Spindletop Trail",1
+"Spirehaven Lane",1
+"Spirit Lake Drive",1
+"Splitridge Court",1
+"Spokane Circle",1
+"Spring Creek Road",1
+"Spring Drive",1
+"Spring Glen Drive",1
+"Spring Grove Avenue",1
+"Spring Hill Drive",1
+"Spring Hollow Drive",1
+"Spring Ranch Drive",1
+"Spring Valley Way",1
+"Springbok Circle",1
+"Springbrook Drive",1
+"Springhill Street",1
+"Springwillow Road",1
+"Springwood Drive",1
+"Spruce Creek Lane",1
+"Spruce Valley Lane",1
+"Squaw Creek Drive",1
+"Squaw Valley Drive",1
+"St Augustine Road",1
+"St Croix Drive",1
+"St Croix Lane",1
+"St David Drive",1
+"St Dominic Circle",1
+"St Francis Avenue",1
+"St Johns Lane",1
+"St Kitts Road",1
+"St Laurent Court",1
+"St Michaels Drive",1
+"St Nicholas Drive",1
+"St Regis Drive",1
+"St Rosalie Drive",1
+"St Sophia Drive",1
+"St Thomas Place",1
+"St Vincent Road",1
+"Stacey Street",1
+"Stacy Cove",1
+"Stag Road",1
+"Stagecoach Way",1
+"Stallcup Drive",1
+"Stallion Ranch Road",1
+"Stamps Avenue",1
+"Stanhope Drive",1
+"Stansfield Drive",1
+"Stanton Place",1
+"Stapleford Circle",1
+"Staples Avenue",1
+"Star Meadow Drive",1
+"Star Mesa Drive",1
+"Star Ridge Drive",1
+"Starboardway Drive",1
+"Stark Avenue",1
+"Starks Avenue",1
+"Starling Circle",1
+"Starling Drive",1
+"Starry Court",1
+"Starry Night Lane",1
+"Stars Road",1
+"State Hwy 205",1
+"Steagall Court",1
+"Stebbins Drive",1
+"Stedman Drive",1
+"Steiner Street",1
+"Steinman Avenue",1
+"Stella Avenue",1
+"Stephens Green Drive",1
+"Stepping Stone Drive",1
+"Steppington Drive",1
+"Sterling Trace Circle",1
+"Stern Street",1
+"Stetson Drive",1
+"Stetson Drive South",1
+"Stetson Way",1
+"Stevens Point Lane",1
+"Stevens Ridge Drive",1
+"Stevens Wood Lane",1
+"Stewart Drive",1
+"Still Forest Drive",1
+"Still Meadow Drive",1
+"Stillmeadow Road",1
+"Stillwater Drive",1
+"Stillwater Trace",1
+"Stirrup Bar Drive",1
+"Stirrup Way",1
+"Stokes Street",1
+"Stone Arbor Court",1
+"Stone Canyon Drive",1
+"Stone Canyon Road",1
+"Stone Creek Lane South",1
+"Stone Creek Meadow Court",1
+"Stone Falls Lane",1
+"Stone Gate Drive",1
+"Stone House Lane",1
+"Stone Lake Drive",1
+"Stone Valley Drive",1
+"Stonebriar Lane",1
+"Stonebrook Circle",1
+"Stonebrook Court",1
+Stonecourt,1
+"Stonecrest Drive",1
+Stoneledge,1
+"Stoneman Street",1
+"Stoneport Drive",1
+"Stoneshire Court",1
+"Stoneside Trace",1
+"Stonewyck Lane",1
+"Stoney Creek Road",1
+"Stony Ford Drive",1
+"Stonycreek Drive",1
+"Strattford Drive",1
+"Strawberry Way",1
+"Strawflowers Drive",1
+"Strickland Street",1
+"Stripling Drive",1
+"Stuart Road",1
+"Stuttgart Drive",1
+"Sudbury Drive",1
+"Sue Ellen Avenue",1
+"Suetelle Drive",1
+"Sugar Maple Drive",1
+"Sugar Mill Lane",1
+"Sugar Mill Road",1
+"Sugar Ridge Road",1
+"Sugarberry Drive",1
+"Sugarberry Road",1
+"Sugartree Lane",1
+"Summerbrook Circle",1
+"Summercrest Drive",1
+"Summerglen Road",1
+"Summerhill Lane",1
+"Summers Drive",1
+"Summerwood Drive",1
+"Summerwoods Lane",1
+"Summit Avenue",1
+"Summit Hill Drive",1
+"Summit Oak Circle",1
+"Summit Point Court",1
+"Summit Run Drive",1
+"Sumter Drive",1
+"Sumter Way",1
+"Sun Drive",1
+"Sun King Lane",1
+"Suncrest Drive",1
+"Sundance Lane",1
+"Sundeck Street",1
+"Sunderland Court",1
+"Sunderland Lane",1
+"Sunny Brook Lane",1
+"Sunny Hill Lane",1
+"Sunnybank Drive",1
+"Sunnydale Drive",1
+"Sunnyland Lane",1
+"Sunnyvale Circle",1
+"Sunnyview Court",1
+"Sunray Drive",1
+"Sunrise Court",1
+"Sunrise Lane",1
+"Sunscape Lane",1
+"Sunscape Lane South",1
+"Sunset Hills Drive",1
+"Sunset Oaks Drive",1
+"Sunwood Circle",1
+"Susana Lane",1
+"Sutton Place",1
+"Sutton Street",1
+"Swananoah Road",1
+"Swayne Avenue",1
+"Sweet Cherry Court",1
+"Sweet Clover Lane",1
+"Sweet Gum Drive",1
+"Sweet Meadows Drive",1
+"Sweet Sue Lane",1
+"Sweetgum Way",1
+"Swiftcurrent Trace",1
+"Swords Drive",1
+"Sycamore Terrace",1
+"Sylvan Dale Road",1
+"Sylvan Meadows Drive",1
+"Sylvania Court",1
+"Sylvia Street",1
+"TX 26",1
+"Table Rock Drive",1
+"Tackett Court",1
+"Tacoma Terrace",1
+"Tahoe Lane",1
+"Talbot Parkway",1
+"Talisman Drive",1
+"Talleyrand Court",1
+"Tallow Wind Trace",1
+"Tallyho Lane",1
+"Talons Crest Circle",1
+"Tamar Trace",1
+"Tamaron Court",1
+"Tamaron Drive",1
+"Tameron Trace",1
+"Tammaron Trace",1
+"Tamworth Drive",1
+"Tanbark Trace",1
+"Tandy Avenue",1
+"Tangleglen Place",1
+"Tangleridge Drive",1
+"Tanglerose Drive",1
+"Tanglevine Drive",1
+"Tanglewood Trace",1
+"Tanner Avenue",1
+"Tanner Street",1
+"Tanneyhill Lane",1
+"Tanque Drive",1
+"Tanyard Lane",1
+"Taperwicke Drive",1
+"Tarpley Avenue",1
+"Tarrant Main Street",1
+"Tarryall Drive",1
+"Tascosa Street",1
+"Tatum Drive",1
+"Tayloe Street",1
+"Taylor Street",1
+"Tayside Court",1
+"Teaberry Lane",1
+"Teakwood Drive",1
+"Telemark Trail",1
+"Temecula Road",1
+"Templeton Trail",1
+"Tennington Park",1
+"Tension Drive",1
+"Terbet Lane",1
+"Teresita Trail",1
+"Terrace Avenue",1
+"Terrace Drive",1
+"Terrace Oaks Lane",1
+"Terrace Trace",1
+"Texas College Drive",1
+"Thayne Drive",1
+"Thicket Bend Drive",1
+"Thistle Creek Court",1
+"Thistle Ridge Terrace",1
+"Thomasson Drive",1
+"Thomaswood Lane",1
+"Thompson Road",1
+"Thoreau Lane",1
+"Thornberry Drive",1
+"Thornbush Drive",1
+"Thorncliff Drive",1
+"Thorndale Circle",1
+"Thorntree Drive",1
+"Thornwood Drive",1
+"Thorp Lane",1
+"Thrasher Court",1
+"Thunder Bay Drive",1
+"Thunder Road",1
+"Tidwell Drive",1
+"Tierney Court North",1
+"Tierra Drive",1
+"Tigris Trace",1
+"Tijuana Trace",1
+"Tilapia Drive",1
+"Timber Creek Trace",1
+"Timber Fall Trace",1
+"Timber Trail Drive",1
+"Timberwood Court",1
+"Timken Trace",1
+"Timothy Road",1
+"Tindall Drive",1
+"Tioga Drive",1
+"Tipperary Drive",1
+"Toland Street",1
+"Tony Court",1
+"Top Rail Run",1
+"Topeka Avenue",1
+"Toppingham Street",1
+"Topsfield Drive",1
+"Tori Trace",1
+"Torino Drive",1
+"Toronto Street",1
+"Tosca Lane",1
+"Toscana Way",1
+"Toulon Lane",1
+"Town & Country Boulevard",1
+"Town Creek Drive",1
+"Town Hill Lane",1
+"Town North Drive",1
+"Towne Bridge Drive",1
+"Townsley Court",1
+"Trade Winds Drive",1
+"Trading Post Drive",1
+"Trail Bend Circle",1
+"Trail Hill Drive",1
+"Trail Stone Lane",1
+"Trail View Lane",1
+"Trailpine Drive",1
+"Trailridge Court",1
+"Tram Drive",1
+"Trammel Drive",1
+"Tranquil Pond Drive",1
+"Tranquility Drive",1
+"Tranquilla Drive",1
+"Travers Trace",1
+"Travis Drive",1
+"Traymore Avenue",1
+"Traymore Drive",1
+"Treehaven Road",1
+"Treemont Place",1
+"Treeview Lane",1
+"Trego Court",1
+"Trestles Road",1
+"Trice Court",1
+"Trilobite Trace",1
+"Trina Drive",1
+"Trinity Creek Drive",1
+"Trinity Gate Drive",1
+"Trinity Heights Boulevard",1
+"Trinity Landing Drive South",1
+"Trinity Landing Drive West",1
+"Trinity Lane",1
+"Trinity River Circle",1
+"Trinity View Drive",1
+"Triple Crown Drive",1
+"Troon Road",1
+"Troy Drive",1
+"Truax Drive",1
+"True Avenue",1
+"Trueland Drive",1
+"Truelson Drive",1
+"Truesdell Place",1
+"Truman Court",1
+"Truxton Drive",1
+"Tube Drive",1
+"Tuggle Street",1
+"Tuleys Creek Drive",1
+"Tulip Tree Court",1
+"Tulsa Way",1
+"Tumbling Creek Trail",1
+"Tumbling River Drive",1
+"Tumbling Trace",1
+"Turnberry Lane",1
+"Turnbridge Drive",1
+"Turner Avenue",1
+"Turner Parkway",1
+"Turner Street",1
+"Turquoise Drive",1
+"Turtle Creek Plaza",1
+"Turtle River Court",1
+"Turtle Stream Drive",1
+"Tweed Drive",1
+"Twilight Circle",1
+"Twilight Drive",1
+"Twin Creek Circle",1
+"Twin Harbors Drive",1
+"Twin Hills Avenue",1
+"Twin Oaks Trace",1
+"Twin Tree Lane",1
+"Twineing Street",1
+"Twisting Star Drive",1
+"Twisting Trail",1
+"Twisting Wind Drive",1
+"Two Hawks Drive",1
+"Tyler Drive",1
+"Tyra Lane",1
+"Tyrone Drive",1
+"US 77",1
+"Ulloa Lane",1
+"Underwood Street",1
+"United Lane",1
+"University Drive",1
+"Urban Crest Road",1
+"Utah Avenue",1
+"Utica Street",1
+"Vacherie Lane",1
+"Vada Drive",1
+"Vagas Street",1
+"Vale Street",1
+"Valeen Lane",1
+"Valencia Grove Court",1
+"Valera Court",1
+"Valiant Drive",1
+"Valley Chapel Lane",1
+"Valley Lake Lane",1
+"Valley Lawn Place",1
+"Valley Mills Drive",1
+"Valley Mills Lane",1
+"Valley River Drive",1
+"Valley Springs Trace",1
+"Valley Vista Drive",1
+"Valverde Lane",1
+"Van Cleave Drive",1
+"Van Hook Drive",1
+"Van Horn Lane",1
+"Van Zandt Drive",1
+"Vancouver Drive",1
+"Vanette Lane",1
+"Vanguard Way",1
+"Vanhorn Avenue",1
+"Varden Street",1
+"Vdali Court",1
+"Vega Court East",1
+"Vel Drive",1
+"Venera Street",1
+"Veneto Drive",1
+"Venice Court",1
+"Ventana Trail",1
+"Verbena Street",1
+"Vernon Way",1
+"Via Helena Drive",1
+"Via James Jacob",1
+"Via San Antonio",1
+"Viceroy Drive",1
+"Vicki Lane",1
+"Vicksburg Lane",1
+"Victoria Avenue",1
+"Vida Court",1
+"View Meadow Lane",1
+"Viewside Drive",1
+"Vil Avenue",1
+"Villa Cliff Drive",1
+"Villa Grove Drive",1
+"Villa Haven Drive",1
+"Village Creek Road",1
+"Village Parkway",1
+"Village Place",1
+"Village Way",1
+"Vincent Avenue",1
+"Vine Street",1
+"Vinemont Street",1
+"Vinland Street",1
+"Vinson Lane",1
+"Vinson Street",1
+"Virginia Court",1
+"Virginia Parkway",1
+"Virginia Street",1
+"Vista Creek Drive",1
+"Vista Glen Lane",1
+"Vista Grande Drive",1
+"Vista Mar Drive",1
+"Vista Meadow Drive",1
+"Vista Ridge Court",1
+"Vista Ridge Drive West",1
+"Vista Royale Drive",1
+"Vista View Drive",1
+"Vista Willow Drive",1
+"Vistadale Drive",1
+"Vistaridge Drive",1
+"Vivian Avenue",1
+"Volga Court",1
+"Volk Court",1
+"Voltaire Drive",1
+"Voltamp Drive",1
+"W FM 544",1
+"W Spring Valley Road",1
+"Waco Avenue",1
+"Wadlington Avenue",1
+"Wagon Rut Court",1
+"Wake Forrest Drive",1
+"Wakefield Drive",1
+"Walden Court",1
+"Walden Way",1
+"Waldorf Street",1
+"Wales Court",1
+"Wallbrook Drive",1
+"Walleye Drive",1
+"Wallingford Drive",1
+"Wallis Drive",1
+"Walmsley Avenue",1
+"Walnut Canyon Court",1
+"Walnut Creek Drive",1
+"Walnut Grove Lane",1
+"Walnut Hill Circle",1
+"Walnut Ridge Drive",1
+"Walraven Circle",1
+"Waltham Avenue",1
+"Walton Walker Boulevard",1
+"Warehouse Way",1
+"Warfield Avenue",1
+"Warick Drive",1
+"Warm Breeze Lane",1
+"Warrington Place",1
+"Warwick Avenue",1
+"Warwick Lane",1
+"Washington Drive",1
+"Washita Way",1
+"Watauga Road",1
+"Water Bridge",1
+"Water Buck Run",1
+"Water Road",1
+"Water Street",1
+"Waterbury Drive",1
+"Watercourse Way",1
+"Watercrest Drive",1
+"Watership Lane",1
+"Waterside Trace",1
+"Watervaliet Drive",1
+"Waterview Court",1
+"Waterview Road",1
+"Watonga Street",1
+"Watson Street",1
+"Watsonwood Street",1
+"Waverly Lane",1
+"Waweenoc Avenue",1
+"Waycross Lane",1
+"Weatherstone Drive",1
+"Weatherwood Court",1
+"Weaver Street",1
+"Webb Chapel Road",1
+"Webb Garden Drive",1
+"Weber River Trace",1
+"Wedgecrest Drive",1
+"Wedgemere Drive",1
+"Wedghill Way",1
+"Wedgway Drive",1
+"Wedgworth Court",1
+"Wedmore Drive",1
+"Weeping Willow Court",1
+"Weisenberger Street",1
+"Welch Avenue",1
+"Welch Court",1
+"Welch Folly Lane",1
+"Welch Road",1
+"Well Springs Drive",1
+"Wellcrest Drive",1
+"Wellington Point Drive",1
+"Wellington Street",1
+"Wemdon Drive",1
+"Wendelkin Street",1
+"Wentworth Drive",1
+"Wesley Street",1
+"Wesleyan Drive",1
+"Wesleyan Street",1
+"West 1st Street",1
+"West 8Th Street",1
+"West 9Th Street",1
+"West Allen Avenue",1
+"West Anthony Street",1
+"West Arlington Avenue",1
+"West Berry Street",1
+"West Beverly Drive",1
+"West Bewick Street",1
+"West Broadway Avenue",1
+"West Brooklyn Avenue",1
+"West Brownlee Avenue",1
+"West Cantey Street",1
+"West Canty Street",1
+"West Cherry Point Drive",1
+"West College Street",1
+"West Continental Boulevard",1
+"West Corning Avenue",1
+"West Creek Drive",1
+"West Crescent Way",1
+"West Daggett Avenue",1
+"West Danieldale Road",1
+"West Debbie Lane",1
+"West Everman Parkway",1
+"West Fain Street",1
+"West Five Mile Parkway",1
+"West Fogg Street",1
+"West Franklin Street",1
+"West Green Oaks Boulevard",1
+"West Greenway Boulevard",1
+"West Grover C Washington Avenue",1
+"West Henderson",1
+"West Henderson Street",1
+"West Jerden Lane",1
+"West Jessamine Street",1
+"West Katherine P Raines Road",1
+"West Kellis Street",1
+"West Lake Highlands Drive",1
+"West Laramie Lane",1
+"West Laureland Road",1
+"West Lawson Road",1
+"West Lawther Drive",1
+"West Leuda Street",1
+"West Long Avenue",1
+"West Lotus Avenue",1
+"West Lucas Road",1
+"West Malta Avenue",1
+"West Mcvey Avenue",1
+"West Morphy Street",1
+"West Mulkey Street",1
+"West Normandale Street",1
+"West Ohio Avenue",1
+"West Park Row Drive",1
+"West Parker Road",1
+"West Pembroke Avenue",1
+"West Point Lane",1
+"West Pulaski Street",1
+"West Richmond Avenue",1
+"West Ricks Circle",1
+"West Risinger Road",1
+"West Rosedale Street South",1
+"West Round Grove Road",1
+"West Suffolk Avenue",1
+"West Talon Drive",1
+"West Thornhill Drive",1
+"West Tucker Boulevard",1
+"West Virginia Drive",1
+"West Woodin Boulevard",1
+"West Yarmouth Street",1
+"Westcliff Road North",1
+"Westcliff Road West",1
+"Westdale Drive",1
+"Wester Avenue",1
+"Wester Way",1
+"Western Center BLVD",1
+"Western Center Blvd",1
+"Western Meadows Court",1
+"Western Pass",1
+"Western Willows Drive",1
+"Westfork Drive South",1
+"Westgate Drive",1
+"Westglen Drive",1
+"Westgrove Drive",1
+"Westlake Drive",1
+"Westland Avenue",1
+"Westlawn Lane",1
+"Westminster Drive",1
+"Westmont Court",1
+"Westover Square Drive",1
+"Westridge Lane",1
+"Westrock Drive",1
+"Westview Avenue",1
+"Westwood Place",1
+"Westwood Shores Drive",1
+"Wheat Sheaf Trace",1
+"Wheatfield Trace",1
+"Wheelock Drive",1
+"Whippoorwill Drive",1
+"Whirlwind Drive",1
+"Whisper Drive",1
+"Whispering Cedar Drive",1
+"Whispering Cove Trace",1
+"Whispering Lake Drive",1
+"Whistlewood Drive",1
+"Whistling Duck Drive",1
+"Whitaker Avenue",1
+"White Ash Road",1
+"White Falcon Way",1
+"White Feather Lane",1
+"White Lane",1
+"White River Drive",1
+"White Rose Trail",1
+"White Sands Drive",1
+"White Spruce Drive",1
+"White Swan Place",1
+"White Valley Drive",1
+"White Willow Drive",1
+"Whitedove Drive",1
+"Whitefern Drive",1
+"Whitehart Street",1
+"Whitestar Lane",1
+"Whitewing Drive",1
+"Whitmore Street",1
+"Whitten Street",1
+"Whittenburg Gate Avenue",1
+"Whittier Avenue",1
+"Whittlesey Road",1
+"Whitworth Drive",1
+"Wichita Court",1
+"Wideman Drive",1
+"Widgeon Way",1
+"Wild Brick Drive",1
+"Wild Valley Drive",1
+"Wildbriar Drive",1
+"Wildcreek Way",1
+"Wildfowl Drive",1
+"Wildriver Trace",1
+"Wildwest Drive",1
+"Wildwood Road",1
+"Wilhelmina Drive",1
+"Wilkie Way",1
+"Williams Avenue",1
+"Williams Spring Road",1
+"Williams Street",1
+"Williams Way",1
+"Williamstown Road",1
+"Willie Street",1
+"Williford Trail",1
+"Willomet Avenue",1
+"Willoughby Boulevard",1
+"Willow Bend Drive",1
+"Willow Bend Road",1
+"Willow Crest Lane",1
+"Willow Oak Drive",1
+"Willow Ranch Way",1
+"Willow Ridge Drive",1
+"Willow Rock Lane",1
+"Willow Springs Lane",1
+"Willowdale Lane",1
+"Willowick Avenue",1
+Willowood,1
+"Willowood Court",1
+"Wills Creek Lane",1
+"Willspoint Court",1
+"Wilma Lane",1
+"Wilma Street",1
+"Wilson Road",1
+"Winchester Drive",1
+"Winchester Street",1
+"Wind Chime Drive",1
+"Wind Dancer Trace",1
+"Wind River Drive",1
+"Wind Star Way",1
+"Windcrest Lane",1
+"Windermere Place",1
+"Windfall Circle",1
+"Windflower Lane",1
+"Winding Hollow Lane",1
+"Winding Lane",1
+"Winding Passage Way",1
+"Winding Ridge Drive",1
+"Winding Rose Trail",1
+"Winding Valley Drive",1
+"Winding Way",1
+"Winding Way Court",1
+"Winding Woods Trail",1
+"Windmier Circle",1
+"Windmill Lane",1
+"Windmill Pointe Drive",1
+"Windrock Road",1
+"Windsor Avenue",1
+"Windsor Parkway",1
+"Windsor Place",1
+"Windville Lane",1
+"Windwillow Court",1
+"Windy Hollow Drive",1
+"Winecup Ridge",1
+"Winesanker Way",1
+"Wing Point Lane",1
+"Wing Way Avenue",1
+"Winged Foot Court",1
+"Winn Street",1
+"Winnie Street",1
+"Winsted Avenue",1
+"Winston Road",1
+"Winter Falls Trace",1
+"Winterberry Drive",1
+"Winterset Avenue",1
+"Winthrop Avenue",1
+"Winthrop Avenue East",1
+"Wiseman Avenue",1
+"Wisen Avenue",1
+"Wiser Avenue",1
+"Wishing Well Court",1
+"Wispwillow Drive",1
+"Wispy Trace",1
+"Wister Drive",1
+"Wisteria Court",1
+"Wisterwood Drive",1
+"Withers Street",1
+"Wolf Creek Trail",1
+"Wolf Mountain Lane",1
+"Wolfson Street",1
+"Wood Heights Drive",1
+"Woodacre Circle",1
+"Woodacre Road",1
+"Woodard Avenue",1
+"Woodberry Drive",1
+"Woodchase Drive",1
+"Woodcreek Trace",1
+"Wooded Creek Drive",1
+"Woodfin Drive",1
+"Woodgreen Drive",1
+"Woodharbor Drive",1
+"Woodland Way",1
+"Woodridge Drive",1
+"Woodrow Avenue",1
+"Woods Avenue",1
+"Woodshore Drive",1
+"Woodspan Drive",1
+"Woodspring Drive",1
+"Woodstock Road",1
+"Woodstone Lane",1
+"Woodstream Drive",1
+"Woodthrush Drive",1
+"Woodwick Drive",1
+"Woodwind Drive",1
+"Woodwind Lane",1
+"Wordsworth Drive",1
+"Worthing Street",1
+"Wovenedge Court",1
+"Wren Way",1
+"Wright Armstrong Street",1
+"Wyatt Court",1
+"Wycliff Street",1
+"Wyndbrook Drive",1
+"Wyndrook Street",1
+"Wynell Street",1
+"Xavier Drive",1
+"Yacht Street",1
+"Yale Street",1
+"Yarra Lane",1
+"Yellow Birch Drive",1
+"Yellow Cedar Trace",1
+"Yellow Wood Drive",1
+"Yellowleaf Court",1
+"Yellowleaf Drive",1
+"Yellowstone Drive",1
+"Yellowstone Trace",1
+"Yorkford Drive",1
+"Yorksprings Drive",1
+"Yorktown Street",1
+"Yorkville Court",1
+"Yosemite Lane",1
+"Youngstown Street",1
+"Yuchi Trace North",1
+"Yuchi Trace South",1
+"Zachary Court",1
+"Zelkova Circle",1
+"Zion Trace",1
+"Zodiac Lane",1
+Street Names>
+Street Names>
+Street Names>
+Street Names>
+Street Names>
+Street Names>
+Street Names> .prompt 'Overview of Data> '
+Overview of Data>
+Overview of Data>
+Overview of Data>
+Overview of Data>
+Overview of Data> SELECT COUNT(*) FROM nodes;
+249683
+Overview of Data>
+Overview of Data>
+Overview of Data>
+Overview of Data> SELECT COUNT(*) FROM ways;
+25934
+Overview of Data>
+Overview of Data>
+Overview of Data>
+Overview of Data> SELECT COUNT(DISTINCT(e.uid))
+   ...> FROM (SELECT uid FROM nodes UNION ALL SELECT uid FROM ways) e;
+1103
+Overview of Data>
+Overview of Data>
+Overview of Data>
+Overview of Data>
+Overview of Data> SELECT e.user, COUNT(*) as num
+   ...> FROM (SELECT user FROM nodes UNION ALL SELECT user FROM ways) e
+   ...> GROUP BY e.user
+   ...> ORDER BY num DESC
+   ...> LIMIT 10;
+"Andrew Matheny_import",174102
+woodpeck_fixbot,29508
+"Andrew Matheny",7634
+Stephen214,6339
+TheDude05,4124
+TexasNHD,2514
+25or6to4,2429
+RoadGeek_MD99,1808
+"Chris Lawrence",1696
+Dami_Tn,1487
+Overview of Data>
+Overview of Data>
+Overview of Data>
+Overview of Data>
+Overview of Data>
+Overview of Data> SELECT COUNT(*)
+   ...> FROM
+   ...>     (SELECT e.user, COUNT(*) as num
+   ...>      FROM (SELECT user FROM nodes UNION ALL SELECT user FROM ways) e
+   ...>      GROUP BY e.user
+   ...>      HAVING num=1)  u;
+338
+Overview of Data>
+Overview of Data>
+Overview of Data>
+Overview of Data>
+Overview of Data>
+Overview of Data> SELECT tags.value, COUNT(*) as count
+   ...> FROM (SELECT * FROM nodes_tags UNION ALL
+   ...>       SELECT * FROM ways_tags) tags
+   ...> WHERE tags.key = 'amenity'
+   ...> GROUP BY tags.value
+   ...> ORDER BY count DESC
+   ...> LIMIT 10;
+parking,151
+place_of_worship,92
+school,55
+fast_food,47
+restaurant,47
+fuel,31
+bank,14
+bench,8
+grave_yard,7
+hospital,7
+Overview of Data>
+Overview of Data>
+Overview of Data>
+Overview of Data>
+Overview of Data>
+Overview of Data> SELECT tags.key, COUNT(*) as count
+   ...> FROM (SELECT * FROM nodes_tags UNION ALL
+   ...>       SELECT * FROM ways_tags) tags
+   ...> GROUP BY tags.key
+   ...> ORDER BY count DESC
+   ...> LIMIT 10;
+building,16946
+street,14754
+housenumber,14753
+highway,8442
+county,5015
+cfcc,5008
+name,4960
+reviewed,4409
+name_base,3428
+source,3292
+Overview of Data>
+Overview of Data>
+Overview of Data>
+Overview of Data> .prompt 'Additional Ideas> '
+Additional Ideas>
+Additional Ideas>
+Additional Ideas>
+Additional Ideas> SELECT *
+   ...>  FROM (SELECT * FROM nodes_tags UNION ALL
+   ...>        SELECT * FROM ways_tags) tags
+   ...>  WHERE tags.key LIKE 'fixme';
+"518031083,fixme,SLIPWAY,"regular
+"0071119,FIXME,"verify name","regular
+"8979034,FIXME,"What is the name? Road not shown in Tiger 2013.","regular
+"0756523,FIXME,"check ref","regular
+"03488534,FIXME,"rough alignment","regular
+"11497944,FIXME,"What is the name? Road not shown in Tiger 2014.","regular
+"11504621,FIXME,"Does this road have a proper 'ending'? None shown in Tiger 2013 Data.","regular
+"23091092,FIXME,"How many lanes?","regular
+"23091134,FIXME,"How many lanes?","regular
+"44897749,FIXME,"check lanes and where median breaks are","regular
+"45752074,FIXME,"check ref","regular
+"72095805,FIXME,"Need names and roads","regular
+"25339911,FIXME,"Is construction done?","regular
+"65050566,FIXME,"Does this road have a proper 'ending'? None shown in Tiger 2013 Data.","regular
+"46992281,FIXME,"need survey, no satellite imagery","regular
+"60414934,FIXME,NAME,"regular
+"19283711,FIXME,"verified via digital data that segment does not have a name. please verify via ground survey","regular
+"19780935,FIXME,"is there a need for dual carriageway?","regular
+"44604917,FIXME,"dual carriageway","regular
+"84848077,FIXME,"survey needed","regular
+"88466334,fixme,"i don`t know my name :(","regular
+"88752357,fixme,contour,"regular
+"04669450,FIXME,"divided highway","regular
+"06520981,FIXME,"What is the name? Road not shown in Tiger 2014.","regular
+Additional Ideas>
+Additional Ideas>
+Additional Ideas>
+Additional Ideas>
+Additional Ideas> .quit
+
+C:\Users\magic\OneDrive\Documents\GitHub\OSM>
